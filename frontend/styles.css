@@ -21,30 +21,33 @@ header {
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
-.nav-links {
+.nav-links, .profile-dropdown {
     list-style: none;
     margin: 0;
     padding: 0;
 }
 
-.nav-links li{
+.nav-links li, .profile-dropdown {
     display: inline-block;
     margin-left: 20px;
 }
-.nav-links li a{
+.nav-links li a, .profile-dropdown a {
     transition: all 0.3s ease;
     color: #ffffff;
     text-decoration: none;
     text-transform: uppercase;
     font-weight: bold;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Segoe UI', Arial, Helvetica, sans-serif;
 }
-.nav-links li a:hover{
+.nav-links li a:hover, .profile-dropdown a:hover {
     transition: all 0.3s ease;
     color: #38bdf8;
 }
 .nav-links li a.current {
-    color: #38bdf8;
+    color: #ffffff;
+    background-color: #38bdf8;
+    border-radius: 20px;
+    padding: 10px 15px;
 }
 
 .logo {
@@ -52,13 +55,21 @@ header {
     font-weight: bold;
     color: #ffffff; /* Flipped to white to contrast against the dark blue  */
     cursor: pointer;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Segoe UI', Arial, Helvetica, sans-serif;
 }
 
 .ease {
     color: #38bdf8; /* Light blue for "Ease" to create a visual distinction */
 }
 
+.login{
+    background-color: #38bdf8; /* Light blue background for the login button */
+    color: #ffffff; /* White text for contrast */
+    padding: 10px 20px;
+    text-decoration: none;
+    font-size: 16px;
+    border-radius: 20px;
+}
 
 /* Hero Banner */
 .hero {
@@ -79,12 +90,72 @@ header {
     font-size: 18px;
     margin-bottom: 30px;
 }
-.btn {
-    background-color: #007bff;
-    color: #fff;
-    padding: 15px 30px;
-    text-decoration: none;
-    font-size: 18px;
+
+/* Profile Dropdown */
+.profile-dropdown {
+    display: none;
+}
+.profile-dropdown ul{
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    margin: 0 15px 0 0;
+    list-style: none;
+}
+
+.nav-links > li:hover .profile-dropdown {
+    display: block;
+    position: absolute;
+    background-color: #38bdf8;
+    padding: 10px 20px;
     border-radius: 5px;
-    transition: background-color 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* Hamburger Menu */ 
+.hamburger {
+    display: none;
+    cursor: pointer;
+
+}
+.hamburger .bar {
+    display: block;
+    width: 25px;
+    height: 3px;
+    background-color: #ffffff;
+    margin: 4px auto;
+    transition: all 0.3s ease;
+}
+
+@media (max-width:768px) {
+    .hamburger {
+        display: block;
+    }
+    .hamburger.active .bar:nth-child(2) {
+        opacity: 0;
+    }
+    .hamburger.active .bar:nth-child(1) {
+        transform: translateY(7px) rotate(45deg);
+    }
+    .hamburger.active .bar:nth-child(3) {
+        transform: translateY(-7px) rotate(-45deg);
+    }
+
+    .nav-links {
+        position: fixed;
+        top: 100px;
+        left: -100%;
+        width: 100%;
+        gap: 0;
+        flex-direction: column;
+        background-color: #0f172a;
+        transition: all 0.3s ease;
+        width: 100%;
+        text-align: center;
+    }
+    
+    .nav-links.active {
+        left: 0;
+    }
+    
 }
