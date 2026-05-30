@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="frontend/styles.css">
+    <link rel="stylesheet" href="https://ka-f.webawesome.com/webawesome@3.7.0/styles/webawesome.css" />
+    <script type="module" src="https://ka-f.webawesome.com/webawesome@3.7.0/webawesome.loader.js"></script>
+
+    
 </head>
 <body>
     <header>
@@ -12,14 +16,26 @@
         <nav class="navbar">
             
             <ul class="nav-links">
-                <li><a href="index.html" class="current" >Home</a></li>
+                <li><a href="index.html" class="current" >Home</a></li> 
+                <!-- Change class to current for the active page -->
+                 
                 <li><a href="#">Search Flights</a></li>
                 <li><a href="#">Book Flights</a></li>
                 <li><a href="#">My Reservations</a></li>
-                <li><a href="#">User Profile</a></li>
+                <li><a href="#">User Profile <wa-icon name="chevron-down"></wa-icon> </a>
+                    <div class="profile-dropdown">
+                        <ul>
+                            <li><a href="#">Profile</a></li>
+                            <li><a href="#">Settings</a></li>
+                            <li><a href="#">Logout</a></li>
+                        </ul>
+                    </div>
+
+                </li>
                 <li><a href="#">Admin Panel</a></li>
             </ul>
         </nav>
+        <a class="login" href="#">Login</a>
     </header>
 
     <main>
