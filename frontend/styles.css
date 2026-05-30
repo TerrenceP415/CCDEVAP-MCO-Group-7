@@ -37,7 +37,7 @@ header {
     text-decoration: none;
     text-transform: uppercase;
     font-weight: bold;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Segoe UI', Arial, Helvetica, sans-serif;
 }
 .nav-links li a:hover, .profile-dropdown a:hover {
     transition: all 0.3s ease;
@@ -55,7 +55,7 @@ header {
     font-weight: bold;
     color: #ffffff; /* Flipped to white to contrast against the dark blue  */
     cursor: pointer;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Segoe UI', Arial, Helvetica, sans-serif;
 }
 
 .ease {
@@ -110,4 +110,52 @@ header {
     padding: 10px 20px;
     border-radius: 5px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* Hamburger Menu */ 
+.hamburger {
+    display: none;
+    cursor: pointer;
+
+}
+.hamburger .bar {
+    display: block;
+    width: 25px;
+    height: 3px;
+    background-color: #ffffff;
+    margin: 4px auto;
+    transition: all 0.3s ease;
+}
+
+@media (max-width:768px) {
+    .hamburger {
+        display: block;
+    }
+    .hamburger.active .bar:nth-child(2) {
+        opacity: 0;
+    }
+    .hamburger.active .bar:nth-child(1) {
+        transform: translateY(7px) rotate(45deg);
+    }
+    .hamburger.active .bar:nth-child(3) {
+        transform: translateY(-7px) rotate(-45deg);
+    }
+
+    .nav-links {
+        position: fixed;
+        top: 100px;
+        left: -100%;
+        width: 100%;
+        gap: 0;
+        flex-direction: column;
+        background-color: #0f172a;
+        transition: all 0.3s ease;
+        width: 100%;
+        text-align: center;
+    }
+    
+    .nav-links.active {
+        left: 0;
+    }
+    
 }
