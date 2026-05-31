@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="frontend/styles.css">
     <link rel="stylesheet" href="https://ka-f.webawesome.com/webawesome@3.7.0/styles/webawesome.css" />
     <script type="module" src="https://ka-f.webawesome.com/webawesome@3.7.0/webawesome.loader.js"></script>
-
+    <script src="backend/scripts.js" defer></script>
     
 </head>
 <body>
@@ -34,6 +34,12 @@
                 </li>
                 <li><a href="#">Admin Panel</a></li>
             </ul>
+            
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
         </nav>
         <a class="login" href="#">Login</a>
     </header>
@@ -44,6 +50,43 @@
             <p>Book your next adventure with ease.</p>
         </section>
 
-        
+
+    <div class="search-container">
+        <div class="search-section">
+            <h3>Search for Flights</h3>
+            <!-- Configure form to submit and get data -->
+            <form class="search-form">
+                
+                <div class="form-row">
+                    <div class="search-input">
+                        <label>Origin</label>
+                        <input type="text" placeholder="From" required>
+                    </div>
+                    <div class="search-input">
+                        <label>Destination</label>
+                        <input type="text" placeholder="To" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="search-input">
+                        <label>Departure Date</label>
+                        <input type="date" required>
+                    </div>
+                    <div class="search-input">
+                        <label>Return Date</label>
+                        <input type="date" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="search-btn">Search Flights</button>
+
+                <!-- Configure form to submit and get data -->
+            </form> 
+        </div>
+    </div>
+
+
+    </main>
 </body>
 </html>
