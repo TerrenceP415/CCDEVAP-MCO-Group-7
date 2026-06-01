@@ -6,7 +6,7 @@
 
 body{
     font-family: Arial, Helvetica, sans-serif;
-    background-color: #f4f4f4;
+    background-color: #ffffff;
 }
 
 /* Navbar */
@@ -19,12 +19,23 @@ header {
     top: 0;
     background-color: #0f172a;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    z-index: 1000;
+}
+
+.nav{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
 }
 
 .nav-links, .profile-dropdown {
     list-style: none;
     margin: 0;
     padding: 0;
+    display: flex;
+    align-items: center;
+    
 }
 
 .nav-links li, .profile-dropdown {
@@ -71,24 +82,19 @@ header {
     border-radius: 20px;
 }
 
-/* Hero Banner */
-.hero {
-    background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('../assets/hero.jpg') ;
-    background-size: cover;
-    background-position: 0% 20%;
-    background-repeat: no-repeat;
-    color: #fff;
-    text-align: center;
-    padding: 100px 20px;
-    
+/* Hero Carousel */
+.carousel-item img {
+    height: 500px;
+    object-fit: cover;
 }
-.hero h2 {
-    font-size: 48px;
-    margin-bottom: 20px;
-}
-.hero p {
-    font-size: 18px;
-    margin-bottom: 30px;
+
+.carousel-caption {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    top: 15%;
+    max-height: 20%;
 }
 
 /* Profile Dropdown */
@@ -112,7 +118,7 @@ header {
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
-/* Hamburger Menu */ 
+/* Hamburger Menu for*/ 
 .hamburger {
     display: none;
     cursor: pointer;
@@ -130,6 +136,7 @@ header {
 @media (max-width:768px) {
     .hamburger {
         display: block;
+        z-index: 1001;
     }
     .hamburger.active .bar:nth-child(2) {
         opacity: 0;
@@ -146,16 +153,22 @@ header {
         top: 100px;
         left: -100%;
         width: 100%;
-        gap: 0;
+        gap: 0px;
         flex-direction: column;
         background-color: #0f172a;
         transition: all 0.3s ease;
         width: 100%;
         text-align: center;
+        gap: 20px;
+        padding: 20px;
     }
     
     .nav-links.active {
         left: 0;
+    }
+
+    .nav-links li {
+        margin: 0;
     }
     
 }
@@ -164,7 +177,10 @@ header {
 .search-container {
     display: flex;
     justify-content: center;
-    padding: 40px 20px;
+    padding: 0 20px;
+    margin-top: -110px;
+    position: relative;
+    z-index: 10;
 }
 
 .search-section {
@@ -173,7 +189,8 @@ header {
     border-radius: 8px;
     width: 100%;
     max-width: 700px; 
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+    border-top: 4px solid #38bdf8;
 }
 
 .search-section h3 {
@@ -220,7 +237,6 @@ header {
     border-color: #38bdf8; /* Highlights with your theme light blue on click */
 }
 
-/* Action Button */
 .search-btn {
     width: 100%;
     background-color: #38bdf8;
@@ -246,4 +262,35 @@ header {
         gap: 15px;
     }
 }
+/* Promo Section */
+.promo-section {
+    text-align: center;
+    padding: 20px;
+    background-color: #0284c7;
+    margin: 80px 0;
+    color: #ffffff;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    font-family: 'Segoe UI', Arial, Helvetica, sans-serif;
+}
+
+/* Popular Destinaction Cards */
+.popular-cards-wrapper {
+  display: flex;
+  justify-content: center;
+  margin: 100px 0;
+}
+.popular-card img {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.popular-card {
+  margin: 0 0.5em;
+  box-shadow: 2px 6px 8px 0 rgba(22, 22, 26, 0.18);
+  border: none;
+  border-radius: 0;
+  width: 300px;
+}
+
+
 
