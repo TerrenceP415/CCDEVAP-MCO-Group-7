@@ -24,34 +24,38 @@
 
     <ul id="accordion">
         <li>
-            <label for="info">Personal Information <span>&#x3e;</span></label>
-            <input type="radio" name="profile" id="info" checked>
+            <label for="info">PERSONAL INFORMATION <span>&#x3e;</span></label>
+            <input type="radio" name="profile" id="info">
             <div class="content">
                 <ul>
-                    <li><span>Full Name</span><strong> Juan Dela Cruz</strong></li>
-                    <li><span>Email</span><strong> juan.dela.cruz@example.com</strong></li>
-                    <li><span>Contact Number</span><strong> +63 912 345 6789</strong></li>
-                    <li><span>Passport Number</span><strong> P1234567</strong></li>
-                    <li><span>Nationality</span><strong> Filipino</strong></li>
-                    <li><span>Date of Birth</span><strong> January 1, 1990</strong></li>
-                    <li><span>Gender</span><strong> Male</strong></li>
-                    <li><span>Emergency Contact</span><strong> +63 912 987 6543</strong></li>
+                    <li><span>Full Name:</span><strong> Juan Dela Cruz</strong></li>
+                    <li><span>Email:</span><strong> juan.dela.cruz@example.com</strong></li>
+                    <li><span>Contact Number:</span><strong> +63 912 345 6789</strong></li>
+                    <li><span>Passport Number:</span><strong> P1234567</strong></li>
+                    <li><span>Nationality:</span><strong> Filipino</strong></li>
+                    <li><span>Date of Birth:</span><strong> January 1, 1990</strong></li>
+                    <li><span>Gender:</span><strong> Male</strong></li>
+                    <li><span>Emergency Contact:</span><strong> +63 912 987 6543</strong></li>
                 </ul>
+                <br></br>
+                <button class="ghost-btn" type="button">Edit Personal Information</button>
             </div>
         </li>
         <li>
-            <label for="saved-passengers">Save Passengers <span>&#x3e;</span></label>
-            <input type="radio" name="profile" id="saved-passengers" checked>
+            <label for="saved-passengers">SAVED PASSENGERS <span>&#x3e;</span></label>
+            <input type="radio" name="profile" id="saved-passengers">
             <div class="content">
                 <ul>                    
                     <li>Rico Dela Cruz</li>
                     <li>Anne Santos</li>
                 </ul>
+                <br></br>
+                <button class="ghost-btn" type="button">Add New Passenger</button>
             </div>
         </li>
         <li>
-            <label for="payment-method">Payment Method <span>&#x3e;</span></label>
-            <input type="radio" name="profile" id="payment-method" checked>
+            <label for="payment-method">PAYMENT METHOD <span>&#x3e;</span></label>
+            <input type="radio" name="profile" id="payment-method">
             <div class="content">
                 <p class="payment-label">Primary Card</p>
                 <h3>Visa •••• 4821</h3>
@@ -62,17 +66,37 @@
             </div>
         </li>
         <li>
-            <label for="notification">Notification Preferences <span>&#x3e;</span></label>
-            <input type="radio" name="profile" id="notification" checked>
+            <label for="notification">NOTIFICATION PREFERENCES <span>&#x3e;</span></label>
+            <input type="radio" name="profile" id="notification">
             <div class="content">
                 <div class="notification-option">
+                    <span class="toggle-text">Email Notifications</span>
                     <input type="checkbox" id="email-notifications">
                     <label for="email-notifications" class="button"></label>
+                </div>
+
+                <div class="notification-option">
+                    <span class="toggle-text">Flight Updates</span>
+                    <input type="checkbox" id="flight-updates">
+                    <label for="flight-updates" class="button"></label>
+                </div>
+
+                <div class="notification-option">
+                    <span class="toggle-text">Promotional Offers</span>
+                    <input type="checkbox" id="promotional-offers">
+                    <label for="promotional-offers" class="button"></label>
+                </div>
+
+                <div class="notification-option">
+                    <span class="toggle-text">Booking Reminders</span>
+                    <input type="checkbox" id="booking-reminders">
+                    <label for="booking-reminders" class="button"></label>
+                </div>
             </div>
         </li>
         <li>
-            <label for="travel-history">Travel History <span>&#x3e;</span></label>
-            <input type="radio" name="profile" id="travel-history" checked>
+            <label for="travel-history">TRAVEL HISTORY <span>&#x3e;</span></label>
+            <input type="radio" name="profile" id="travel-history">
             <div class="content">
                 <ul class="travel-history-list">
                     <li>

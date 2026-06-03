@@ -391,7 +391,7 @@ header {
     box-sizing: border-box;
 }
 body{
-    background-color: #429bf4;
+    background-color: #6fb7ff;
 }
 
 
@@ -409,6 +409,7 @@ body{
     border-radius: 4px;
 }
 
+
 #accordion li label{
     padding: 10px;
     display: flex;
@@ -417,13 +418,15 @@ body{
     font-size: 18px;
     font-weight: 500;
     cursor: pointer;
-    color:#38bdf8;
+    color:#065693;
+    font-family: 'Segoe UI', Arial, Helvetica, sans-serif;
 }
+
 
 #accordion li label span{
     transform: rotate(90deg);
     font-size: 22px;
-    color: #333;
+    color: #01408d80;
 
 }
 
@@ -440,47 +443,116 @@ body{
 }
 
 #accordion label + input[type="radio"]:checked + .content{
-    max-height: 400px;
+    max-height: 600px;
+    padding: 20px;
 }
 
-.notification-option{
+.profile-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 12px;
+}
+
+
+.ghost-btn {
+    background-color: #ffffff;
+    color: #065693;
+    border: 1px solid #38bdf8;
+    border-radius: 999px;
+    padding: 10px 14px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: block;
+    margin: 20px auto 0;
+    width: max-content;
+}
+
+.ghost-btn:hover {
+    background-color: #38bdf8;
+    color: #ffffff;
+}
+
+/* Container to hold both the edit text and the arrow */
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 15px; /* Adds space between "Edit" and ">" */
+}
+
+/* Style for the header edit label */
+.inline-edit-btn {
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    background-color: #f0f9ff;
+    color: #0284c7;
+    padding: 4px 10px;
+    border-radius: 4px;
+    border: 1px solid #bae6fd;
+    transition: all 0.2s ease;
+}
+
+.inline-edit-btn:hover {
+    background-color: #0284c7;
+    color: #ffffff;
+}
+
+
+
+/* Container for the text and toggle button */
+.notification-option {
     width: 100%;
-    height: 100vh;
+    padding: 15px 5px;
     background-color: #fff;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between; /* Pushes text to left, button to right */
 }
 
-.button{
+/* Text styling */
+.toggle-text {
+    font-size: 16px;
+    color: #333;
+    font-weight: 500;
+}
+
+
+.button {
     background-color: #d2d2d2;
-    width: 150px;
-    height: 50px;
-    border-radius:200px;
+    width: 60px;   
+    height: 30px; 
+    border-radius: 30px;
     cursor: pointer;
     position: relative;
     transition: 0.3s;
 }
 
-.button::before{
+/* The moving slider circle */
+.button::before {
     position: absolute;
     content: '';
     background-color: #fff;
-    width: 40px;
-    height: 40px;
-    border-radius: 150px;
-    margin: 5px;
+    width: 22px;   
+    height: 22px;  
+    border-radius: 50%;
+    top: 4px;    
+    left: 4px;    
     transition: 0.3s;
-
 }
 
-input:checked + .button{
+/* Blue Active State when Checked */
+input:checked + .button {
     background-color: #38bdf8;
 }
-input:checked + .button::before{
-    transform: translateX(100px);
+
+/* Smooth sliding movement */
+input:checked + .button::before {
+    transform: translateX(30px); 
 }
 
-input[type="checkbox"]{
+/* Keep checkbox hidden */
+input[type="checkbox"] {
     display: none;
 }
