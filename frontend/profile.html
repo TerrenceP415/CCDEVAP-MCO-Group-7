@@ -1,10 +1,10 @@
-<!DOCTYPE html>
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SkyEase | User Profile</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="style-profile.css">
 </head>
 <body class="profile-page">
     <header>
@@ -22,96 +22,79 @@
         </nav>
     </header>
 
-    <main class="profile-shell">
-        <section class="profile-hero">
-            <div>
-                <p class="eyebrow">Traveler account</p>
-                <h1>Welcome back, Juan Dela Cruz</h1>
-                <p class="hero-copy">Manage your personal details, passenger profiles, payment options, alerts, and past trips in one place.</p>
-            </div>
-            <div class="profile-badge">Gold Member</div>
-        </section>
-
-        <section class="profile-grid">
-            <article class="profile-card">
-                <h2>Personal Information</h2>
-                <ul class="detail-list">
-                    <li><span>Full Name</span><strong>Juan Dela Cruz</strong></li>
-                    <li><span>Email</span><strong>juan.dela.cruz@example.com</strong></li>
-                    <li><span>Contact Number</span><strong>+63 912 345 6789</strong></li>
-                    <li><span>Passport Number</span><strong>P1234567</strong></li>
-                    <li><span>Nationality</span><strong>Filipino</strong></li>
-                    <li><span>Date of Birth</span><strong>January 1, 1990</strong></li>
-                    <li><span>Gender</span><strong>Male</strong></li>
-                    <li><span>Emergency Contact</span><strong>+63 912 987 6543</strong></li>
+    <ul id="accordion">
+        <li>
+            <label for="info">Personal Information <span>&#x3e;</span></label>
+            <input type="radio" name="profile" id="info" checked>
+            <div class="content">
+                <ul>
+                    <li><span>Full Name</span><strong> Juan Dela Cruz</strong></li>
+                    <li><span>Email</span><strong> juan.dela.cruz@example.com</strong></li>
+                    <li><span>Contact Number</span><strong> +63 912 345 6789</strong></li>
+                    <li><span>Passport Number</span><strong> P1234567</strong></li>
+                    <li><span>Nationality</span><strong> Filipino</strong></li>
+                    <li><span>Date of Birth</span><strong> January 1, 1990</strong></li>
+                    <li><span>Gender</span><strong> Male</strong></li>
+                    <li><span>Emergency Contact</span><strong> +63 912 987 6543</strong></li>
                 </ul>
-            </article>
-
-            <article class="profile-card">
-                <h2>Saved Passengers</h2>
-                <ul class="chip-list">
-                    <li>Maria Dela Cruz</li>
+            </div>
+        </li>
+        <li>
+            <label for="saved-passengers">Save Passengers <span>&#x3e;</span></label>
+            <input type="radio" name="profile" id="saved-passengers" checked>
+            <div class="content">
+                <ul>                    
                     <li>Rico Dela Cruz</li>
                     <li>Anne Santos</li>
                 </ul>
-                <p class="muted">Add family members or travel companions to speed up future bookings.</p>
-            </article>
-
-            <article class="profile-card">
-                <h2>Payment Method UI Mockup</h2>
-                <div class="payment-card">
-                    <p class="payment-label">Primary Card</p>
-                    <h3>Visa •••• 4821</h3>
-                    <p>Juan Dela Cruz</p>
-                    <span>Expires 08/28</span>
-                </div>
+            </div>
+        </li>
+        <li>
+            <label for="payment-method">Payment Method <span>&#x3e;</span></label>
+            <input type="radio" name="profile" id="payment-method" checked>
+            <div class="content">
+                <p class="payment-label">Primary Card</p>
+                <h3>Visa •••• 4821</h3>
+                <p>Juan Dela Cruz</p>
+                <span>Expires 08/28</span>
+                <br></br>
                 <button class="ghost-btn" type="button">Add New Payment Method</button>
-            </article>
-
-            <article class="profile-card">
-                <h2>Notification Preferences</h2>
-                <ul class="toggle-list">
-                    <li><span>Flight updates</span><strong>On</strong></li>
-                    <li><span>Promotions</span><strong>On</strong></li>
-                    <li><span>Payment reminders</span><strong>Off</strong></li>
-                    <li><span>Travel checklist</span><strong>On</strong></li>
-                </ul>
-            </article>
-
-            <article class="profile-card profile-wide">
-                <h2>Travel History</h2>
-                <table class="history-table">
-                    <thead>
-                        <tr>
-                            <th>Route</th>
-                            <th>Date</th>
-                            <th>Flight</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Manila → Cebu</td>
-                            <td>May 18, 2026</td>
-                            <td>PR 3131</td>
-                            <td class="done">Completed</td>
-                        </tr>
-                        <tr>
-                            <td>Davao → Manila</td>
-                            <td>Apr 02, 2026</td>
-                            <td>PR 2025</td>
-                            <td class="done">Completed</td>
-                        </tr>
-                        <tr>
-                            <td>Cebu → Tokyo</td>
-                            <td>Mar 11, 2026</td>
-                            <td>PR 810</td>
-                            <td class="upcoming">Upcoming</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </article>
-        </section>
-    </main>
+            </div>
+        </li>
+        <li>
+            <label for="notification">Notification Preferences <span>&#x3e;</span></label>
+            <input type="radio" name="profile" id="notification" checked>
+            <div class="content">
+                <div class="notification-option">
+                    <input type="checkbox" id="email-notifications">
+                    <label for="email-notifications" class="button"></label>
+            </div>
+        </li>
+        <li>
+            <label for="travel-history">Travel History <span>&#x3e;</span></label>
+            <input type="radio" name="profile" id="travel-history" checked>
+            <div class="content">
+                <ul class="travel-history-list">
+                    <li>
+                        <h3>Flight to Tokyo</h3>
+                        <p>Departure: January 15, 2024</p>
+                        <p>Arrival: January 16, 2024</p>
+                        <p>Status: Completed</p>
+                    </li>
+                    <li>
+                        <h3>Flight to New York</h3>
+                        <p>Departure: February 20, 2024</p>
+                        <p>Arrival: February 21, 2024</p>
+                        <p>Status: Completed</p>
+                    </li>
+                    <li>
+                        <h3>Flight to Paris</h3>
+                        <p>Departure: March 10, 2024</p>
+                        <p>Arrival: March 11, 2024</p>
+                        <p>Status: Completed</p>
+                    </li>
+            </div>
+        </li>
+    </ul>
 </body>
 </html>

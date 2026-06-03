@@ -380,3 +380,107 @@ header {
   width: 300px;
 }
 
+
+
+/*Profile Page*/
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+    box-sizing: border-box;
+}
+body{
+    background-color: #429bf4;
+}
+
+
+#accordion{
+    margin: 100px auto;
+    width: 600px;
+}
+
+#accordion li{
+    list-style: none;
+    width: 100%;
+    margin-bottom: 10px;
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 4px;
+}
+
+#accordion li label{
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 18px;
+    font-weight: 500;
+    cursor: pointer;
+    color:#38bdf8;
+}
+
+#accordion li label span{
+    transform: rotate(90deg);
+    font-size: 22px;
+    color: #333;
+
+}
+
+#accordion label + input[type="radio"]{
+    display: none;
+}
+
+#accordion .content{
+    max-height: 0;
+    padding: 0 10px;
+    line-height: 26px;
+    overflow: hidden;
+    transition: max-height 0.5s;
+}
+
+#accordion label + input[type="radio"]:checked + .content{
+    max-height: 400px;
+}
+
+.notification-option{
+    width: 100%;
+    height: 100vh;
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.button{
+    background-color: #d2d2d2;
+    width: 150px;
+    height: 50px;
+    border-radius:200px;
+    cursor: pointer;
+    position: relative;
+    transition: 0.3s;
+}
+
+.button::before{
+    position: absolute;
+    content: '';
+    background-color: #fff;
+    width: 40px;
+    height: 40px;
+    border-radius: 150px;
+    margin: 5px;
+    transition: 0.3s;
+
+}
+
+input:checked + .button{
+    background-color: #38bdf8;
+}
+input:checked + .button::before{
+    transform: translateX(100px);
+}
+
+input[type="checkbox"]{
+    display: none;
+}
