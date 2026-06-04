@@ -425,7 +425,13 @@ header {
     border-radius: 12px;
     box-shadow: 0 4px 15px rgba(15, 23, 42, 0.06);
 }
-
+.tabcontent i{
+    color: #38bdf8;
+}
+.tabcontent p{
+    color: #64748b;
+    font-size: 14px;
+}
 /*  Analytics Dashboard Formatting */
 .analytics-header {
     margin-bottom: 25px;
@@ -490,24 +496,7 @@ header {
     margin-bottom: 15px;
 }
 
-.analytics-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 15px;
-}
 
-.analytics-table th, 
-.analytics-table td {
-    padding: 12px 16px;
-    text-align: left;
-    border-bottom: 1px solid #e2e8f0;
-}
-
-.analytics-table th {
-    background-color: #f8fafc;
-    color: #64748b;
-    font-weight: bold;
-}
 
 
 .analytics-table tbody tr:hover {
@@ -537,43 +526,43 @@ header {
 
 /* Admin-Flights */
 
-.admin-flights-table-wrapper {
+.admin-table-wrapper {
     margin-top: 20px;
     max-width: 1100px;
+    overflow-x: auto;
 }
 
-.admin-flights-table-wrapper h4 {
+.tabcontent h3 {
     color: #0f172a;
-    font-size: 16px;
-    font-weight: bold;
-    margin-bottom: 15px;
+    font-weight: 700;
 }
 
-.admin-flights-table {
+.admin-table {
     width: 100%;
     border-collapse: collapse;
     font-size: 15px;
+    overflow-x: auto;
 }
 
-.admin-flights-table th, 
-.admin-flights-table td {
+.admin-table th, 
+.admin-table td {
     padding: 12px 16px;
     text-align: left;
     border-bottom: 1px solid #e2e8f0;
 }
 
-.admin-flights-table th {
+.admin-table th {
     background-color: #f8fafc;
     color: #64748b;
     font-weight: bold;
 }
 
 
-.admin-flights-table tbody tr:hover {
+.admin-table tbody tr:hover {
     background-color: #f8fafc;
 }
 
-.admin-flights-table-wrapper #addFlight {
+.admin-table-wrapper #addFlight {
     background-color: #38bdf8;
     color: #ffffff;
     border: none;
@@ -586,11 +575,9 @@ header {
     margin-bottom: 15px;
 }
 
-.admin-flights-table-wrapper #addFlight:hover {
-    background-color: #0284c7; 
-}
 
-.admin-flights-table-wrapper .action-btn-flights{
+
+.admin-table-wrapper .action-btn-admin{
     color: #ffffff;
     border: none;
     padding: 8px 16px;
@@ -603,38 +590,74 @@ header {
     
 }
 
-.admin-flights-table-wrapper #editFlight {
+.admin-table-wrapper #editFlight {
     background-color: #69dc86;
 
 }
-.admin-flights-table-wrapper #editFlight:hover {
+.admin-table-wrapper #editFlight:hover {
     background-color: #22af45;
 }
 
-.admin-flights-table-wrapper #deleteFlight {
+.admin-table-wrapper #deleteFlight {
     background-color: #f87171;
 }
-.admin-flights-table-wrapper #deleteFlight:hover {
+.admin-table-wrapper #deleteFlight:hover {
     background-color: #ef4444;
 }
 
+.admin-table-wrapper #editUser {
+    background-color: #69dc86;
+
+}
+.admin-table-wrapper #editUser:hover {
+    background-color: #22af45;
+}
+
+.admin-table-wrapper #deleteUser {
+    background-color: #f87171;
+}
+.admin-table-wrapper #deleteUser:hover {
+    background-color: #ef4444;
+}
+
+.admin-table-wrapper #addFlight:hover {
+    background-color: #0284c7; 
+}
+.admin-table-wrapper #addUser {
+    background-color: #38bdf8;
+    color: #ffffff;
+    border: none;
+    padding: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    margin-bottom: 15px;
+}
+
+.admin-table-wrapper #addUser:hover {
+    background-color: #0284c7; 
+}
 
 @media (max-width: 768px) {
-    .admin-flights-table {
+    .admin-table {
         font-size: 13px;
     }
 
-    .admin-flights-table th,
-    .admin-flights-table td {
+    .admin-table th,
+    .admin-table td {
         padding: 10px 10px;
     }
 
-    .admin-flights-table-wrapper .action-btn-flights {
+    .admin-table-wrapper .action-btn-flights {
         padding: 6px 10px;
         margin: 4px;
     }
 
-    .admin-flights-table-wrapper #editFlight {
+    .admin-table-wrapper #editFlight {
     padding: 6px 18px ;
     }
 }
+
+/* Delete Modal */

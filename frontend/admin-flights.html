@@ -52,11 +52,13 @@
         <button class="tablinks" onclick="window.location.href='admin-reservations.html'">Reservations</button>
     </div>
 
-    <main class="tabcontent">
-        <h1>Admin Flights</h1>
-        <div class="admin-flights-table-wrapper">
+    <main class="tabcontent" id="admin-Flight">
+        <h3><i class="bi bi-airplane"></i> Admin Flights</h3>
+        <p>Manage all flight information and schedules.</p>
+        <div class="admin-table-wrapper" id="flightsTableWrapper">
+            
             <button id="addFlight">Add New Flight</button>
-        <table class="admin-flights-table">
+        <table class="admin-table" id="flightsTable">
             <tr>
                 <th>Flight Number</th>
                 <th>Origin</th>
@@ -73,8 +75,8 @@
                 <td>2024-07-01 08:00</td>
                 <td>2024-07-01 11:00</td>
                 <td>
-                    <button id="editFlight" class="action-btn-flights">Edit</button>
-                    <button id="deleteFlight" class="action-btn-flights">Delete</button>
+                    <button id="editFlight" class="action-btn-admin">Edit</button>
+                    <button id="deleteFlight" class="action-btn-admin">Delete</button>
                 </td>
             </tr>
 
@@ -85,8 +87,23 @@
                 <td>2024-07-01 08:00</td>
                 <td>2024-07-01 11:00</td>
                 <td>
-                    <button id="editFlight" class="action-btn-flights">Edit</button>
-                    <button id="deleteFlight" class="action-btn-flights">Delete</button>
+                    <button id="editFlight" class="action-btn-admin">Edit</button>
+                    <button id="deleteFlight" class="action-btn-admin">Delete</button>
+                    <div id="id01" class="modal">
+                        <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
+                        <form class="modal-content" action="#">
+                            <!-- Change action attribute as needed -->
+                            <div class="container">
+                            <h1>Delete Account</h1>
+                            <p>Are you sure you want to delete your account?</p>
+
+                            <div class="clearfix">
+                                <button type="button" class="cancelbtn">Cancel</button>
+                                <button type="button" class="deletebtn">Delete</button>
+                            </div>
+                            </div>
+                        </form>
+                    </div>
                 </td>
             </tr>
         </table>
