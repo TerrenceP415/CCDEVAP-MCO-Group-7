@@ -76,7 +76,7 @@
                 <td>2024-07-01 11:00</td>
                 <td>
                     <button id="editFlight" class="action-btn-admin">Edit</button>
-                    <button id="deleteFlight" class="action-btn-admin">Delete</button>
+                    <button id="deleteFlight" class="action-btn-admin" onclick="document.getElementById('deleteConfirmationModal').style.display='block'">Delete</button>
                 </td>
             </tr>
 
@@ -88,27 +88,29 @@
                 <td>2024-07-01 11:00</td>
                 <td>
                     <button id="editFlight" class="action-btn-admin">Edit</button>
-                    <button id="deleteFlight" class="action-btn-admin">Delete</button>
-                    <div id="id01" class="modal">
-                        <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
-                        <form class="modal-content" action="#">
-                            <!-- Change action attribute as needed -->
-                            <div class="container">
-                            <h1>Delete Account</h1>
-                            <p>Are you sure you want to delete your account?</p>
-
-                            <div class="clearfix">
-                                <button type="button" class="cancelbtn">Cancel</button>
-                                <button type="button" class="deletebtn">Delete</button>
-                            </div>
-                            </div>
-                        </form>
-                    </div>
+                    <button id="deleteFlight" class="action-btn-admin" onclick="document.getElementById('deleteConfirmationModal').style.display='block'">Delete</button>
+                </td>
+                    
                 </td>
             </tr>
         </table>
         </div>
     </main> 
+
+    <div id="deleteConfirmationModal" class="modal">
+  <span onclick="document.getElementById('deleteConfirmationModal').style.display='none'" class="close" title="Close Modal">&times;</span>
+  <form class="modal-content" action="#">
+    <div class="DCMcontainer">
+      <h1>Delete?</h1>
+      <p>Are you sure you want to proceed with deleting this entry?</p>
+
+      <div class="confirmation-btns">
+        <button type="button" class="cancelDCMbtn" onclick="document.getElementById('deleteConfirmationModal').style.display='none'">Cancel</button>
+        <button type="button" class="deleteDCMbtn">Delete</button>
+      </div>
+    </div>
+  </form>
+</div>
         
     </body>
 </html>
