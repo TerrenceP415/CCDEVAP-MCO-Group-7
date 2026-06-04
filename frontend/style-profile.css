@@ -391,35 +391,51 @@ header {
     box-sizing: border-box;
 }
 body{
-    background-color: #6fb7ff;
+    background:
+        radial-gradient(circle at top, #eff6ff 0%, #f8fafc 35%, #e2e8f0 100%);
+    color: #0f172a;
 }
 
 
 #accordion{
     margin: 100px auto;
-    width: 600px;
+    width: min(900px, calc(100% - 32px));
+    display: grid;
+    gap: 14px;
 }
 
 #accordion li{
     list-style: none;
     width: 100%;
-    margin-bottom: 10px;
-    background-color: #fff;
+    margin-bottom: 0;
+    background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
     padding: 10px;
-    border-radius: 4px;
+    border-radius: 18px;
+    border: 1px solid #dbeafe;
+    box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
 }
 
 
 #accordion li label{
-    padding: 10px;
+    padding: 12px 14px;
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    font-size: 18px;
-    font-weight: 500;
+    justify-content: center;
+    gap: 10px;
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: 0.6px;
     cursor: pointer;
-    color:#065693;
+    color: #0f172a;
     font-family: 'Segoe UI', Arial, Helvetica, sans-serif;
+    border-radius: 14px;
+    background: linear-gradient(135deg, #eff6ff 0%, #ffffff 100%);
+    transition: transform 0.18s ease, background 0.18s ease;
+}
+
+#accordion li label:hover {
+    transform: translateY(-1px);
+    background: linear-gradient(135deg, #dbeafe 0%, #f8fbff 100%);
 }
 
 
@@ -427,7 +443,20 @@ body{
     transform: rotate(90deg);
     font-size: 22px;
     color: #01408d80;
+    margin-left: auto;
 
+}
+
+.info-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 170px;
+    color: #0f172a;
+}
+
+.info-label i {
+    color: #0284c7;
 }
 
 #accordion label + input[type="radio"]{
@@ -439,12 +468,25 @@ body{
     padding: 0 10px;
     line-height: 26px;
     overflow: hidden;
-    transition: max-height 0.5s;
+    transition: max-height 0.45s ease, padding 0.35s ease;
 }
 
 #accordion label + input[type="radio"]:checked + .content{
-    max-height: 600px;
-    padding: 20px;
+    max-height: 900px;
+    padding: 14px 10px 18px;
+}
+
+#accordion .content ul {
+    display: grid;
+    gap: 8px;
+}
+
+#accordion .content ul li {
+    background: #ffffff;
+    border: 1px solid #e5eefb;
+    border-radius: 12px;
+    padding: 10px 12px;
+    box-shadow: 0 6px 16px rgba(15, 23, 42, 0.04);
 }
 
 .profile-actions {
@@ -453,25 +495,69 @@ body{
     margin-top: 12px;
 }
 
+.profile-form {
+  display: grid;
+  gap: 10px;
+}
+
+.profile-field {
+  display: grid;
+  gap: 2px;
+}
+
+.profile-field label {
+  font-size: 13px;
+  font-weight: 700;
+  color: #0f172a;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.profile-field input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  background: #fff;
+  color: #0f172a;
+}
+
+.profile-field input:disabled {
+  background: #f8fafc;
+  color: #475569;
+}
+
+.form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.ghost-btn-secondary {
+  background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+}
+
 
 .ghost-btn {
-    background-color: #ffffff;
-    color: #065693;
-    border: 1px solid #38bdf8;
+    background: linear-gradient(135deg, #0ea5e9 0%, #2563eb 100%);
+    color: #ffffff;
+    border: none;
     border-radius: 999px;
-    padding: 10px 14px;
+    padding: 10px 16px;
     font-size: 14px;
-    font-weight: 600;
+    font-weight: 700;
     cursor: pointer;
     transition: all 0.2s ease;
     display: block;
-    margin: 20px auto 0;
+    margin: 18px auto 0;
     width: max-content;
+    box-shadow: 0 10px 20px rgba(14, 165, 233, 0.25);
 }
 
 .ghost-btn:hover {
-    background-color: #38bdf8;
-    color: #ffffff;
+    transform: translateY(-1px);
+    box-shadow: 0 14px 24px rgba(37, 99, 235, 0.28);
 }
 
 /* Container to hold both the edit text and the arrow */
@@ -504,52 +590,61 @@ body{
 /* Container for the text and toggle button */
 .notification-option {
     width: 100%;
-    padding: 15px 5px;
-    background-color: #fff;
+    padding: 12px 14px;
+    background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+    border: 1px solid #e5eefb;
+    border-radius: 12px;
     display: flex;
     align-items: center;
-    justify-content: space-between; /* Pushes text to left, button to right */
+    justify-content: space-between;
+    margin-bottom: 8px;
+    box-shadow: 0 6px 16px rgba(15, 23, 42, 0.04);
 }
 
 /* Text styling */
 .toggle-text {
-    font-size: 16px;
-    color: #333;
-    font-weight: 500;
+    font-size: 15px;
+    color: #1f2937;
+    font-weight: 600;
 }
 
 
 .button {
-    background-color: #d2d2d2;
-    width: 60px;   
-    height: 30px; 
-    border-radius: 30px;
+    background-color: #cbd5e1;
+    width: 64px;
+    height: 32px;
+    border-radius: 999px;
     cursor: pointer;
     position: relative;
-    transition: 0.3s;
+    transition: 0.25s ease;
+    border: 2px solid #94a3b8;
+    box-shadow: inset 0 2px 4px rgba(15, 23, 42, 0.12);
 }
 
 /* The moving slider circle */
 .button::before {
     position: absolute;
     content: '';
-    background-color: #fff;
-    width: 22px;   
-    height: 22px;  
+    background-color: #ffffff;
+    width: 24px;
+    height: 24px;
     border-radius: 50%;
-    top: 4px;    
-    left: 4px;    
-    transition: 0.3s;
+    top: 2px;
+    left: 2px;
+    transition: 0.25s ease;
+    box-shadow: 0 2px 6px rgba(15, 23, 42, 0.25);
 }
 
 /* Blue Active State when Checked */
 input:checked + .button {
-    background-color: #38bdf8;
+    background: linear-gradient(135deg, #38bdf8 0%, #2563eb 100%);
+    border-color: #2563eb;
+    box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.18), inset 0 2px 4px rgba(15, 23, 42, 0.18);
 }
 
 /* Smooth sliding movement */
 input:checked + .button::before {
-    transform: translateX(30px); 
+    transform: translateX(32px);
 }
 
 /* Keep checkbox hidden */
