@@ -459,8 +459,8 @@ header {
     border-radius: 8px;
     padding: 20px;
     text-align: left;
-    align-items: flex-start; /* Correct structural alignment */
-    box-shadow: none; /* Removed heavy styling wrappers for a cleaner aesthetic */
+    align-items: flex-start; 
+    box-shadow: none; 
 }
 
 .analytics-card h4 {
@@ -532,5 +532,109 @@ header {
     .tab-selector button {
         padding: 14px 20px;
         border-bottom: 1px solid #000000;
+    }
+}
+
+/* Admin-Flights */
+
+.admin-flights-table-wrapper {
+    margin-top: 20px;
+    max-width: 1100px;
+}
+
+.admin-flights-table-wrapper h4 {
+    color: #0f172a;
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.admin-flights-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 15px;
+}
+
+.admin-flights-table th, 
+.admin-flights-table td {
+    padding: 12px 16px;
+    text-align: left;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.admin-flights-table th {
+    background-color: #f8fafc;
+    color: #64748b;
+    font-weight: bold;
+}
+
+
+.admin-flights-table tbody tr:hover {
+    background-color: #f8fafc;
+}
+
+.admin-flights-table-wrapper #addFlight {
+    background-color: #38bdf8;
+    color: #ffffff;
+    border: none;
+    padding: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    margin-bottom: 15px;
+}
+
+.admin-flights-table-wrapper #addFlight:hover {
+    background-color: #0284c7; 
+}
+
+.admin-flights-table-wrapper .action-btn-flights{
+    color: #ffffff;
+    border: none;
+    padding: 8px 16px;
+    font-size: 12px;
+    font-weight: bold;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    margin: 10px
+    
+}
+
+.admin-flights-table-wrapper #editFlight {
+    background-color: #69dc86;
+
+}
+.admin-flights-table-wrapper #editFlight:hover {
+    background-color: #22af45;
+}
+
+.admin-flights-table-wrapper #deleteFlight {
+    background-color: #f87171;
+}
+.admin-flights-table-wrapper #deleteFlight:hover {
+    background-color: #ef4444;
+}
+
+
+@media (max-width: 768px) {
+    .admin-flights-table {
+        font-size: 13px;
+    }
+
+    .admin-flights-table th,
+    .admin-flights-table td {
+        padding: 10px 10px;
+    }
+
+    .admin-flights-table-wrapper .action-btn-flights {
+        padding: 6px 10px;
+        margin: 4px;
+    }
+
+    .admin-flights-table-wrapper #editFlight {
+    padding: 6px 18px ;
     }
 }
