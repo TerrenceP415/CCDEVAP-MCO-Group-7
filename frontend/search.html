@@ -23,16 +23,17 @@
         </nav>
     </header>
 
-    <h1>Search</h1>
-    <form>
-        <label for="origin">Origin Airport:</label>
+    <div class="search-container">
+        <form for="search" action="results.html" method="get">
+        <h1 for="search">Search</h1>
+        <label for="origin">Origin Airport</label>
         <select name="origin">
             <option value="NAIA"> Ninoy Aquino International Airport (NAIA)</option>
             <option value="CHG"> Clark International Airport (CHG)</option>
             <option value="DVO"> Francisco Bangoy International Airport (DVO)</option>
         </select>
     <br><br>
-        <label for="destination">Destination Airport:</label>
+        <label for="destination">Destination Airport</label>
         <select name="destination">
             <option value="NAIA"> Ninoy Aquino International Airport (NAIA)</option>
             <option value="CHG"> Clark International Airport (CHG)</option>
@@ -45,46 +46,47 @@
            <input type="radio" id="round_trip" name="trip_type" value="round_trip">
            <label for="round_trip">Round Trip</label>
     <br><br>
-        <label for="departure_date">Departure Date:</label>
+        <label for="departure_date">Departure Date</label>
         <input type="date" id="departure_id" name="departure_date">
     <br><br>
-        <label for="return_date">Return Date:</label>
+        <label for="return_date">Return Date</label>
         <input type="date" id="return_id" name="return_date">
     <br><br>
-        <label for="passengers">Passengers:</label>
+        <label for="passengers">Passengers</label>
         <select name="passengers">
             <option value="adults">Adults</option>
             <option value="children">Children</option>
             <option value="infants">Infants</option>
         </select>
     <br><br>
-        <label for="cabin_class">Cabin Class:</label>
+        <label for="cabin_class">Cabin Class</label>
         <select name="cabin_class">
             <option value="economy">Economy</option>
             <option value="business">Business</option>
             <option value="first_class">First Class</option>
         </select>
     <br><br>
-    <h1>Advance Search:</h1>
-        <label for="airline">Airline:</label>
+    <h1 for="search">Advance Search</h1>
+        <label for="airline">Airline</label>
         <select name="airline">
             <option value="philippine_airlines">Philippine Airlines</option>
             <option value="cebu_pacific">Cebu Pacific</option>
             <option value="air_asia">Air Asia</option>
         </select>
     <br><br>
-        <label for="direct_flight">Direct Flight:</label>
+        <label for="direct_flight">Direct Flight</label>
         <input type="checkbox" id="direct_flight" name="direct_flight" value="yes">
         <label for="direct_flight">Yes</label>
     <br><br>
-        <label for="flexible_dates">Flexible Dates:</label>
+        <label for="flexible_dates">Flexible Dates</label>
         <input type="checkbox" id="flexible_dates" name="flexible_dates" value="yes">
         <label for="flexible_dates">Yes</label>
     <br><br>
-        <label for="price_range">Price Range:</label>
+        <label for="price_range">Price Range</label>
         <input type="text" id="price_range" name="price_range" placeholder="e.g., 5000-10000">
     <br><br>
-        <button type="submit">Search</button>
+        <a href="results.html"><button type="submit">Search</button></a>
     </form>
+</div>
 </body>
 </html>
