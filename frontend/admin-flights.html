@@ -57,7 +57,7 @@
         <p>Manage all flight information and schedules.</p>
         <div class="admin-table-wrapper" id="flightsTableWrapper">
             
-            <button id="addFlight">Add New Flight</button>
+            <button id="addFlight" type="button" class="btn btn-primary action-btn-admin" data-toggle="modal" data-target="#addFlightModal">Add New Flight</button>
         <table class="admin-table" id="flightsTable">
             <tr>
                 <th>Flight Number</th>
@@ -75,8 +75,8 @@
                 <td>2024-07-01 08:00</td>
                 <td>2024-07-01 11:00</td>
                 <td>
-                    <button id="editFlight" class="action-btn-admin">Edit</button>
-                    <button id="deleteFlight" class="action-btn-admin" onclick="document.getElementById('deleteConfirmationModal').style.display='block'">Delete</button>
+                    <button id="editFlight" type="button" class="btn btn-primary action-btn-admin" data-toggle="modal" data-target="#editFlightModal">Edit</button>
+                    <button id="deleteFlight" type="button" class="btn btn-primary action-btn-admin" data-toggle="modal" data-target="#deleteConfirmationModal">Delete</button>
                 </td>
             </tr>
 
@@ -87,8 +87,8 @@
                 <td>2024-07-01 08:00</td>
                 <td>2024-07-01 11:00</td>
                 <td>
-                    <button id="editFlight" class="action-btn-admin">Edit</button>
-                    <button id="deleteFlight" class="action-btn-admin" onclick="document.getElementById('deleteConfirmationModal').style.display='block'">Delete</button>
+                    <button id="editFlight" type="button" class="btn btn-primary action-btn-admin" data-toggle="modal" data-target="#editFlightModal">Edit</button>
+                    <button id="deleteFlight" type="button" class="btn btn-primary action-btn-admin" data-toggle="modal" data-target="#deleteConfirmationModal">Delete</button>
                 </td>
                     
                 </td>
@@ -96,21 +96,121 @@
         </table>
         </div>
     </main> 
+    <!-- Modals -->
+     <!-- Add Flight -->
 
-    <div id="deleteConfirmationModal" class="modal">
-  <span onclick="document.getElementById('deleteConfirmationModal').style.display='none'" class="close" title="Close Modal">&times;</span>
-  <form class="modal-content" action="#">
-    <div class="DCMcontainer">
-      <h1>Delete?</h1>
-      <p>Are you sure you want to proceed with deleting this entry?</p>
+     <div class="modal fade" id="addFlightModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">Add Flight</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="origin">Origin</label>
+                        <input type="text" class="form-control" id="origin" placeholder="Enter origin">
+                    </div>
+                    <div class="form-group">
+                        <label for="destination">Destination</label>
+                        <input type="text" class="form-control" id="destination" placeholder="Enter destination">
+                    </div>
+                    <div class="form-group">
+                        <label for="departureTime">Departure Time</label>
+                        <input type="datetime-local" class="form-control" id="departureTime">
+                    </div>
+                    <div class="form-group">
+                        <label for="arrivalTime">Arrival Time</label>
+                        <input type="datetime-local" class="form-control" id="arrivalTime">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Discard</button>
 
-      <div class="confirmation-btns">
-        <button type="button" class="cancelDCMbtn" onclick="document.getElementById('deleteConfirmationModal').style.display='none'">Cancel</button>
-        <button type="button" class="deleteDCMbtn">Delete</button>
-      </div>
-    </div>
-  </form>
-</div>
+                <!-- Handle Creation -->
+                <button type="button" class="btn btn-success" data-dismiss="modal">Add Flight</button>
+
+
+            </div>
+            </div>
+        </div>
+        </div>
+
+
+     <!-- Edit Flight -->
+      <div class="modal fade" id="editFlightModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+
+                <h5 class="modal-title" id="exampleModalCenterTitle">Edit Flight</h5>
+
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="origin">Origin</label>
+                        <input type="text" class="form-control" id="origin" placeholder="Enter origin">
+                    </div>
+                    <div class="form-group">
+                        <label for="destination">Destination</label>
+                        <input type="text" class="form-control" id="destination" placeholder="Enter destination">
+                    </div>
+                    <div class="form-group">
+                        <label for="departureTime">Departure Time</label>
+                        <input type="datetime-local" class="form-control" id="departureTime">
+                    </div>
+                    <div class="form-group">
+                        <label for="arrivalTime">Arrival Time</label>
+                        <input type="datetime-local" class="form-control" id="arrivalTime">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Discard</button>
+                
+                <!-- Handle Edit -->
+                <button type="button" class="btn btn-success" data-dismiss="modal">Save Changes</button>
+
+
+            </div>
+            </div>
+        </div>
+        </div>
+    
+     <!-- Delete Confirmation -->
+
+        <div class="modal fade" id="deleteConfirmationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">Delete Flight</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete this flight?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                
+                <!-- Handle Deletion -->
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Delete Flight</button>
+
+                
+            </div>
+            </div>
+        </div>
+        </div>
         
     </body>
 </html>
