@@ -90,12 +90,34 @@
                 
                 <div class="form-row">
                     <div class="search-input">
-                        <label>Origin</label>
-                        <input type="text" placeholder="From" required>
+                        <label for="region-filter">Filter by Region</label>
+                        <select id="region-filter" class="form-control">
+                            <option value="all">All Regions</option>
+                            <option value="asia">Asia</option>
+                            <option value="europe">Europe</option>
+                        </select>
                     </div>
+                </div>
+
+                <div class="form-row">
                     <div class="search-input">
-                        <label>Destination</label>
-                        <input type="text" placeholder="To" required>
+                        <label for="origin-select">Origin</label>
+                        <select id="origin-select" class="form-control" required>
+                            <option value="" disabled selected>Select Origin</option>
+                            <option value="MNL" data-region="asia">Manila (MNL)</option>
+                            <option value="NRT" data-region="asia">Tokyo (NRT)</option>
+                            <option value="FCO" data-region="europe">France (CDG)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="search-input">
+                        <label for="destination-select">Destination</label>
+                        <select id="destination-select" class="form-control" required>
+                            <option value="" disabled selected>Select Destination</option>
+                            <option value="MNL" data-region="asia">Manila (MNL)</option>
+                            <option value="NRT" data-region="asia">Tokyo (NRT)</option>
+                            <option value="FCO" data-region="europe">France (CDG)</option>
+                        </select>
                     </div>
                 </div>
 
