@@ -82,61 +82,60 @@
 </div>
 
 
+    <!-- Combined Search Card Overlapping Hero Section -->
     <div class="search-container">
-        <div class="search-section">
-            <h3>Search for Flights</h3>
-            <!-- Configure form to submit and get data -->
-            <form class="search-form">
+        <!-- Configure form to submit and get data -->
+        <form class="search-form">
+        <h5><i class="bi bi-search"></i> Find Your Flight</h5>
+            
+            <div class="form-row">
+                <div class="search-input">
+                    <label for="region-filter">Filter by Region</label>
+                    <select id="region-filter" class="form-control">
+                        <option value="all">All Regions</option>
+                        <option value="asia">Asia</option>
+                        <option value="europe">Europe</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="search-input">
+                    <label for="origin-select">Origin</label>
+                    <select id="origin-select" class="form-control" required>
+                        <option value="" disabled selected>Select Origin</option>
+                        <option value="MNL" data-region="asia">Manila (MNL)</option>
+                        <option value="NRT" data-region="asia">Tokyo (NRT)</option>
+                        <option value="FCO" data-region="europe">France (CDG)</option>
+                    </select>
+                </div>
                 
-                <div class="form-row">
-                    <div class="search-input">
-                        <label for="region-filter">Filter by Region</label>
-                        <select id="region-filter" class="form-control">
-                            <option value="all">All Regions</option>
-                            <option value="asia">Asia</option>
-                            <option value="europe">Europe</option>
-                        </select>
-                    </div>
+                <div class="search-input">
+                    <label for="destination-select">Destination</label>
+                    <select id="destination-select" class="form-control" required>
+                        <option value="" disabled selected>Select Destination</option>
+                        <option value="MNL" data-region="asia">Manila (MNL)</option>
+                        <option value="NRT" data-region="asia">Tokyo (NRT)</option>
+                        <option value="FCO" data-region="europe">France (CDG)</option>
+                    </select>
                 </div>
+            </div>
 
-                <div class="form-row">
-                    <div class="search-input">
-                        <label for="origin-select">Origin</label>
-                        <select id="origin-select" class="form-control" required>
-                            <option value="" disabled selected>Select Origin</option>
-                            <option value="MNL" data-region="asia">Manila (MNL)</option>
-                            <option value="NRT" data-region="asia">Tokyo (NRT)</option>
-                            <option value="FCO" data-region="europe">France (CDG)</option>
-                        </select>
-                    </div>
-                    
-                    <div class="search-input">
-                        <label for="destination-select">Destination</label>
-                        <select id="destination-select" class="form-control" required>
-                            <option value="" disabled selected>Select Destination</option>
-                            <option value="MNL" data-region="asia">Manila (MNL)</option>
-                            <option value="NRT" data-region="asia">Tokyo (NRT)</option>
-                            <option value="FCO" data-region="europe">France (CDG)</option>
-                        </select>
-                    </div>
+            <div class="form-row">
+                <div class="search-input">
+                    <label>Departure Date</label>
+                    <input type="date" required>
                 </div>
-
-                <div class="form-row">
-                    <div class="search-input">
-                        <label>Departure Date</label>
-                        <input type="date" required>
-                    </div>
-                    <div class="search-input">
-                        <label>Return Date</label>
-                        <input type="date" required>
-                    </div>
+                <div class="search-input">
+                    <label>Return Date</label>
+                    <input type="date" required>
                 </div>
+            </div>
 
-                <button type="submit" class="search-btn">Search Flights</button>
+            <button type="submit" class="search-btn">Search Flights</button>
 
-                <!-- Configure form to submit and get data -->
-            </form> 
-        </div>
+            <!-- Configure form to submit and get data -->
+        </form> 
     </div>
 
     <!-- Fix statistics header design -->
