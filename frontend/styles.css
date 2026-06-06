@@ -745,3 +745,15 @@ span.admin-status {
 #filter-users-btn:hover {
     background-color: #0284c7; 
 }
+
+/* admin reservations */
+
+.details-chevron{
+    transition: transform 0.3s ease;
+    display: block;
+    margin: 0px 0px 0px 6px;
+}
+.details-clickable-row[aria-expanded="true"] .details-chevron {
+    transform: rotate(90deg);
+    transform-origin: center;
+}

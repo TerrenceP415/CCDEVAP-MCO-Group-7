@@ -59,32 +59,70 @@
         <p>Manage all reservations and bookings.</p>
         <div class="admin-table-wrapper" id="reservationsTableWrapper">
             
-            <button id="addReservation" type="button" class="btn btn-primary action-btn-admin" data-toggle="modal" data-target="#addReservationModal">Add New Reservation</button>
-        <table class="admin-table" id="reservationsTable">
-            <tr>
-                <th>Reservation Number</th>
-                <th>Origin</th>
-                <th>Destination</th>
-                <th>Departure Time</th>
-                <th>Arrival Time</th>
-                <th>Seat Number</th>
-                <th>Total Price</th>
-                <th colspan="2">Actions</th>
-            </tr>
-            <!-- Example flight row -->
-            <tr>
-                <td>RN321</td>
-                <td>New York (JFK)</td>
-                <td>Los Angeles (LAX)</td>
-                <td>2024-07-01 08:00</td>
-                <td>2024-07-01 11:00</td>
-                <td>12A</td>
-                <td>350</td>
-                <td>
-                    <button id="editReservation" type="button" class="btn btn-primary action-btn-admin" data-toggle="modal" data-target="#editReservationModal">Edit</button>
-                    <button id="deleteReservation" type="button" class="btn btn-primary action-btn-admin" data-toggle="modal" data-target="#deleteConfirmationModal">Delete</button>
-                </td>
-            </tr>
-        
+        <table class="admin-table table" id="reservationsTable">
+                <thead>
+                    <tr>
+                        <th></th> <th>Reservation Number</th>
+                        <th>Origin</th>
+                        <th>Destination</th>
+                        <th>Departure Time</th>
+                        <th>Arrival Time</th>
+                        <th>Seat Number</th>
+                        <th>Total Price</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Example reservation row -->
+                    <tr class="details-clickable-row" data-toggle="collapse" data-target="#details-RN321" aria-expanded="false" aria-controls="details-RN321" style="cursor: pointer;">
+                        <td class="details-chevron"><i class="bi bi-chevron-right"></i></td>
+                        <td>RN321</td>
+                        <td>New York (JFK)</td>
+                        <td>Los Angeles (LAX)</td>
+                        <td>2024-07-01 08:00</td>
+                        <td>2024-07-01 11:00</td>
+                        <td>12A, 12B, 12C</td>
+                        <td>$350</td>
+                        <td><span class="admin-status badge badge-success">Confirmed</span></td>
+                        <td>
+                            <button type="button" class="btn btn-primary action-btn-admin btn-sm" data-toggle="modal" data-target="#editReservationModal" onclick="event.stopPropagation();">Edit</button>
+                            <button type="button" class="btn btn-danger action-btn-admin btn-sm" data-toggle="modal" data-target="#deleteConfirmationModal" onclick="event.stopPropagation();">Delete</button>
+                        </td>
+                    </tr>
+                    <!-- Example Details Row -->
+                    <tr class="details-collapse-row">
+                        <td colspan="10" class="p-0 border-top-0">
+                            <div id="details-RN321" class="collapse" data-parent="#reservationsTable">
+                                <div class="p-3 bg-light border-bottom">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <strong>Passenger Name:</strong>
+                                            <p class="mb-2 text-muted">John Doe</p>
+                                            <p class="mb-2 text-muted">Jane Doe</p>
+                                            <p class="mb-2 text-muted">Ronald Donald</p>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <strong>Passenger Count:</strong>
+                                            <p class="mb-2 text-muted">3 Adults, 0 Children</p>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <strong>Meal Package:</strong>
+                                            <p class="mb-2 text-muted">2x Standard, 1x Vegetarian</p>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <strong>Extra Services:</strong>
+                                            <p class="mb-2 text-muted">1x Extra Baggage, Priority Boarding</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+
+            
     </body>
 </html>
