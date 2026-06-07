@@ -6,7 +6,9 @@
 
 body{
     font-family: Arial, Helvetica, sans-serif;
-    background-color: #ffffff;
+    background:
+        radial-gradient(circle at top, #eff6ff 0%, #f8fafc 35%, #e2e8f0 100%);
+    color: #0f172a;
 }
 
 /* Navbar */
@@ -388,18 +390,52 @@ header {
     padding: 0;
     box-sizing: border-box;
     font-family: Arial, Helvetica, sans-serif;
-    box-sizing: border-box;
-}
-body{
-    background:
-        radial-gradient(circle at top, #eff6ff 0%, #f8fafc 35%, #e2e8f0 100%);
-    color: #0f172a;
 }
 
+.profile-shell {
+    min-height: calc(100vh - 80px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 32px 18px 48px;
+}
+
+.profile-card {
+    width: 100%;
+    max-width: 980px;
+    background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+    border: 1px solid #dbeafe;
+    border-radius: 24px;
+    box-shadow: 0 18px 38px rgba(15, 23, 42, 0.12);
+    padding: 30px;
+}
+
+.eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 0.35em;
+    font-size: 0.75rem;
+    color: #0284c7;
+    font-weight: 700;
+}
+
+.profile-card h1 {
+    color: #0f172a;
+    font-family: 'Segoe UI', Arial, Helvetica, sans-serif;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+    font-size: 2rem;
+}
+
+.profile-copy {
+    color: #475569;
+    margin-bottom: 18px;
+    font-size: 15px;
+    line-height: 1.5;
+}
 
 #accordion{
-    margin: 100px auto;
-    width: min(900px, calc(100% - 32px));
+    margin: 0;
+    width: 100%;
     display: grid;
     gap: 14px;
 }
@@ -415,6 +451,10 @@ body{
     box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
 }
 
+#accordion li:hover {
+    border-color: #bae6fd;
+}
+
 
 #accordion li label{
     padding: 12px 14px;
@@ -422,9 +462,9 @@ body{
     align-items: center;
     justify-content: center;
     gap: 10px;
-    font-size: 17px;
+    font-size: 16px;
     font-weight: 700;
-    letter-spacing: 0.6px;
+    letter-spacing: 0.4px;
     cursor: pointer;
     color: #0f172a;
     font-family: 'Segoe UI', Arial, Helvetica, sans-serif;
@@ -520,20 +560,29 @@ img{
 }
 
 .profile-field label {
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 700;
-  color: #0f172a;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+  color: #334155;
+  text-transform: none;
+  letter-spacing: 0;
+  font-family: 'Segoe UI', Arial, Helvetica, sans-serif;
 }
 
 .profile-field input {
   width: 100%;
-  padding: 10px 12px;
-  border: 1px solid #cbd5e1;
+  padding: 12px;
+  border: 1px solid #b4d6ff;
   border-radius: 10px;
   background: #fff;
   color: #0f172a;
+  font-size: 14px;
+  font-family: 'Segoe UI', Arial, Helvetica, sans-serif;
+}
+
+.profile-field input:focus {
+  outline: none;
+  border-color: #38bdf8;
+  box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.18);
 }
 
 .profile-field input:disabled {
@@ -618,8 +667,9 @@ img{
 /* Text styling */
 .toggle-text {
     font-size: 15px;
-    color: #1f2937;
-    font-weight: 600;
+    color: #334155;
+    font-weight: 700;
+    font-family: 'Segoe UI', Arial, Helvetica, sans-serif;
 }
 
 
