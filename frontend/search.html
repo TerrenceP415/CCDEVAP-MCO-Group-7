@@ -40,11 +40,15 @@
             <option value="DVO"> Francisco Bangoy International Airport (DVO)</option>
         </select>
     <br><br>
-        <label for="trip_type">Trip Type:</label>
-           <input type="radio" class="form-check-input" id="one_way" name="trip_type" value="one_way"> 
-           <label for="one_way">One Way</label>
-           <input type="radio" class="form-check-input" id="round_trip" name="trip_type" value="round_trip">
-           <label for="round_trip">Round Trip</label>
+        <div class="trip-type-row">
+            <label for="trip_type">Trip Type:</label>
+            <div class="select-container">
+                <input type="radio" id="one_way" name="trip_type" value="one_way">
+                <label for="one_way">One Way</label>
+                <input type="radio" id="round_trip" name="trip_type" value="round_trip">
+                <label for="round_trip">Round Trip</label>
+            </div>
+        </div>
     <br><br>
         <label for="departure_date">Departure Date</label>
         <input type="date" id="departure_id" name="departure_date">
@@ -66,7 +70,11 @@
             <option value="first_class">First Class</option>
         </select>
     <br><br>
-    <h1 for="search">Advance Search</h1>
+</div>
+<div class="accordion-container">
+    <h1 for="search">Advance Search <span>&#x3e;</span></h1>
+    <input type="radio" id="advanced_search" name="advanced_search" value="yes">
+    <br><br>
         <label for="airline">Airline</label>
         <select name="airline">
             <option value="philippine_airlines">Philippine Airlines</option>
@@ -84,9 +92,9 @@
     <br><br>
         <label for="price_range">Price Range</label>
         <input type="text" id="price_range" name="price_range" placeholder="e.g., 5000-10000">
+    </div>
     <br><br>
-        <a href="results.html"><button type="submit">Search</button></a>
+    <button type="submit" class="search-button">Search</button>
     </form>
-</div>
 </body>
 </html>
