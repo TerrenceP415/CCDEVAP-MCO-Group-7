@@ -23,78 +23,90 @@
         </nav>
     </header>
 
-    <div class="search-container">
-        <form for="search" action="results.html" method="get">
-        <h1 for="search">Search</h1>
-        <label for="origin">Origin Airport</label>
-        <select name="origin">
-            <option value="NAIA"> Ninoy Aquino International Airport (NAIA)</option>
-            <option value="CHG"> Clark International Airport (CHG)</option>
-            <option value="DVO"> Francisco Bangoy International Airport (DVO)</option>
-        </select>
-    <br><br>
-        <label for="destination">Destination Airport</label>
-        <select name="destination">
-            <option value="NAIA"> Ninoy Aquino International Airport (NAIA)</option>
-            <option value="CHG"> Clark International Airport (CHG)</option>
-            <option value="DVO"> Francisco Bangoy International Airport (DVO)</option>
-        </select>
-    <br><br>
-        <div class="trip-type-row">
-            <label for="trip_type">Trip Type:</label>
-            <div class="select-container">
-                <input type="radio" id="one_way" name="trip_type" value="one_way">
-                <label for="one_way">One Way</label>
-                <input type="radio" id="round_trip" name="trip_type" value="round_trip">
-                <label for="round_trip">Round Trip</label>
-            </div>
-        </div>
-    <br><br>
-        <label for="departure_date">Departure Date</label>
-        <input type="date" id="departure_id" name="departure_date">
-    <br><br>
-        <label for="return_date">Return Date</label>
-        <input type="date" id="return_id" name="return_date">
-    <br><br>
-        <label for="passengers">Passengers</label>
-        <select name="passengers">
-            <option value="adults">Adults</option>
-            <option value="children">Children</option>
-            <option value="infants">Infants</option>
-        </select>
-    <br><br>
-        <label for="cabin_class">Cabin Class</label>
-        <select name="cabin_class">
-            <option value="economy">Economy</option>
-            <option value="business">Business</option>
-            <option value="first_class">First Class</option>
-        </select>
-    <br><br>
-</div>
-<div class="accordion-container">
-    <h1 for="search">Advance Search <span>&#x3e;</span></h1>
-    <input type="radio" id="advanced_search" name="advanced_search" value="yes">
-    <br><br>
-        <label for="airline">Airline</label>
-        <select name="airline">
-            <option value="philippine_airlines">Philippine Airlines</option>
-            <option value="cebu_pacific">Cebu Pacific</option>
-            <option value="air_asia">Air Asia</option>
-        </select>
-    <br><br>
-        <label for="direct_flight">Direct Flight</label>
-        <input type="checkbox" id="direct_flight" name="direct_flight" value="yes">
-        <label for="direct_flight">Yes</label>
-    <br><br>
-        <label for="flexible_dates">Flexible Dates</label>
-        <input type="checkbox" id="flexible_dates" name="flexible_dates" value="yes">
-        <label for="flexible_dates">Yes</label>
-    <br><br>
-        <label for="price_range">Price Range</label>
-        <input type="text" id="price_range" name="price_range" placeholder="e.g., 5000-10000">
-    </div>
-    <br><br>
-    <button type="submit" class="search-button">Search</button>
-    </form>
+    <br><br><br><br><br>
+
+    <main class="search-shell">
+        <section class="search-container">
+            <form class="search-card" action="results.html" method="get">
+                <p class="eyebrow">SkyEase</p>
+                <h1>Search flights</h1>
+                <p class="search-copy">Plan your trip quickly with a clean, centered search panel.</p>
+
+                <div class="form-grid">
+                    <label for="origin">Origin Airport</label>
+                    <select name="origin" id="origin">
+                        <option value="NAIA">Ninoy Aquino International Airport (NAIA)</option>
+                        <option value="CHG">Clark International Airport (CHG)</option>
+                        <option value="DVO">Francisco Bangoy International Airport (DVO)</option>
+                    </select>
+
+                    <label for="destination">Destination Airport</label>
+                    <select name="destination" id="destination">
+                        <option value="NAIA">Ninoy Aquino International Airport (NAIA)</option>
+                        <option value="CHG">Clark International Airport (CHG)</option>
+                        <option value="DVO">Francisco Bangoy International Airport (DVO)</option>
+                    </select>
+
+                    <div class="trip-type-row">
+                        <label>Trip Type</label>
+                        <div class="select-container">
+                            <input type="radio" id="one_way" name="trip_type" value="one_way">
+                            <label for="one_way">One Way</label>
+                            <input type="radio" id="round_trip" name="trip_type" value="round_trip" checked>
+                            <label for="round_trip">Round Trip</label>
+                        </div>
+                    </div>
+
+                    <label for="departure_date">Departure Date</label>
+                    <input type="date" id="departure_date" name="departure_date">
+
+                    <label for="return_date">Return Date</label>
+                    <input type="date" id="return_date" name="return_date">
+
+                    <label for="passengers">Passengers</label>
+                    <select name="passengers" id="passengers">
+                        <option value="1">1 Passenger</option>
+                        <option value="2">2 Passengers</option>
+                        <option value="3">3 Passengers</option>
+                        <option value="4">4 Passengers</option>
+                    </select>
+
+                    <label for="cabin_class">Cabin Class</label>
+                    <select name="cabin_class" id="cabin_class">
+                        <option value="economy">Economy</option>
+                        <option value="business">Business</option>
+                        <option value="first_class">First Class</option>
+                    </select>
+                </div>
+
+                <details class="accordion-container">
+                    <summary>Advanced search options</summary>
+                    <div class="accordion-panel">
+                        <label for="airline">Airline</label>
+                        <select name="airline" id="airline">
+                            <option value="philippine_airlines">Philippine Airlines</option>
+                            <option value="cebu_pacific">Cebu Pacific</option>
+                            <option value="air_asia">Air Asia</option>
+                        </select>
+
+                        <label class="checkbox-row" for="direct_flight">
+                            <input type="checkbox" id="direct_flight" name="direct_flight" value="yes">
+                            Direct flight only
+                        </label>
+
+                        <label class="checkbox-row" for="flexible_dates">
+                            <input type="checkbox" id="flexible_dates" name="flexible_dates" value="yes">
+                            Flexible dates
+                        </label>
+
+                        <label for="price_range">Price Range</label>
+                        <input type="text" id="price_range" name="price_range" placeholder="e.g. 5000-10000">
+                    </div>
+                </details>
+
+                <button type="submit" class="search-button">Search flights</button>
+            </form>
+        </section>
+    </main>
 </body>
 </html>
