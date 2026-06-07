@@ -29,18 +29,18 @@
         <section class="search-container">
             <form class="search-card" action="results.html" method="get">
                 <p class="eyebrow">SkyEase</p>
-                <h1>Search flights</h1>
+                <h1><i class="bi bi-search"></i> Search flights</h1>
                 <p class="search-copy">Plan your trip quickly with a clean, centered search panel.</p>
 
                 <div class="form-grid">
-                    <label for="origin">Origin Airport</label>
+                    <label for="origin"><i class="bi bi-airplane"></i> Origin Airport</label>
                     <select name="origin" id="origin">
                         <option value="NAIA">Ninoy Aquino International Airport (NAIA)</option>
                         <option value="CHG">Clark International Airport (CHG)</option>
                         <option value="DVO">Francisco Bangoy International Airport (DVO)</option>
                     </select>
 
-                    <label for="destination">Destination Airport</label>
+                    <label for="destination"><i class="bi bi-airplane"></i> Destination Airport</label>
                     <select name="destination" id="destination">
                         <option value="NAIA">Ninoy Aquino International Airport (NAIA)</option>
                         <option value="CHG">Clark International Airport (CHG)</option>
@@ -48,7 +48,7 @@
                     </select>
 
                     <div class="trip-type-row">
-                        <label>Trip Type</label>
+                        <label><i class="bi bi-info-circle"></i> Trip Type</label>
                         <div class="select-container">
                             <input type="radio" id="one_way" name="trip_type" value="one_way">
                             <label for="one_way">One Way</label>
@@ -57,13 +57,13 @@
                         </div>
                     </div>
 
-                    <label for="departure_date">Departure Date</label>
+                    <label for="departure_date"><i class="bi bi-calendar"></i> Departure Date</label>
                     <input type="date" id="departure_date" name="departure_date">
 
-                    <label for="return_date">Return Date</label>
+                    <label for="return_date"><i class="bi bi-calendar"></i> Return Date</label>
                     <input type="date" id="return_date" name="return_date">
 
-                    <label for="passengers">Passengers</label>
+                    <label for="passengers"><i class="bi bi-person"></i> Passengers</label>
                     <select name="passengers" id="passengers">
                         <option value="1">1 Passenger</option>
                         <option value="2">2 Passengers</option>
@@ -71,7 +71,7 @@
                         <option value="4">4 Passengers</option>
                     </select>
 
-                    <label for="cabin_class">Cabin Class</label>
+                    <label for="cabin_class"><i class="bi bi-building"></i> Cabin Class</label>
                     <select name="cabin_class" id="cabin_class">
                         <option value="economy">Economy</option>
                         <option value="business">Business</option>
@@ -80,9 +80,9 @@
                 </div>
 
                 <details class="accordion-container">
-                    <summary>Advanced search options</summary>
+                    <summary><i class="bi bi-gear"></i> Advanced search options</summary>
                     <div class="accordion-panel">
-                        <label for="airline">Airline</label>
+                        <label for="airline"><i class="bi bi-airplane"></i> Airline</label>
                         <select name="airline" id="airline">
                             <option value="philippine_airlines">Philippine Airlines</option>
                             <option value="cebu_pacific">Cebu Pacific</option>
@@ -91,15 +91,15 @@
 
                         <label class="checkbox-row" for="direct_flight">
                             <input type="checkbox" id="direct_flight" name="direct_flight" value="yes">
-                            Direct flight only
+                            <i class="bi bi-check-circle"></i> Direct flight only
                         </label>
 
                         <label class="checkbox-row" for="flexible_dates">
                             <input type="checkbox" id="flexible_dates" name="flexible_dates" value="yes">
-                            Flexible dates
+                            <i class="bi bi-check-circle"></i> Flexible dates
                         </label>
 
-                        <label for="price_range">Price Range</label>
+                        <label for="price_range"><i class="bi bi-currency-dollar"></i>  Range</label>
                         <input type="text" id="price_range" name="price_range" placeholder="e.g. 5000-10000">
                     </div>
                 </details>
