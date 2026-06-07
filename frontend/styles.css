@@ -666,7 +666,7 @@ header {
     display: flex;
     justify-content: center;
     padding: 0 20px;
-    margin-top: 40px;
+    margin-top: -110px;
     position: relative;
     z-index: 10;
 }
@@ -731,6 +731,7 @@ header {
 }
 
 .select-container input[type="radio"] {
+<<<<<<< HEAD
     display: none;
 }
 
@@ -783,3 +784,50 @@ header {
     transition: transform 0.3s ease;
 }
 
+=======
+    margin-right: 8px;
+}
+
+
+.admin-status {
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+span.admin-status {
+    display: inline-block;
+    padding: 8px 12px;  
+}
+
+.filter-users-dropdown-wrapper {
+    display: inline-block;
+}
+
+#filter-users-btn {
+    background-color: #23d0b3;
+    color: #ffffff;
+    border: none;
+    padding: 8px 16px;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+
+}
+
+#filter-users-btn:hover {
+    background-color: #0284c7; 
+}
+
+/* admin reservations */
+
+.details-chevron{
+    transition: transform 0.3s ease;
+    display: block;
+    margin: 0px 0px 0px 6px;
+}
+.details-clickable-row[aria-expanded="true"] .details-chevron {
+    transform: rotate(90deg);
+    transform-origin: center;
+}
+>>>>>>> 5e553df7f0a52de7c61def2c9fc650ed937c328f
