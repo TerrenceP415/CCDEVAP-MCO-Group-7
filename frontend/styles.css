@@ -950,8 +950,104 @@ span.admin-status {
     justify-content: center;
 }
 
-.results-body{
+#results-body{
     max-width: 1100px;
     margin: 0 auto;
 }
 
+/* RESULTS TABLE */
+
+.results-table {
+    width: 95%;
+    margin: 0 auto 40px;
+    border-collapse: collapse;
+    background: #fff;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.results-table thead {
+    background: #0284c7;
+    color: white;
+}
+
+.results-table th {
+    padding: 16px;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.results-table td {
+    padding: 15px;
+    text-align: center;
+    border-bottom: 1px solid #e5e7eb;
+    vertical-align: middle;
+}
+
+.results-table tbody tr {
+    transition: 0.3s;
+}
+
+.results-table tbody tr:hover {
+    background: #f0f9ff;
+    transform: scale(1.01);
+}
+
+.results-table img {
+    width: 55px;
+    height: auto;
+    object-fit: contain;
+}
+
+/* Buttons */
+
+.view-details-btn,
+.book-btn {
+    border: none;
+    padding: 10px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.view-details-btn {
+    background: #e0f2fe;
+    color: #0369a1;
+}
+
+.view-details-btn:hover {
+    background: #bae6fd;
+}
+
+.book-btn {
+    background: #0284c7;
+    color: white;
+}
+
+.book-btn:hover {
+    background: #0369a1;
+}
+
+/* Remaining Seats */
+
+.results-table td:nth-child(7) {
+    font-weight: bold;
+}
+
+/* Responsive */
+
+.results-shell {
+    overflow-x: auto;
+}
+
+@media (max-width: 1000px) {
+    .results-table {
+        min-width: 1200px;
+    }
+}
