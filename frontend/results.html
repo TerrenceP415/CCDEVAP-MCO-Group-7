@@ -23,10 +23,150 @@
         </nav>
     </header>
 
-    <br><br><br><br><br>
-
 <div class="results-shell">
-    
+    <div class="results-header">
+        <h3><i class="bi bi-search"></i> Search Results</h3>
+        <p>Showing available flights based on your search criteria.</p>
+    </div>
+
+    <div class="filter-class">
+        <label for="flight"><i class="bi bi-filter"></i> Filter: </label>
+        <input type="text" id="flight" placeholder="Enter Airline">
+        <select id="sort">
+            <option value="">Sort By</option>
+            <option value="price_asc">Price: Low to High</option>
+            <option value="price_desc">Price: High to Low</option>
+        </select>   
+        <input type="number" id="stops" placeholder="Max Stops">
+        <input type="date" id="departure_date">
+    </div>
+
+    <div class="results-grid">
+        <table class="results-table">
+            <thead>
+                <tr>
+                    <th>Airline</th>
+                    <th>Flight Number</th>
+                    <th>Departure and Arrival Times</th>
+                    <th>Flight Duration</th>
+                    <th>Number of Layovers</th>
+                    <th>Price</th>
+                    <th>Remaining Seats</th>
+                    <th>View Details</th>
+                    <th>Books</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody id="results-body">
+                <!-- Flight results will be dynamically inserted here -->
+                 <tr>
+                    <td><img src="airline/cebu-pacific.png" width="50" alt="Cebu Pacific"></td>
+                    <td>AA123</td>
+                    <td>10:00 AM - 2:00 PM</td>
+                    <td>4 hours</td>
+                    <td>1</td>
+                    <td>$150</td>
+                    <td>5</td>
+                    <td><button class="view-details-btn">View Details</button></td>
+                    <td><button class="book-btn">Book Now</button></td>
+                </tr>
+
+                <tr>
+                    <td><img src="airline/airasia.png" width="50" alt="AirAsia"></td>
+                    <td>AA456</td>
+                    <td>3:00 PM - 7:00 PM</td>
+                    <td>4 hours</td>
+                    <td>1</td>
+                    <td>$180</td>
+                    <td>3</td>
+                    <td><button class="view-details-btn">View Details</button></td>
+                    <td><button class="book-btn">Book Now</button></td>
+                </tr>
+
+                <tr>
+                    <td><img src="airline/emirates.png" width="50" alt="Emirates"></td>
+                    <td>AA789</td>
+                    <td>6:00 PM - 10:00 PM</td>
+                    <td>4 hours</td>
+                    <td>1</td>
+                    <td>$200</td>
+                    <td>2</td>
+                    <td><button class="view-details-btn">View Details</button></td>
+                    <td><button class="book-btn">Book Now</button></td>
+                </tr>
+                
+                <tr>
+                    <td><img src="airline/american-airlines.png" width="50" alt="American Airlines"></td>
+                    <td>AA012</td>
+                    <td>9:00 AM - 1:00 AM</td>
+                    <td>11 hours</td>
+                    <td>1</td>
+                    <td>$220</td>
+                    <td>1</td>
+                    <td><button class="view-details-btn">View Details</button></td>
+                    <td><button class="book-btn">Book Now</button></td>
+                </tr>
+
+                <tr>
+                    <td><img src="airline/japan-airlines.png" width="50" alt="Japan Airlines"> </td>
+                    <td>AA345</td>
+                    <td>2:00 PM - 6:00 PM</td>
+                    <td>4 hours</td>
+                    <td>1</td>
+                    <td>$250</td>
+                    <td>0</td>
+                    <td><button class="view-details-btn">View Details</button></td>
+                    <td><button class="book-btn">Book Now</button></td>
+                </tr>
+
+                <tr>
+                    <td><img src="airline/klm.png" width="50" alt="KLM"></td>
+                    <td>AA678</td>
+                    <td>5:00 PM - 9:00 PM</td>
+                    <td>4 hours</td>
+                    <td>1</td>
+                    <td>$280</td>
+                    <td>4</td>
+                    <td><button class="view-details-btn">View Details</button></td>
+                    <td><button class="book-btn">Book Now</button></td>
+                </tr>
+
+                <tr>
+                    <td><img src="airline/philippine-airlines.png" width="50" alt="Philippine Airlines"></td>
+                    <td>AA901</td>
+                    <td>8:00 AM - 12:00 PM</td>
+                    <td>4 hours</td>
+                    <td>1</td>
+                    <td>$300</td>
+                    <td>2</td>
+                    <td><button class="view-details-btn">View Details</button></td>
+                    <td><button class="book-btn">Book Now</button></td>
+                </tr>
+
+                <tr>
+                    <td><img src="airline/sinagpore-airlines.png" width="50" alt="Singapore Airlines"></td>
+                    <td>AA234</td>
+                    <td>1:00 PM - 5:00 PM</td>
+                    <td>4 hours</td>
+                    <td>1</td>
+                    <td>$350</td>
+                    <td>3</td>
+                    <td><button class="view-details-btn">View Details</button></td>
+                    <td><button class="book-btn">Book Now</button></td>
+                </tr>
+
+                <tr>
+                    <td><img src="airline/vietnam-airlines.png" width="50" alt="Vietnam Airlines"></td>
+                    <td>AA567</td>
+                    <td>4:00 PM - 8:00 PM</td>
+                    <td>4 hours</td>
+                    <td>1</td>
+                    <td>$400</td>
+                    <td>1</td>
+                    <td><button class="view-details-btn">View Details</button></td>
+                    <td><button class="book-btn">Book Now</button></td>
+                </tr>
+            </tbody>
 </div>
 
 </body>
