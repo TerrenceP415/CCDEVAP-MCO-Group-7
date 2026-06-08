@@ -119,10 +119,108 @@
                             </div>
                         </td>
                     </tr>
+                    <!-- Remember to change data targets to appropriate detail row (check reference numbers) -->
+
+                    <!-- Example reservation row -->
+                    <tr class="details-clickable-row" data-toggle="collapse" data-target="#details-RN123" aria-expanded="false" aria-controls="details-RN123" style="cursor: pointer;">
+                        <td class="details-chevron"><i class="bi bi-chevron-right"></i></td>
+                        <td>RN123</td>
+                        <td>New York (JFK)</td>
+                        <td>Los Angeles (LAX)</td>
+                        <td>2024-07-01 08:00</td>
+                        <td>2024-07-01 11:00</td>
+                        <td>12A, 12B, 12C</td>
+                        <td>$350</td>
+                        <td><span class="admin-status badge badge-warning">Pending</span></td>
+                        <td>
+                            <button type="button" class="btn btn-primary action-btn-admin btn-sm" data-toggle="modal" data-target="#editReservationModal" onclick="event.stopPropagation();">Edit</button>
+                            <button type="button" class="btn btn-danger action-btn-admin btn-sm" data-toggle="modal" data-target="#deleteConfirmationModal" onclick="event.stopPropagation();">Delete</button>
+                        </td>
+                    </tr>
+                    <!-- Example Details Row -->
+                    <tr class="details-collapse-row">
+                        <td colspan="10" class="p-0 border-top-0">
+
+                            <!-- Detail Row ID -->
+                            <div id="details-RN123" class="collapse" data-parent="#reservationsTable">
+                                <div class="p-3 bg-light border-bottom">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <strong>Passenger Name:</strong>
+                                            <p class="mb-2 text-muted">John Doe</p>
+                                            <p class="mb-2 text-muted">Jane Doe</p>
+                                            <p class="mb-2 text-muted">Ronald Donald</p>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <strong>Passenger Count:</strong>
+                                            <p class="mb-2 text-muted">3 Adults, 0 Children</p>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <strong>Meal Package:</strong>
+                                            <p class="mb-2 text-muted">2x Standard, 1x Vegetarian</p>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <strong>Extra Services:</strong>
+                                            <p class="mb-2 text-muted">1x Extra Baggage, Priority Boarding</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <!-- Example reservation row -->
+                    <tr class="details-clickable-row" data-toggle="collapse" data-target="#details-RN456" aria-expanded="false" aria-controls="details-RN456" style="cursor: pointer;">
+                        <td class="details-chevron"><i class="bi bi-chevron-right"></i></td>
+                        <td>RN456</td>
+                        <td>New York (JFK)</td>
+                        <td>Los Angeles (LAX)</td>
+                        <td>2024-07-01 08:00</td>
+                        <td>2024-07-01 11:00</td>
+                        <td>12A, 12B, 12C</td>
+                        <td>$350</td>
+                        <td><span class="admin-status badge badge-danger">Cancelled</span></td>
+                        <td>
+                            <button type="button" class="btn btn-primary action-btn-admin btn-sm" data-toggle="modal" data-target="#editReservationModal" onclick="event.stopPropagation();">Edit</button>
+                            <button type="button" class="btn btn-danger action-btn-admin btn-sm" data-toggle="modal" data-target="#deleteConfirmationModal" onclick="event.stopPropagation();">Delete</button>
+                        </td>
+                    </tr>
+                    <!-- Example Details Row -->
+                    <tr class="details-collapse-row">
+                        <td colspan="10" class="p-0 border-top-0">
+
+                            <!-- Detail Row ID -->
+                            <div id="details-RN456" class="collapse" data-parent="#reservationsTable">
+                                <div class="p-3 bg-light border-bottom">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <strong>Passenger Name:</strong>
+                                            <p class="mb-2 text-muted">John Doe</p>
+                                            <p class="mb-2 text-muted">Jane Doe</p>
+                                            <p class="mb-2 text-muted">Ronald Donald</p>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <strong>Passenger Count:</strong>
+                                            <p class="mb-2 text-muted">3 Adults, 0 Children</p>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <strong>Meal Package:</strong>
+                                            <p class="mb-2 text-muted">2x Standard, 1x Vegetarian</p>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <strong>Extra Services:</strong>
+                                            <p class="mb-2 text-muted">1x Extra Baggage, Priority Boarding</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+
                 </tbody>
             </table>
 
 
-            
+
     </body>
 </html>
