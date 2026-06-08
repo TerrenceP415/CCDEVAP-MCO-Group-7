@@ -1019,6 +1019,7 @@ span.admin-status {
 .view-details-btn {
     background: #e0f2fe;
     color: #0369a1;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .view-details-btn:hover {
@@ -1028,6 +1029,7 @@ span.admin-status {
 .book-btn {
     background: #0284c7;
     color: white;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .book-btn:hover {
