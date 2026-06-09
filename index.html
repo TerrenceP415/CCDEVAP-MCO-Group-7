@@ -149,21 +149,21 @@
         <div class="panel panel-default">
             <div class="panel-body">
                 <i class="bi bi-airplane-fill"></i>
-                <div class="stat-number">X</div>
+                <div class="stat-number" id="available-Flights">X</div>
                 <div class="stat-label">Available Flights</div>
             </div>
         </div>
         <div class="panel panel-default">
             <div class="panel-body">
                 <i class="bi bi-calendar-check-fill"></i>
-                <div class="stat-number">Y</div>
+                <div class="stat-number" id="active-Bookings">Y</div>
                 <div class="stat-label">Active Bookings</div>
             </div>
         </div>
         <div class="panel panel-default">
             <div class="panel-body">
                 <i class="bi bi-geo-alt-fill"></i>
-                <div class="stat-number">Z</div>
+                <div class="stat-number" id="popular-Destinations">Z</div>
                 <div class="stat-label">Popular Destinations</div>
             </div>
         </div>
@@ -266,7 +266,16 @@
 
     </div>
 </div>
+<script>
 
+    const availableFlightsCard = document.getElementById("available-Flights");
+    availableFlightsCard.innerHTML = availableFlights;
+    const activeBookingsCard = document.getElementById("active-Bookings");
+    activeBookingsCard.innerHTML = activeBookings;
+    const popularDestinationsCard = document.getElementById("popular-Destinations");
+    popularDestinationsCard.innerHTML = destinations;
+
+</script>
     <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
     
 </body>
