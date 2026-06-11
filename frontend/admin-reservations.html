@@ -86,8 +86,8 @@
                         <td>$350</td>
                         <td><span class="admin-status badge badge-success">Confirmed</span></td>
                         <td>
-                            <button type="button" class="btn btn-primary action-btn-admin btn-sm" data-toggle="modal" data-target="#editReservationModal" onclick="event.stopPropagation();">Edit</button>
-                            <button type="button" class="btn btn-danger action-btn-admin btn-sm" data-toggle="modal" data-target="#deleteConfirmationModal" onclick="event.stopPropagation();">Delete</button>
+                            <button id="editReservation" type="button" class="btn btn-primary action-btn-admin" data-toggle="modal" data-target="#editReservationModal">Edit</button>
+                            <button id="deleteReservation" type="button" class="btn btn-primary action-btn-admin" data-toggle="modal" data-target="#deleteConfirmationModal">Delete</button>
                         </td>
                     </tr>
                     <!-- Example Details Row -->
@@ -133,8 +133,8 @@
                         <td>$350</td>
                         <td><span class="admin-status badge badge-warning">Pending</span></td>
                         <td>
-                            <button type="button" class="btn btn-primary action-btn-admin btn-sm" data-toggle="modal" data-target="#editReservationModal" onclick="event.stopPropagation();">Edit</button>
-                            <button type="button" class="btn btn-danger action-btn-admin btn-sm" data-toggle="modal" data-target="#deleteConfirmationModal" onclick="event.stopPropagation();">Delete</button>
+                            <button id="editReservation" type="button" class="btn btn-primary action-btn-admin" data-toggle="modal" data-target="#editReservationModal">Edit</button>
+                            <button id="deleteReservation" type="button" class="btn btn-primary action-btn-admin" data-toggle="modal" data-target="#deleteConfirmationModal">Delete</button>
                         </td>
                     </tr>
                     <!-- Example Details Row -->
@@ -181,8 +181,8 @@
                         <td>$350</td>
                         <td><span class="admin-status badge badge-danger">Cancelled</span></td>
                         <td>
-                            <button type="button" class="btn btn-primary action-btn-admin btn-sm" data-toggle="modal" data-target="#editReservationModal" onclick="event.stopPropagation();">Edit</button>
-                            <button type="button" class="btn btn-danger action-btn-admin btn-sm" data-toggle="modal" data-target="#deleteConfirmationModal" onclick="event.stopPropagation();">Delete</button>
+                            <button id="editReservation" type="button" class="btn btn-primary action-btn-admin" data-toggle="modal" data-target="#editReservationModal">Edit</button>
+                            <button id="deleteReservation" type="button" class="btn btn-primary action-btn-admin" data-toggle="modal" data-target="#deleteConfirmationModal">Delete</button>
                         </td>
                     </tr>
                     <!-- Example Details Row -->
@@ -219,6 +219,129 @@
 
                 </tbody>
             </table>
+
+
+            <!-- Modals -->
+     
+     <!-- Edit Flight -->
+      <div class="modal fade" id="editReservationModal" tabindex="-1" role="dialog" aria-labelledby="editReservationModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editReservationModalTitle">Edit Reservation</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <form>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="editReservationNumber">Reservation Number</label>
+                                <input type="text" class="form-control" id="editReservationNumber" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label for="editOrigin">Origin</label>
+                                <input type="text" class="form-control" id="editOrigin" placeholder="Enter origin">
+                            </div>
+                            <div class="form-group">
+                                <label for="editDestination">Destination</label>
+                                <input type="text" class="form-control" id="editDestination" placeholder="Enter destination">
+                            </div>
+                            <div class="form-group">
+                                <label for="editDepartureTime">Departure Time</label>
+                                <input type="datetime-local" class="form-control" id="editDepartureTime">
+                            </div>
+                            <div class="form-group">
+                                <label for="editArrivalTime">Arrival Time</label>
+                                <input type="datetime-local" class="form-control" id="editArrivalTime">
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="editSeatNumber">Seat Number(s)</label>
+                                <input type="text" class="form-control" id="editSeatNumber" placeholder="e.g., 12A, 12B, 12C">
+                            </div>
+                            <div class="form-group">
+                                <label for="editTotalPrice">Total Price</label>
+                                <input type="text" class="form-control" id="editTotalPrice" placeholder="Enter price">
+                            </div>
+                            <div class="form-group">
+                                <label for="editReservationStatus">Status</label>
+                                <select class="form-control" id="editReservationStatus">
+                                    <option value="Pending">Pending</option>
+                                    <option value="Confirmed">Confirmed</option>
+                                    <option value="Cancelled">Cancelled</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="editPassengerCount">Passenger Count</label>
+                                <input type="text" class="form-control" id="editPassengerCount" placeholder="e.g., 3 Adults, 0 Children">
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="editPassengerNames">Passenger Names (One per line)</label>
+                                <textarea class="form-control" id="editPassengerNames" rows="3" placeholder="Enter passenger names"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="editMealPackage">Meal Package</label>
+                                <input type="text" class="form-control" id="editMealPackage" placeholder="e.g., 2x Standard, 1x Vegetarian">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="editExtraServices">Extra Services</label>
+                                <input type="text" class="form-control" id="editExtraServices" placeholder="e.g., 1x Extra Baggage, Priority Boarding">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Discard</button>
+                <button type="button" class="btn btn-success" data-dismiss="modal">Save Changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+        <!-- Delete Confirmation -->
+
+        <div class="modal fade" id="deleteConfirmationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">Delete Flight</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete this flight?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                
+                <!-- Handle Deletion -->
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Delete Flight</button>
+
+                
+            </div>
+            </div>
+        </div>
+        </div>
 
 
 

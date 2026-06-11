@@ -802,6 +802,22 @@ header {
 .admin-table-wrapper #addUser:hover {
     background-color: #0284c7; 
 }
+.admin-table-wrapper #deleteReservation {
+    background-color: #f87171;
+
+}
+.admin-table-wrapper #deleteReservation:hover {
+    background-color: #ef4444;
+}
+.admin-table-wrapper #editReservation {
+    background-color: #69dc86;
+
+}
+.admin-table-wrapper #editReservation:hover {
+    background-color: #22af45;
+}
+
+
 
 @media (max-width: 768px) {
     .admin-table {
