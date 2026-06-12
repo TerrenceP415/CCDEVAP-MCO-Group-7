@@ -1445,7 +1445,7 @@ table {
 
 .results-shell{
     width: 100%;
-    max-width: 1200px;
+    max-width: 95vw;
     margin: 0 auto;
     padding: 0 15px;
     box-sizing: border-box;
@@ -1510,6 +1510,7 @@ table {
     border-radius: 15px;
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
 }
+
 #results-body{
     max-width: 1100px;
     margin: 0 auto;
@@ -1518,13 +1519,11 @@ table {
 /* RESULTS TABLE */
 
 .results-table {
-    width: 95%;
+    width: 100%;
     margin: 0 auto 40px;
     border-collapse: collapse;
     background: #fff;
     border-radius: 15px;
-    overflow: hidden;
-    box-shadow: 0 8px 25px rgba(0,0,0,0.08);
     font-family: 'Segoe UI', sans-serif;
 }
 
@@ -1534,15 +1533,16 @@ table {
 }
 
 .results-table th {
-    padding: 16px;
+    padding: 16px 8px;
     text-align: center;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 600;
     letter-spacing: 0.5px;
+    white-space: nowrap;
 }
 
 .results-table td {
-    padding: 15px;
+    padding: 12px 8px;
     text-align: center;
     border-bottom: 1px solid #e5e7eb;
     vertical-align: middle;
@@ -1554,7 +1554,7 @@ table {
 
 .results-table tbody tr:hover {
     background: #f0f9ff;
-    transform: scale(1.01);
+    transform: scale(1.005);
 }
 
 .results-table img {
