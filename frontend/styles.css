@@ -840,6 +840,7 @@ header {
 }
 
 /*Profile Page*/
+
 *{
     margin: 0;
     padding: 0;
@@ -847,6 +848,7 @@ header {
     font-family: Arial, Helvetica, sans-serif;
 }
 
+/* Cover all profile*/
 .profile-shell {
     min-height: calc(100vh - 80px);
     display: flex;
@@ -855,6 +857,7 @@ header {
     padding: 32px 18px 48px;
 }
 
+/*Cover the header of profile*/
 .profile-card {
     width: 100%;
     max-width: 980px;
@@ -865,6 +868,7 @@ header {
     padding: 30px;
 }
 
+/* Main Title */
 .eyebrow {
     text-transform: uppercase;
     letter-spacing: 0.35em;
@@ -873,6 +877,7 @@ header {
     font-weight: 700;
 }
 
+/* */
 .profile-card h1 {
     color: #0f172a;
     font-family: 'Segoe UI', Arial, Helvetica, sans-serif;
@@ -888,6 +893,7 @@ header {
     line-height: 1.5;
 }
 
+/*list of profile */
 #accordion{
     margin: 0;
     width: 100%;
@@ -933,7 +939,7 @@ header {
     background: linear-gradient(135deg, #dbeafe 0%, #f8fbff 100%);
 }
 
-
+/*The "v" */
 #accordion li label span{
     transform: rotate(90deg);
     font-size: 22px;
@@ -958,6 +964,7 @@ header {
     color: #0284c7;
 }
 
+/*Make the radio button disapper but functional*/
 #accordion label + input[type="radio"]{
     display: none;
 }
@@ -988,7 +995,8 @@ header {
     box-shadow: 0 6px 16px rgba(15, 23, 42, 0.04);
 }
 
-img{
+/*Profile picture */
+.profile-field img{
     height: 120px;
     width: 120px;
     border-radius: 50%;
@@ -1009,6 +1017,7 @@ img{
   gap: 10px;
 }
 
+/*form edit*/
 .profile-field {
   display: grid;
   gap: 2px;
@@ -1173,6 +1182,7 @@ input[type="checkbox"] {
 
 /*Search Page */
 
+/*Main search*/
 .search-shell {
     min-height: calc(100vh - 80px);
     display: flex;
@@ -1316,6 +1326,7 @@ input[type="checkbox"] {
     box-shadow: inset 2px 2px 4px rgba(0, 0, 0, 0.18), inset -2px -2px 4px rgba(255, 255, 255, 0.15);
 }
 
+/*advance search bar*/
 .accordion-container {
     margin-top: 18px;
     border: 1px solid #dbeafe;
@@ -1365,8 +1376,19 @@ input[type="checkbox"] {
 }
 
 .checkbox-row input {
+    display: inline-block;
     width: 16px;
     height: 16px;
+    accent-color: #2563eb;
+}
+
+.checkbox-row .bi {
+    color: #94a3b8;
+    transition: color 0.2s ease;
+}
+
+.checkbox-row input:checked + .bi {
+    color: #2563eb;
 }
 
 .admin-status {
@@ -1413,6 +1435,21 @@ span.admin-status {
 
 /*Results Page */
 
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 600px; 
+
+}
+
+.results-shell{
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+    box-sizing: border-box;
+}
 .results-header {
     text-align: center;
     padding: 20px;
@@ -1422,6 +1459,7 @@ span.admin-status {
     box-shadow: 0 4px 15px rgba(15, 23, 42, 0.1);
     font-family: 'Segoe UI', Arial, Helvetica, sans-serif;
     letter-spacing: 0.75px;
+    border-radius: 8px;
 }
 
 .results-header i{
@@ -1434,6 +1472,8 @@ span.admin-status {
     justify-content: center;
     gap: 20px;
     margin-bottom: 30px;
+    flex-wrap: wrap;
+    padding: 0 10px;
 }
 
 .filter-class label {
@@ -1449,18 +1489,27 @@ span.admin-status {
     cursor: pointer;
 }
 
+.filter-class input, .filter-class select {
+    padding: 8px 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 14px;
+}
+
 .filter-class input[type="checkbox"] {
     width: 16px;
     height: 16px;
 }
 
-.results-class{
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: center;
+.results-grid{
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin-bottom: 40px;
+    border-radius: 15px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
 }
-
 #results-body{
     max-width: 1100px;
     margin: 0 auto;
