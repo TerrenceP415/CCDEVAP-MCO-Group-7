@@ -2,7 +2,7 @@
 const sampleFlights = [
   {
     id: "FL-001",
-    airlineLogo: "assets/images/airlines/ph-air.png",
+    airlineLogo: "airline/philippine-airlines.png",
     airlineName: "Philippine Airways",
     flightNumber: "PR-102",
     origin: "MNL",
@@ -17,7 +17,7 @@ const sampleFlights = [
   },
   {
     id: "FL-002",
-    airlineLogo: "assets/images/airlines/fly-fast.png",
+    airlineLogo: "airline/cebu-pacific.png",
     airlineName: "FlyFast Express",
     flightNumber: "FF-305",
     origin: "MNL",
@@ -32,7 +32,7 @@ const sampleFlights = [
   },
   {
     id: "FL-003",
-    airlineLogo: "assets/images/airlines/pacific-star.png",
+    airlineLogo: "airline/singapore-airlines.png",
     airlineName: "Pacific Star Airlines",
     flightNumber: "PS-882",
     origin: "MNL",
@@ -47,7 +47,7 @@ const sampleFlights = [
   },
   {
     id: "FL-004",
-    airlineLogo: "assets/images/airlines/ph-air.png",
+    airlineLogo: "airline/philippine-airlines.png",
     airlineName: "Philippine Airways",
     flightNumber: "PR-426",
     origin: "MNL",
@@ -62,7 +62,7 @@ const sampleFlights = [
   },
   {
     id: "FL-005",
-    airlineLogo: "assets/images/airlines/global-jet.png",
+    airlineLogo: "airline/emirates.png",
     airlineName: "Global Jet",
     flightNumber: "GJ-011",
     origin: "MNL",
@@ -77,7 +77,7 @@ const sampleFlights = [
   },
   {
     id: "FL-006",
-    airlineLogo: "assets/images/airlines/pacific-star.png",
+    airlineLogo: "airline/singapore-airlines.png",
     airlineName: "Pacific Star Airlines",
     flightNumber: "PS-009",
     origin: "MNL",
@@ -92,7 +92,7 @@ const sampleFlights = [
   },
   {
     id: "FL-007",
-    airlineLogo: "assets/images/airlines/fly-fast.png",
+    airlineLogo: "airline/cebu-pacific.png",
     airlineName: "FlyFast Express",
     flightNumber: "FF-112",
     origin: "MNL",
@@ -107,7 +107,7 @@ const sampleFlights = [
   },
   {
     id: "FL-008",
-    airlineLogo: "assets/images/airlines/global-jet.png",
+    airlineLogo: "airline/emirates.png",
     airlineName: "Global Jet",
     flightNumber: "GJ-702",
     origin: "MNL",

@@ -2825,3 +2825,397 @@ table {
         order: -1;
     }
 }
+
+
+/* ===================================================================
+   ADMIN PANEL – Comprehensive Styles
+   =================================================================== */
+
+/* Admin page body background */
+body.admin-page {
+    background-color: var(--color-slate-50);
+}
+
+/* ── Tab selector: active state via page-level class ──────────────── */
+.tab-selector .tablinks.tab-active {
+    color: var(--color-sky-600);
+    border-bottom: 3px solid var(--color-sky-500);
+    background-color: var(--color-white);
+    font-weight: 700;
+}
+
+/* ── Tab content wrapper improvements ──────────────────────────────── */
+.tabcontent {
+    animation: adminFadeIn 0.3s ease;
+}
+
+@keyframes adminFadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.tabcontent h3 {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+}
+
+.tabcontent h3 i {
+    font-size: 22px;
+}
+
+/* ── Analytics cards enhancements ─────────────────────────────────── */
+.analytics-card {
+    border-top: 3px solid var(--color-sky-400);
+    position: relative;
+    overflow: hidden;
+}
+
+.analytics-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 80px;
+    height: 80px;
+    background: radial-gradient(circle at top right, var(--color-sky-50), transparent 70%);
+    pointer-events: none;
+}
+
+/* ── Admin table polish ───────────────────────────────────────────── */
+.admin-table {
+    background-color: var(--color-white);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+}
+
+.admin-table th {
+    background: linear-gradient(180deg, var(--color-slate-50) 0%, var(--color-slate-100) 100%);
+    color: var(--color-slate-700);
+    font-size: 11px;
+    letter-spacing: 0.8px;
+    padding: var(--space-3) var(--space-4);
+    border-bottom: 2px solid var(--color-slate-200);
+    white-space: nowrap;
+}
+
+.admin-table td {
+    vertical-align: middle;
+    color: var(--color-slate-700);
+    font-size: 13px;
+}
+
+.admin-table tbody tr {
+    transition: background-color var(--transition-fast);
+}
+
+.admin-table tbody tr:hover {
+    background-color: var(--color-sky-50);
+}
+
+.admin-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* ── Admin action button improvements ─────────────────────────────── */
+.action-btn-admin {
+    color: var(--color-white);
+    border: none;
+    padding: var(--space-2) var(--space-4);
+    font-size: 12px;
+    font-weight: 700;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    margin: var(--space-1);
+    font-family: var(--font-primary);
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.action-btn-admin:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.action-btn-admin:active {
+    transform: translateY(0);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+/* ── Status badge enhancements ────────────────────────────────────── */
+.admin-status.badge {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: var(--radius-pill);
+}
+
+.admin-status.badge-success {
+    background-color: rgba(34, 197, 94, 0.12) !important;
+    color: var(--color-green-600) !important;
+    border: 1px solid rgba(34, 197, 94, 0.25);
+}
+
+.admin-status.badge-warning {
+    background-color: rgba(245, 158, 11, 0.12) !important;
+    color: #b45309 !important;
+    border: 1px solid rgba(245, 158, 11, 0.25);
+}
+
+.admin-status.badge-danger {
+    background-color: rgba(239, 68, 68, 0.10) !important;
+    color: var(--color-red-500) !important;
+    border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+/* ── Filter dropdown styling ──────────────────────────────────────── */
+.filter-header {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--color-slate-500);
+    padding: var(--space-2) var(--space-4);
+    margin: 0;
+}
+
+#filter-users-dropdown.dropdown-menu {
+    border: 1px solid var(--color-slate-200);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lg);
+    padding: var(--space-2) 0;
+    min-width: 180px;
+}
+
+#filter-users-dropdown .dropdown-item {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--color-slate-700);
+    padding: var(--space-2) var(--space-4);
+    transition: all var(--transition-fast);
+}
+
+#filter-users-dropdown .dropdown-item:hover {
+    background-color: var(--color-sky-50);
+    color: var(--color-sky-600);
+}
+
+#filter-users-dropdown .dropdown-divider {
+    border-color: var(--color-slate-100);
+    margin: var(--space-1) 0;
+}
+
+/* ── Collapsible reservation detail rows ──────────────────────────── */
+.details-clickable-row {
+    cursor: pointer;
+    transition: background-color var(--transition-fast);
+}
+
+.details-clickable-row:hover {
+    background-color: var(--color-sky-50) !important;
+}
+
+.details-clickable-row .details-chevron i {
+    transition: transform var(--transition-med);
+    font-size: 14px;
+    color: var(--color-slate-500);
+}
+
+.details-clickable-row[aria-expanded="true"] .details-chevron i {
+    transform: rotate(90deg);
+    color: var(--color-sky-500);
+}
+
+.details-collapse-row .collapse .p-3 {
+    background-color: var(--color-slate-50) !important;
+    border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+    font-size: 13px;
+    border-left: 3px solid var(--color-sky-400);
+    margin-left: var(--space-3);
+}
+
+.details-collapse-row strong {
+    color: var(--color-navy);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.details-collapse-row .text-muted {
+    color: var(--color-slate-500) !important;
+    font-size: 13px;
+}
+
+/* ── Modal overrides for consistent styling ───────────────────────── */
+.modal-content {
+    border: none;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-xl);
+    overflow: hidden;
+}
+
+.modal-header {
+    background: linear-gradient(135deg, var(--color-navy) 0%, var(--color-navy-light) 100%);
+    border-bottom: none;
+    padding: var(--space-4) var(--space-6);
+}
+
+.modal-header .modal-title {
+    color: var(--color-white);
+    font-family: var(--font-primary);
+    font-weight: 700;
+    font-size: 16px;
+    letter-spacing: 0.3px;
+}
+
+.modal-header .close {
+    color: var(--color-white);
+    opacity: 0.7;
+    text-shadow: none;
+    font-size: 22px;
+}
+
+.modal-header .close:hover {
+    opacity: 1;
+    color: var(--color-sky-400);
+}
+
+.modal-body {
+    padding: var(--space-6);
+}
+
+.modal-body .form-group label {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--color-slate-700);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: var(--space-1);
+}
+
+.modal-body .form-control {
+    border: 1px solid var(--color-slate-200);
+    border-radius: var(--radius-sm);
+    padding: var(--space-2) var(--space-3);
+    font-size: 14px;
+    font-family: var(--font-primary);
+    color: var(--color-slate-700);
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.modal-body .form-control:focus {
+    border-color: var(--color-sky-400);
+    box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.12);
+    outline: none;
+}
+
+.modal-footer {
+    background-color: var(--color-slate-50);
+    border-top: 1px solid var(--color-slate-200);
+    padding: var(--space-3) var(--space-6);
+}
+
+.modal-footer .btn {
+    font-size: 13px;
+    font-weight: 700;
+    font-family: var(--font-primary);
+    border-radius: var(--radius-sm);
+    padding: var(--space-2) var(--space-5);
+    letter-spacing: 0.3px;
+    transition: all var(--transition-fast);
+}
+
+.modal-footer .btn-secondary {
+    background-color: var(--color-slate-200);
+    border-color: var(--color-slate-200);
+    color: var(--color-slate-700);
+}
+
+.modal-footer .btn-secondary:hover {
+    background-color: var(--color-slate-300);
+    border-color: var(--color-slate-300);
+}
+
+.modal-footer .btn-success {
+    background: linear-gradient(135deg, var(--color-green-600) 0%, var(--color-green-500) 100%);
+    border: none;
+    box-shadow: 0 2px 8px rgba(22, 163, 74, 0.25);
+}
+
+.modal-footer .btn-success:hover {
+    filter: brightness(1.06);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(22, 163, 74, 0.3);
+}
+
+.modal-footer .btn-danger {
+    background: linear-gradient(135deg, var(--color-red-500) 0%, var(--color-red-400) 100%);
+    border: none;
+    box-shadow: 0 2px 8px rgba(239, 68, 68, 0.25);
+}
+
+.modal-footer .btn-danger:hover {
+    filter: brightness(1.06);
+    transform: translateY(-1px);
+}
+
+/* ── Admin page toolbar (button row above tables) ─────────────────── */
+.admin-table-wrapper {
+    margin-top: var(--space-6);
+}
+
+.admin-table-wrapper > .action-btn-admin,
+.admin-table-wrapper > .btn,
+.admin-table-wrapper > .dropdown {
+    margin-bottom: var(--space-4);
+}
+
+/* ── Responsive admin improvements ────────────────────────────────── */
+@media (max-width: 768px) {
+    .tabcontent {
+        padding: var(--space-5);
+        margin: var(--space-3);
+        border-radius: var(--radius-md);
+    }
+
+    .tabcontent h3 {
+        font-size: 17px;
+    }
+
+    .admin-table-wrapper {
+        border-radius: var(--radius-md);
+    }
+
+    .admin-table td,
+    .admin-table th {
+        font-size: 12px;
+        padding: var(--space-2) var(--space-3);
+    }
+
+    .action-btn-admin {
+        padding: var(--space-1) var(--space-3);
+        font-size: 11px;
+    }
+
+    .details-collapse-row .collapse .p-3 {
+        margin-left: 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .tab-selector {
+        flex-wrap: wrap;
+    }
+
+    .tab-selector .tablinks {
+        flex: 1 1 50%;
+        text-align: center;
+        font-size: 12px;
+        padding: var(--space-3) var(--space-2);
+    }
+}
