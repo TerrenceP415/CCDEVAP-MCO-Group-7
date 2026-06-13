@@ -1580,7 +1580,6 @@ input[type="checkbox"] {
     color: var(--color-blue-600);
 }
 
-<<<<<<< HEAD
 /* ==== */
 
 .admin-status {
@@ -1627,8 +1626,6 @@ span.admin-status {
 
 /*Results Page */
 
-=======
->>>>>>> c61eff14d89c5bdcd306ddc1975e78a304b7237e
 
 /* RESULTS PAGE */
 table {
@@ -1774,17 +1771,7 @@ table {
     object-fit: contain;
 }
 
-<<<<<<< HEAD
-/* Buttons */
-
-/* Hide the functional checkboxes completely from screen */
-.details-toggle {
-    display: none;
-}
-
-=======
 /* Results Buttons */
->>>>>>> c61eff14d89c5bdcd306ddc1975e78a304b7237e
 .view-details-btn,
 .book-btn {
     border: none;
@@ -1800,7 +1787,6 @@ table {
 /*View Details*/
 
 .view-details-btn {
-<<<<<<< HEAD
     display: inline-block;
     padding: 8px 14px;
     background-color: #0284c7;
@@ -1815,14 +1801,14 @@ table {
 
 .view-details-btn:hover {
     background: #0369a1;
-=======
+
     background: var(--color-sky-100);
     color: var(--color-sky-600);
 }
 
 .view-details-btn:hover {
     background: var(--color-sky-200);
->>>>>>> c61eff14d89c5bdcd306ddc1975e78a304b7237e
+
 }
 
 /*Hide all details rows by default */
@@ -1866,11 +1852,7 @@ table {
 
 /*book button*/
 .book-btn {
-<<<<<<< HEAD
-    background: #529cc1;
-=======
     background: linear-gradient(135deg, var(--color-sky-600) 0%, var(--color-sky-400) 100%);
->>>>>>> c61eff14d89c5bdcd306ddc1975e78a304b7237e
     color: white;
     box-shadow: 0 3px 8px rgba(2, 132, 199, 0.2);
 }
