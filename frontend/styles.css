@@ -353,6 +353,21 @@ header {
     letter-spacing: 0.5px;
 }
 
+.quick-search-input input[type="date"] {
+    font-family: var(--font-primary);
+    font-size: 14px;
+    color: var(--color-slate-700);
+    height: 38px;
+    padding: 6px 10px;
+    background-color: #fff;
+    cursor: pointer;
+}
+
+.quick-search-input input[type="date"]::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    filter: invert(0.4);
+}
+
 /* Search Button */
 .quick-search-btn {
     width: 100%;
