@@ -1367,6 +1367,7 @@ input[type="checkbox"] {
     padding: 0 16px 16px;
 }
 
+/*Check box for direct flight and flexible dates */
 .checkbox-row {
     display: flex;
     align-items: center;
@@ -1390,6 +1391,8 @@ input[type="checkbox"] {
 .checkbox-row input:checked + .bi {
     color: #2563eb;
 }
+
+/* ==== */
 
 .admin-status {
     font-weight: 600;
@@ -1466,6 +1469,8 @@ table {
     -webkit-text-stroke: 0.35px #ffffff;
 
 }
+
+/*Filter Buttons*/
 
 .filter-class {
     display: flex;
@@ -1565,6 +1570,11 @@ table {
 
 /* Buttons */
 
+/* Hide the functional checkboxes completely from screen */
+.details-toggle {
+    display: none;
+}
+
 .view-details-btn,
 .book-btn {
     border: none;
@@ -1576,18 +1586,67 @@ table {
     transition: 0.3s;
 }
 
+/*View Details*/
+
 .view-details-btn {
-    background: #e0f2fe;
-    color: #0369a1;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: inline-block;
+    padding: 8px 14px;
+    background-color: #0284c7;
+    color: white;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 0.2s ease;
 }
 
 .view-details-btn:hover {
-    background: #bae6fd;
+    background: #0369a1;
 }
 
+/*Hide all details rows by default */
+.details-row {
+    display: none;
+    background-color: #f8fafc;
+}
+
+/* The Mechanism: If a row contains a checked toggle, display the immediate next .details-row */
+.flight-row:has(.details-toggle:checked) + .details-row {
+    display: table-row;
+}
+
+/* Dynamic Button Text: Uses CSS pseudoelements to add 'View' or 'Hide' based on toggle state */
+.details-toggle:checked + .view-details-btn {
+    background-color: #64748b; /* Changes to a muted gray when open */
+}
+
+.details-toggle:not(:checked) + .view-details-btn::before {
+    content: "View ";
+}
+
+/* Switches text instantly when open */
+.details-toggle:checked + .view-details-btn::before {
+    content: "Hide ";
+}
+
+/* Formatting container for your inner aircraft specs */
+.extra-details-container {
+    display: flex;
+    gap: 40px;
+    padding: 15px 30px;
+    text-align: left;
+    font-size: 14px;
+    color: #475569;
+}
+
+.extra-details-container strong {
+    color: #0284c7;
+}
+
+/*book button*/
 .book-btn {
-    background: #0284c7;
+    background: #529cc1;
     color: white;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }

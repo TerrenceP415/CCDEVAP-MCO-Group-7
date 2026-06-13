@@ -31,7 +31,8 @@
 
 <div class="results-shell">
     <div class="results-header">
-        <h3><i class="bi bi-search"></i> Search Results</h3>
+        <h3><i class="bi bi-search"></i>   Search Results</h3>
+        <br>
         <p>Showing available flights based on your search criteria.</p>
     </div>
 
@@ -66,7 +67,7 @@
             </thead>
             <tbody id="results-body">
                 <!-- Flight results will be dynamically inserted here -->
-                 <tr>
+                 <tr class="flight-row">
                     <td><img src="../airline/cebu-pacific.png" width="50" alt="Cebu Pacific"></td>
                     <td>Cebu Pacific</td>
                     <td>AA123</td>
@@ -75,11 +76,23 @@
                     <td>1</td>
                     <td>$150</td>
                     <td>5</td>
-                    <td><button class="view-details-btn">View Details</button></td>
+                    <td>
+                        <input type="checkbox" id="toggle-aa123" class="details-toggle">
+                        <label for="toggle-aa123" class="view-details-btn">Details</label>
+                    </td>
                     <td><button class="book-btn">Book Now</button></td>
                 </tr>
+                <tr class="details-row">
+                    <td colspan="10">
+                        <div class="extra-details-container">
+                            <div><strong>Aircraft Model:</strong> Airbus A320</div>
+                            <div><strong>Departure Date:</strong> 13/06/2026</div>
+                            <div><strong>Total Allowed Seats:</strong> 180</div>
+                        </div>
+                    </td>
+                </tr>
 
-                <tr>
+                <tr class="flight-row">
                     <td><img src="../airline/airasia.png" width="50" alt="AirAsia"></td>
                     <td>Airasia</td>
                     <td>AA456</td>
@@ -88,11 +101,24 @@
                     <td>1</td>
                     <td>$180</td>
                     <td>3</td>
-                    <td><button class="view-details-btn">View Details</button></td>
+                    <td>
+                        <input type="checkbox" id="toggle-aa456" class="details-toggle">
+                        <label for="toggle-aa456" class="view-details-btn">Details</label>
+                    </td>
                     <td><button class="book-btn">Book Now</button></td>
                 </tr>
+                <tr class="details-row">
+                    <td colspan="10">
+                        <div class="extra-details-container">
+                            <div><strong>Aircraft Model:</strong> Airbus A350</div>
+                            <div><strong>Departure Date:</strong> 13/06/2026</div>
+                            <div><strong>Total Allowed Seats:</strong> 200</div>
+                        </div>
+                    </td>
+                </tr>
 
-                <tr>
+
+                <tr class="flight-row">
                     <td><img src="../airline/emirates.png" width="50" alt="Emirates"></td>
                     <td>Emirates</td>
                     <td>AA789</td>
@@ -101,11 +127,23 @@
                     <td>1</td>
                     <td>$200</td>
                     <td>2</td>
-                    <td><button class="view-details-btn">View Details</button></td>
+                    <td>
+                        <input type="checkbox" id="toggle-aa789" class="details-toggle">
+                        <label for="toggle-aa789" class="view-details-btn">Details</label>
+                    </td>
                     <td><button class="book-btn">Book Now</button></td>
                 </tr>
+                <tr class="details-row">
+                    <td colspan="10">
+                        <div class="extra-details-container">
+                            <div><strong>Aircraft Model:</strong> Airbus A350</div>
+                            <div><strong>Departure Date:</strong> 13/06/2026</div>
+                            <div><strong>Total Allowed Seats:</strong> 200</div>
+                        </div>
+                    </td>
+                </tr>
                 
-                <tr>
+                <tr class="flight-row">
                     <td><img src="../airline/american-airlines.png" width="50" alt="American Airlines"></td>
                     <td>American Airlines</td>
                     <td>AA012</td>
@@ -114,11 +152,23 @@
                     <td>1</td>
                     <td>$220</td>
                     <td>1</td>
-                    <td><button class="view-details-btn">View Details</button></td>
+                    <td>
+                        <input type="checkbox" id="toggle-aa012" class="details-toggle">
+                        <label for="toggle-aa012" class="view-details-btn">Details</label>
+                    </td>
                     <td><button class="book-btn">Book Now</button></td>
                 </tr>
+                <tr class="details-row">
+                    <td colspan="10">
+                        <div class="extra-details-container">
+                            <div><strong>Aircraft Model:</strong> Airbus A350</div>
+                            <div><strong>Departure Date:</strong> 13/06/2026</div>
+                            <div><strong>Total Allowed Seats:</strong> 200</div>
+                        </div>
+                    </td>
+                </tr>
 
-                <tr>
+                <tr class="flight-row">
                     <td><img src="../airline/japan-airlines.png" width="50" alt="Japan Airlines"></td>
                     <td>Japan Airlines</td>
                     <td>AA345</td>
@@ -127,11 +177,23 @@
                     <td>1</td>
                     <td>$250</td>
                     <td>0</td>
-                    <td><button class="view-details-btn">View Details</button></td>
+                    <td>
+                        <input type="checkbox" id="toggle-aa345" class="details-toggle">
+                        <label for="toggle-aa345" class="view-details-btn">Details</label>
+                    </td>
                     <td><button class="book-btn">Book Now</button></td>
                 </tr>
+                <tr class="details-row">
+                    <td colspan="10">
+                        <div class="extra-details-container">
+                            <div><strong>Aircraft Model:</strong> Airbus A350</div>
+                            <div><strong>Departure Date:</strong> 13/06/2026</div>
+                            <div><strong>Total Allowed Seats:</strong> 200</div>
+                        </div>
+                    </td>
+                </tr>
 
-                <tr>
+                <tr class="flight-row">
                     <td><img src="../airline/klm.png" width="50" alt="KLM"></td>
                     <td>KLM</td>
                     <td>AA678</td>
@@ -140,24 +202,48 @@
                     <td>1</td>
                     <td>$280</td>
                     <td>4</td>
-                    <td><button class="view-details-btn">View Details</button></td>
+                    <td>
+                        <input type="checkbox" id="toggle-aa678" class="details-toggle">
+                        <label for="toggle-aa678" class="view-details-btn">Details</label>
+                    </td>
                     <td><button class="book-btn">Book Now</button></td>
                 </tr>
+                <tr class="details-row">
+                    <td colspan="10">
+                        <div class="extra-details-container">
+                            <div><strong>Aircraft Model:</strong> Airbus A350</div>
+                            <div><strong>Departure Date:</strong> 13/06/2026</div>
+                            <div><strong>Total Allowed Seats:</strong> 200</div>
+                        </div>
+                    </td>
+                </tr>
 
-                <tr>
+                <tr class="flight-row">
                     <td><img src="../airline/philippine-airlines.png" width="50" alt="Philippine Airlines"></td>
-                    <td>Philippine Airline</td>
+                    <td>Philippine Airlines</td>
                     <td>AA901</td>
                     <td>8:00 AM - 12:00 PM</td>
                     <td>4 hours</td>
                     <td>1</td>
                     <td>$300</td>
                     <td>2</td>
-                    <td><button class="view-details-btn">View Details</button></td>
+                    <td>
+                        <input type="checkbox" id="toggle-aa901" class="details-toggle">
+                        <label for="toggle-aa901" class="view-details-btn">Details</label>
+                    </td>
                     <td><button class="book-btn">Book Now</button></td>
                 </tr>
+                <tr class="details-row">
+                    <td colspan="10">
+                        <div class="extra-details-container">
+                            <div><strong>Aircraft Model:</strong> Airbus A350</div>
+                            <div><strong>Departure Date:</strong> 13/06/2026</div>
+                            <div><strong>Total Allowed Seats:</strong> 200</div>
+                        </div>
+                    </td>
+                </tr>
 
-                <tr>
+                <tr class="flight-row">
                     <td><img src="../airline/singapore-airlines.png" width="50" alt="Singapore Airlines"></td>
                     <td>Singapore Airlines</td>
                     <td>AA234</td>
@@ -166,11 +252,23 @@
                     <td>1</td>
                     <td>$350</td>
                     <td>3</td>
-                    <td><button class="view-details-btn">View Details</button></td>
+                    <td>
+                        <input type="checkbox" id="toggle-aa234" class="details-toggle">
+                        <label for="toggle-aa234" class="view-details-btn">Details</label>
+                    </td>
                     <td><button class="book-btn">Book Now</button></td>
                 </tr>
+                <tr class="details-row">
+                    <td colspan="10">
+                        <div class="extra-details-container">
+                            <div><strong>Aircraft Model:</strong> Airbus A350</div>
+                            <div><strong>Departure Date:</strong> 13/06/2026</div>
+                            <div><strong>Total Allowed Seats:</strong> 200</div>
+                        </div>
+                    </td>
+                </tr>
 
-                <tr>
+                <tr class="flight-row">
                     <td><img src="../airline/vietnam-airlines.png" width="50" alt="Vietnam Airlines"></td>
                     <td>Vietnam Airlines</td>
                     <td>AA567</td>
@@ -179,11 +277,24 @@
                     <td>1</td>
                     <td>$400</td>
                     <td>1</td>
-                    <td><button class="view-details-btn">View Details</button></td>
+                    <td>
+                        <input type="checkbox" id="toggle-aa567" class="details-toggle">
+                        <label for="toggle-aa567" class="view-details-btn">Details</label>
+                    </td>
                     <td><button class="book-btn">Book Now</button></td>
                 </tr>
+                <tr class="details-row">
+                    <td colspan="10">
+                        <div class="extra-details-container">
+                            <div><strong>Aircraft Model:</strong> Airbus A350</div>
+                            <div><strong>Departure Date:</strong> 13/06/2026</div>
+                            <div><strong>Total Allowed Seats:</strong> 200</div>
+                        </div>
+                    </td>
+                </tr>
             </tbody>
+        </table>
+    </div>
 </div>
-
 </body>
 </html>
