@@ -1640,24 +1640,33 @@ table {
 }
 
 .results-header {
-    padding: 32px 0 16px;
-    max-width: 1300px;
-    margin: 0 auto;
-    padding-left: 20px;
-    padding-right: 20px;
+    text-align: center;
+    padding: var(--space-6) var(--space-5);
+    background: linear-gradient(135deg, var(--color-sky-600) 0%, var(--color-sky-500) 100%);
+    color: var(--color-white);
+    box-shadow: var(--shadow-md);
+    font-family: var(--font-primary);
+    letter-spacing: 0.5px;
+    margin-bottom: var(--space-8);
 }
 
 .results-header h3 {
-    font-size: 22px;
+    font-size: 20px;
     font-weight: 700;
-    color: #0f172a;
-    margin-bottom: 4px;
+    color: var(--color-white);
+    margin-bottom: var(--space-1);
 }
 
-.results-header p { 
-    color: #64748b; 
-    font-size: 14px; 
-    margin: 0; 
+.results-header h3 i {
+    -webkit-text-stroke: 0.35px var(--color-white);
+}
+
+.results-header p {
+    color: var(--color-white);
+    opacity: 0.9;
+    font-size: 14px;
+    margin: 0;
+    font-weight: 400;
 }
 
 /* Results Layout & Main Content */
@@ -1667,10 +1676,10 @@ table {
     max-width: 1300px;
     margin: 24px auto 60px;
     padding: 0 20px;
-    align-items: flex-start;
+    align-items: stretch;
 }
 
-.results-main { flex: 1; min-width: 0; }
+.results-main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
 
 /* Filter Sidebar */
 .filter-sidebar {
@@ -1692,6 +1701,14 @@ table {
     color: #64748b;
     margin-bottom: 12px;
     margin-top: 16px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.filter-sidebar h5 i {
+    color: var(--color-sky-500);
+    font-size: 14px;
 }
 
 .filter-sidebar h5:first-child { margin-top: 0; }
@@ -1705,6 +1722,13 @@ table {
     cursor: pointer;
     margin-bottom: 6px;
     font-weight: 500;
+    padding: 4px 6px;
+    border-radius: var(--radius-sm);
+    transition: background-color var(--transition-fast);
+}
+
+.filter-sidebar label:hover {
+    background-color: var(--color-sky-50);
 }
 
 .filter-sidebar input[type="checkbox"] {
@@ -1769,24 +1793,74 @@ table {
     gap: 12px;
     margin-bottom: 16px;
     flex-wrap: wrap;
+    background: var(--color-white);
+    padding: var(--space-3) var(--space-4);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
 }
 
 .results-topbar select,
 .results-topbar input {
     padding: 8px 12px;
-    border: 1px solid #bae6fd;
-    border-radius: 8px;
+    border: 1px solid var(--color-sky-200);
+    border-radius: var(--radius-md);
     font-size: 13px;
     font-family: inherit;
-    color: #334155;
+    color: var(--color-slate-700);
     background: #fff;
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.results-topbar select:focus,
+.results-topbar input:focus {
+    outline: none;
+    border-color: var(--color-sky-400);
+    box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
+}
+
+.topbar-search-wrap {
+    position: relative;
+    flex: 1;
+    min-width: 180px;
+    max-width: 280px;
+}
+
+.topbar-search-wrap i {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--color-slate-500);
+    font-size: 13px;
+    pointer-events: none;
+}
+
+.topbar-search-wrap input {
+    width: 100%;
+    padding-left: 32px;
+}
+
+.results-topbar .sort-wrap {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.results-topbar .sort-wrap i {
+    color: var(--color-sky-500);
+    font-size: 14px;
 }
 
 .results-count {
     margin-left: auto;
-    font-size: 13px;
-    color: #64748b;
-    font-weight: 600;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--color-sky-600);
+    background: var(--color-sky-50);
+    border: 1px solid var(--color-sky-100);
+    padding: var(--space-1) var(--space-3);
+    border-radius: var(--radius-pill);
+    letter-spacing: 0.3px;
 }
 
 /* No results message */
@@ -1850,6 +1924,7 @@ table {
     margin-bottom: var(--space-10);
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-lg);
+    border: 1px solid var(--color-slate-200);
 }
 
 #results-body {
@@ -1885,9 +1960,10 @@ table {
 .results-table td {
     padding: var(--space-3) var(--space-2);
     text-align: center;
-    border-bottom: 1px solid var(--color-slate-200);
+    border-bottom: 1px solid var(--color-slate-300);
     vertical-align: middle;
     font-size: 14px;
+    color: var(--color-slate-700);
 }
 
 .results-table tbody tr {
@@ -2031,6 +2107,7 @@ table {
     .results-layout { flex-direction: column; }
     .filter-sidebar { width: 100%; position: static; }
 }
+
 
 
 /* BOOKING PAGE */

@@ -45,9 +45,10 @@
         <p>Showing available flights based on your search criteria.</p>
     </div>
 
+    <div class="results-shell">
     <div class="results-layout">
         <aside class="filter-sidebar">
-            <h5><i class="bi bi-filter"></i> Airlines</h5>
+            <h5><i class="bi bi-airplane"></i> Airlines</h5>
             <div id="airline-checkboxes">
                 </div>
 
@@ -76,19 +77,25 @@
                 <option value="evening">Evening (18:00–23:59)</option>
             </select>
 
-            <button class="sidebar-clear-btn" id="clear-filters">Clear All Filters</button>
+            <button class="sidebar-clear-btn" id="clear-filters"><i class="bi bi-x-circle"></i> Clear All Filters</button>
         </aside>
 
         <div class="results-main">
             <div class="results-topbar">
-                <input type="text" id="topbar-airline" placeholder="Filter by airline name">
-                <select id="sort">
-                    <option value="">Sort By</option>
-                    <option value="price_asc">Price: Low → High</option>
-                    <option value="price_desc">Price: High → Low</option>
-                    <option value="depart_asc">Departure: Earliest</option>
-                    <option value="duration_asc">Duration: Shortest</option>
-                </select>
+                <div class="topbar-search-wrap">
+                    <i class="bi bi-search"></i>
+                    <input type="text" id="topbar-airline" placeholder="Filter by airline name">
+                </div>
+                <div class="sort-wrap">
+                    <i class="bi bi-sort-down"></i>
+                    <select id="sort">
+                        <option value="">Sort By</option>
+                        <option value="price_asc">Price: Low → High</option>
+                        <option value="price_desc">Price: High → Low</option>
+                        <option value="depart_asc">Departure: Earliest</option>
+                        <option value="duration_asc">Duration: Shortest</option>
+                    </select>
+                </div>
                 <span class="results-count" id="results-count">0 flights</span>
             </div>
 
@@ -120,6 +127,7 @@
                 <p>Try adjusting your search criteria or clearing filters.</p>
             </div>
         </div>
+    </div>
     </div>
 
     <script>
