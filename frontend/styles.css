@@ -954,7 +954,7 @@ header {
 /* Edit Buttons */
 .admin-table-wrapper #editFlight,
 .admin-table-wrapper #editUser,
-.admin-table-wrapper #editReservation {
+.admin-table-wrapper #editReservation{
     background-color: var(--color-green-500);
 }
 
