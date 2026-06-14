@@ -2,10 +2,13 @@
 <html lang="en">
 
     <head>
-            <title>Admin Users</title>
-            <link rel="stylesheet" href="styles.css">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+        <title>Admin Users</title>
+        <!-- CSS -->
+        <link rel="stylesheet" href="styles.css">
+        <!-- JS -->
         <script src="../backend/scripts.js" defer></script>
+        <!-- Bootstrap -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
         <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
@@ -46,6 +49,8 @@
             </nav>
         </header>
 
+        <!-- Admin Panel Tab Selection -->
+         
         <div class="tab-selector">
             <button class="tablinks" onclick="window.location.href='admin-dashboard.html'">Analytics</button>
             <button class="tablinks" onclick="window.location.href='admin-flights.html'">Flights</button>
@@ -74,7 +79,11 @@
                 </thead>
                 <tbody>
                     <!-- Example reservation row -->
+
+
+                    <!-- Remember to match aria controls, id, data target (check reference numbers) -->
                     <tr class="details-clickable-row" data-toggle="collapse" data-target="#details-RN321" aria-expanded="false" aria-controls="details-RN321" style="cursor: pointer;">
+                        
                         <td class="details-chevron"><i class="bi bi-chevron-right"></i></td>
                         <td>RN321</td>
                         <td>New York (JFK)</td>
@@ -92,7 +101,10 @@
                     <!-- Example Details Row -->
                     <tr class="details-collapse-row">
                         <td colspan="10" class="p-0 border-top-0">
+
+                            <!-- Remember to match aria controls, id, data target (check reference numbers) -->
                             <div id="details-RN321" class="collapse" data-parent="#reservationsTable">
+                                
                                 <div class="p-3 bg-light border-bottom">
                                     <div class="row">
                                         <div class="col-md-3">
@@ -118,9 +130,10 @@
                             </div>
                         </td>
                     </tr>
-                    <!-- Remember to change data targets to appropriate detail row (check reference numbers) -->
+                    
 
                     <!-- Example reservation row -->
+                     <!-- Remember to match aria controls, id, data target (check reference numbers) -->
                     <tr class="details-clickable-row" data-toggle="collapse" data-target="#details-RN123" aria-expanded="false" aria-controls="details-RN123" style="cursor: pointer;">
                         <td class="details-chevron"><i class="bi bi-chevron-right"></i></td>
                         <td>RN123</td>
@@ -140,7 +153,7 @@
                     <tr class="details-collapse-row">
                         <td colspan="10" class="p-0 border-top-0">
 
-                            <!-- Detail Row ID -->
+                            <!-- Remember to match aria controls, id, data target (check reference numbers) -->
                             <div id="details-RN123" class="collapse" data-parent="#reservationsTable">
                                 <div class="p-3 bg-light border-bottom">
                                     <div class="row">
@@ -169,6 +182,7 @@
                     </tr>
 
                     <!-- Example reservation row -->
+                     <!-- Remember to match aria controls, id, data target (check reference numbers) -->
                     <tr class="details-clickable-row" data-toggle="collapse" data-target="#details-RN456" aria-expanded="false" aria-controls="details-RN456" style="cursor: pointer;">
                         <td class="details-chevron"><i class="bi bi-chevron-right"></i></td>
                         <td>RN456</td>
@@ -189,6 +203,7 @@
                         <td colspan="10" class="p-0 border-top-0">
 
                             <!-- Detail Row ID -->
+                             <!-- Remember to match aria controls, id, data target (check reference numbers) -->
                             <div id="details-RN456" class="collapse" data-parent="#reservationsTable">
                                 <div class="p-3 bg-light border-bottom">
                                     <div class="row">
@@ -224,14 +239,14 @@
      
      <!-- Edit Flight -->
       <div class="modal fade" id="editReservationModal" tabindex="-1" role="dialog" aria-labelledby="editReservationModalTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="editReservationModalTitle">Edit Reservation</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editReservationModalTitle">Edit Reservation</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
 
             <div class="modal-body">
                 <form>
@@ -308,16 +323,19 @@
                 </form>
             </div>
             
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Discard</button>
-                <button type="button" class="btn btn-success btnSave" data-dismiss="modal">Save Changes</button>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Discard</button>
+
+                        <!-- Handle Edit -->
+
+                        <button type="button" class="btn btn-success btnSave" data-dismiss="modal">Save Changes</button>
+                    </div>
             </div>
         </div>
     </div>
-</div>
 
-<!-- Save Toast Notificaiton -->
-<div class="toast-container" id="toastContainer"></div>
+        <!-- Save Toast Notificaiton -->
+            <div class="toast-container" id="toastContainer"></div>
 
         <!-- Delete Confirmation -->
 
