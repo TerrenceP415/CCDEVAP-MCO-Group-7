@@ -10,4 +10,50 @@ if (hamburger && navLinks) {
         navLinks.classList.toggle('active');
         hamburger.classList.toggle('active');
     });
-}
+} 
+
+document.addEventListener('DOMContentLoaded', () => {
+    const createButtons = document.querySelectorAll('.btnCreate');
+    const saveButtons = document.querySelectorAll('.btnSave');
+    const deleteButtons = document.querySelectorAll('.btnDelete');
+    const toastContainer = document.getElementById('toastContainer');
+
+    // Helper function to generate and display a toast notification
+    function showToast(message) {
+        if (!toastContainer) return;
+
+        const toast = document.createElement('div');
+        toast.className = 'toast-notification';
+        toast.innerHTML = `
+            <i class="bi bi-check-circle-fill"></i>
+            <span>${message}</span>
+        `;
+
+        toastContainer.appendChild(toast);
+
+        requestAnimationFrame(() => {
+            toast.classList.add('show');
+        });
+
+        setTimeout(() => {
+            toast.classList.remove('show');
+            toast.addEventListener('transitionend', () => {
+                toast.remove();
+            });
+        }, 3500);
+    }
+
+    // Attach listeners to all Create buttons
+    createButtons.forEach(button => {
+        button.addEventListener('click', () => showToast('Creation successful!'));
+    });
+
+    // Attach listeners to all Save buttons
+    saveButtons.forEach(button => {
+        button.addEventListener('click', () => showToast('Changes Saved!'));
+    });
+
+    deleteButtons.forEach(button => {
+        button.addEventListener('click', () => showToast('Entry Deleted Successfully!'));
+    });
+});

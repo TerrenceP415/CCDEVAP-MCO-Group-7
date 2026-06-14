@@ -181,13 +181,19 @@
                                 </form>
                             </div>
 
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Discard</button>
-                                <button type="button" class="btn btn-success" data-dismiss="modal">Create User</button>
-                            </div>
+                            <!-- Locate the Add New User modal footer and update the button: -->
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Discard</button>
+                            <button type="button" class="btn btn-success btnCreate" data-dismiss="modal">Create User</button>
+                        </div>
+
+                        
+                        
                         </div>
                     </div>
                 </div>
+                <!-- Toast Notification for Create user -->
+                <div class="toast-container" id="toastContainer"></div>
 
 
                 <!-- ══════════════════════════════════════════
@@ -250,12 +256,13 @@
 
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Discard</button>
-                                <button type="button" class="btn btn-success" data-dismiss="modal">Save Changes</button>
+                                <button type="button" class="btn btn-success btnSave" data-dismiss="modal">Save Changes</button>
                             </div>
                         </div>
                     </div>
                 </div>
-
+                
+                <div class="toast-container" id="toastContainer"></div>
 
                 <!-- ══════════════════════════════════════════
                      MODAL: Delete User Confirmation
@@ -279,11 +286,12 @@
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                                 <!-- Handle Deletion -->
-                                <button type="button" class="btn btn-danger" data-dismiss="modal">Delete User</button>
+                                <button type="button" class="btn btn-danger btnDelete" data-dismiss="modal">Delete User</button>
                             </div>
                         </div>
                     </div>
                 </div>
+                <div class="toast-container" id="toastContainer"></div>
 
             </div><!-- /.admin-table-wrapper -->
         </main>
