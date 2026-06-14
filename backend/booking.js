@@ -1,4 +1,5 @@
 $(function () {
+
     // ---------- Selected flight (dummy — would come from search results) ----------
     var flight = (typeof sampleFlights !== "undefined") ? sampleFlights[2] : {
         airlineName: "SkyEase Airways",
@@ -28,7 +29,8 @@ $(function () {
         baggage: 0,
         priorityBoarding: false,
         travelInsurance: false,
-        loungeAccess: false
+        loungeAccess: false,
+        passengerCount: 1
     };
 
     var BAGGAGE_PRICE = 25;
@@ -74,15 +76,18 @@ $(function () {
     // Default to Standard Meal
     selectMeal($mealOptions.find('.meal-option[data-id="M01"]'));
 
-    // ---------- Seat map ----------
+    // ---------- Seat map (Bootstrap Grid) ----------
     var rows = 6;
     var cols = ["A", "B", "C", "D", "E", "F"];
     var occupied = ["1C", "1D", "2A", "3F", "4B", "4C", "5E", "6A"];
     var $seatMap = $("#seatMap");
 
     for (var r = 1; r <= rows; r++) {
-        var $row = $('<div class="seat-row"></div>');
-        $row.append('<div class="row-label">' + r + '</div>');
+        // Create a Bootstrap row for each aircraft row
+        var $row = $('<div class="row no-gutters seat-row justify-content-center align-items-center mb-1"></div>');
+
+        // Row label column
+        $row.append('<div class="col-auto seat-row-label">' + r + '</div>');
 
         cols.forEach(function (col, i) {
             var seatId = r + col;
@@ -93,31 +98,93 @@ $(function () {
             if (isOccupied) classes += " occupied";
             else if (isPremium) classes += " premium";
 
-            var title = isOccupied
-                ? "Seat " + seatId + " - Occupied"
-                : "Seat " + seatId + (isPremium ? " - Premium (+$30)" : " - Standard");
+            var seatType = isOccupied ? "Occupied" : (isPremium ? "Premium" : "Standard");
+            var seatPrice = isPremium ? "$30.00" : "Included";
+            if (isOccupied) seatPrice = "N/A";
 
-            var $seat = $('<div class="' + classes + '" data-seat="' + seatId + '" data-premium="' + isPremium + '" title="' + title + '">' + seatId + '</div>');
+            var $seat = $(
+                '<div class="col-auto px-1">' +
+                    '<div class="' + classes + '"' +
+                        ' data-seat="' + seatId + '"' +
+                        ' data-premium="' + isPremium + '"' +
+                        ' data-seat-type="' + seatType + '"' +
+                        ' data-seat-price="' + seatPrice + '"' +
+                        ' data-seat-row="' + r + '"' +
+                        ' data-seat-col="' + col + '"' +
+                        ' data-toggle="tooltip"' +
+                        ' data-placement="top"' +
+                        ' title="Seat ' + seatId + ' \u2022 ' + seatType + (isPremium && !isOccupied ? ' (+$30)' : '') + '"' +
+                    '>' + seatId + '</div>' +
+                '</div>'
+            );
             $row.append($seat);
 
             // Aisle gap after column C
             if (i === 2) {
-                $row.append('<div class="aisle-gap"></div>');
+                $row.append('<div class="col-auto aisle-gap"></div>');
             }
         });
 
         $seatMap.append($row);
     }
 
+    // Initialize ALL Bootstrap tooltips (seats + extra services)
+    $('[data-toggle="tooltip"]').tooltip();
+
+    // ---------- Seat Detail Modal ----------
+    var modalSeatId = null;
+
     $seatMap.on("click", ".seat", function () {
         var $seat = $(this);
+        var seatId = $seat.data("seat");
+        var isOccupied = $seat.hasClass("occupied");
+        var isPremium = $seat.data("premium");
+        var seatType = $seat.data("seat-type");
+        var seatPrice = $seat.data("seat-price");
+        var seatRow = $seat.data("seat-row");
+        var seatCol = $seat.data("seat-col");
+
+        // Populate modal fields
+        $("#modalSeatNumber").text(seatId);
+        $("#modalSeatRow").text("Row " + seatRow);
+        $("#modalSeatCol").text("Column " + seatCol);
+        $("#modalSeatType").text(seatType);
+        $("#modalSeatPrice").text(isOccupied ? "N/A" : (isPremium ? "+$30.00" : "Included in fare"));
+
+        if (isOccupied) {
+            $("#modalSeatStatus").html('<span class="badge badge-danger">Occupied</span>');
+            $("#modalSelectSeatBtn").prop("disabled", true).text("Unavailable");
+        } else if ($seat.hasClass("selected")) {
+            $("#modalSeatStatus").html('<span class="badge badge-success">Currently Selected</span>');
+            $("#modalSelectSeatBtn").prop("disabled", false).text("Deselect Seat");
+        } else {
+            $("#modalSeatStatus").html('<span class="badge badge-success">Available</span>');
+            $("#modalSelectSeatBtn").prop("disabled", false).text("Select This Seat");
+        }
+
+        modalSeatId = seatId;
+
+        // Hide the tooltip before opening modal
+        $seat.tooltip('hide');
+
+        // Show the modal
+        $("#seatDetailModal").modal("show");
+    });
+
+    // Modal select/deselect button
+    $("#modalSelectSeatBtn").on("click", function () {
+        if (!modalSeatId) return;
+
+        var $seat = $seatMap.find('.seat[data-seat="' + modalSeatId + '"]');
         if ($seat.hasClass("occupied")) return;
 
         if ($seat.hasClass("selected")) {
+            // Deselect
             $seat.removeClass("selected");
             state.seat = null;
             state.seatPrice = 0;
         } else {
+            // Select
             $seatMap.find(".seat.selected").removeClass("selected");
             $seat.addClass("selected");
             state.seat = $seat.data("seat");
@@ -127,6 +194,9 @@ $(function () {
         $("#selectedSeatLabel").text(state.seat ? state.seat : "None selected");
         $("#summarySeat").text(state.seat ? state.seat : "Not selected");
         updateSummary();
+
+        // Close modal
+        $("#seatDetailModal").modal("hide");
     });
 
     // ---------- Extra services ----------
@@ -182,6 +252,9 @@ $(function () {
         $("#priceExtras").text(extrasTotal > 0 ? "+$" + extrasTotal.toFixed(2) : "$0.00");
         $("#priceTaxes").text("$" + taxes.toFixed(2));
         $("#priceTotal").text("$" + grandTotal.toFixed(2));
+
+        // Passenger count
+        $("#summaryPassengers").text(state.passengerCount);
 
         $("#summaryMeal").text(meals.find(function (m) { return m.id === state.meal; }).name);
         $("#summaryExtras").text(

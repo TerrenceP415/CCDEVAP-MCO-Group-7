@@ -3,9 +3,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SkyEase | Booking</title>
+    <!-- Bootstrap -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="styles.css">
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha384-xBuQ/xzmlsLoJpyjoggmTEz8OWUFM0/RC5BsqQBDX2v5cMvDHcMakNTNrHIW2I5f" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <script src="../backend/data.js"></script>
     <script src="../backend/scripts.js" defer></script>
 </head>
@@ -149,7 +153,8 @@
                                     <div class="legend-item"><span class="legend-swatch occupied"></span> Occupied</div>
                                 </div>
 
-                                <div class="seat-map" id="seatMap"></div>
+                                <!-- Seat map using Bootstrap Grid -->
+                                <div class="container-fluid px-0" id="seatMap"></div>
 
                                 <div class="selected-seat-display">
                                     Selected Seat: <span id="selectedSeatLabel">None selected</span>
@@ -170,9 +175,9 @@
                             <div class="meal-options" id="mealOptions"></div>
 
                             <div class="extras-list">
-                                <div class="extra-row">
+                                <div class="extra-row" data-toggle="tooltip" data-placement="top" data-html="true" title="<strong>Additional Baggage</strong><br>Each item allows 20 kg of checked luggage. You can add up to 5 extra bags per booking.">
                                     <div class="extra-info">
-                                        <span class="extra-title"><i class="bi bi-suitcase"></i> Additional Baggage</span>
+                                        <span class="extra-title"><i class="bi bi-suitcase"></i> Additional Baggage <i class="bi bi-info-circle extra-tooltip-icon"></i></span>
                                         <span class="extra-desc">Add extra checked baggage (20kg per item) &mdash; $25.00 each</span>
                                     </div>
                                     <div class="extra-control">
@@ -185,9 +190,9 @@
                                     </div>
                                 </div>
 
-                                <div class="extra-row">
+                                <div class="extra-row" data-toggle="tooltip" data-placement="top" data-html="true" title="<strong>Priority Boarding</strong><br>Be among the first to board the aircraft. Enjoy early overhead bin access and a stress-free boarding experience.">
                                     <div class="extra-info">
-                                        <span class="extra-title"><i class="bi bi-lightning-charge"></i> Priority Boarding</span>
+                                        <span class="extra-title"><i class="bi bi-lightning-charge"></i> Priority Boarding <i class="bi bi-info-circle extra-tooltip-icon"></i></span>
                                         <span class="extra-desc">Skip the line and board first</span>
                                     </div>
                                     <div class="extra-control">
@@ -199,9 +204,9 @@
                                     </div>
                                 </div>
 
-                                <div class="extra-row">
+                                <div class="extra-row" data-toggle="tooltip" data-placement="top" data-html="true" title="<strong>Travel Insurance</strong><br>Comprehensive coverage including trip cancellations, delays, lost baggage, and medical emergencies up to $50,000.">
                                     <div class="extra-info">
-                                        <span class="extra-title"><i class="bi bi-shield-check"></i> Travel Insurance</span>
+                                        <span class="extra-title"><i class="bi bi-shield-check"></i> Travel Insurance <i class="bi bi-info-circle extra-tooltip-icon"></i></span>
                                         <span class="extra-desc">Coverage for trip cancellations and medical emergencies</span>
                                     </div>
                                     <div class="extra-control">
@@ -213,9 +218,9 @@
                                     </div>
                                 </div>
 
-                                <div class="extra-row">
+                                <div class="extra-row" data-toggle="tooltip" data-placement="top" data-html="true" title="<strong>Lounge Access</strong><br>Relax in our premium airport lounge with complimentary refreshments, Wi-Fi, charging stations, and comfortable seating before departure.">
                                     <div class="extra-info">
-                                        <span class="extra-title"><i class="bi bi-cup-straw"></i> Lounge Access</span>
+                                        <span class="extra-title"><i class="bi bi-cup-straw"></i> Lounge Access <i class="bi bi-info-circle extra-tooltip-icon"></i></span>
                                         <span class="extra-desc">Relax in the airport lounge before departure</span>
                                     </div>
                                     <div class="extra-control">
@@ -244,6 +249,11 @@
                 <span id="summaryAirline">SkyEase Airways</span><br>
                 <span id="summaryTime">06:00 AM - 11:30 AM (4h 30m)</span><br>
                 Class: <span id="summaryClass">Business</span>
+            </div>
+
+            <div class="summary-row">
+                <span>Passengers</span>
+                <span id="summaryPassengers">1</span>
             </div>
 
             <div class="summary-row">
@@ -277,6 +287,52 @@
             </div>
         </aside>
     </main>
+
+    <!-- Seat Detail Modal -->
+    <div class="modal fade" id="seatDetailModal" tabindex="-1" role="dialog" aria-labelledby="seatDetailModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="seatDetailModalLabel"><i class="bi bi-grid-3x3"></i> Seat Details</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="seat-modal-info">
+                        <div class="seat-modal-row">
+                            <span class="seat-modal-label">Seat Number</span>
+                            <span class="seat-modal-value" id="modalSeatNumber">—</span>
+                        </div>
+                        <div class="seat-modal-row">
+                            <span class="seat-modal-label">Row</span>
+                            <span class="seat-modal-value" id="modalSeatRow">—</span>
+                        </div>
+                        <div class="seat-modal-row">
+                            <span class="seat-modal-label">Column</span>
+                            <span class="seat-modal-value" id="modalSeatCol">—</span>
+                        </div>
+                        <div class="seat-modal-row">
+                            <span class="seat-modal-label">Type</span>
+                            <span class="seat-modal-value" id="modalSeatType">—</span>
+                        </div>
+                        <div class="seat-modal-row">
+                            <span class="seat-modal-label">Price</span>
+                            <span class="seat-modal-value" id="modalSeatPrice">—</span>
+                        </div>
+                        <div class="seat-modal-row">
+                            <span class="seat-modal-label">Status</span>
+                            <span class="seat-modal-value" id="modalSeatStatus">—</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="modalSelectSeatBtn">Select This Seat</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script src="../backend/booking.js"></script>
 </body>

@@ -2470,7 +2470,7 @@ table {
     color: var(--color-sky-600);
 }
 
-/* Seat map */
+/* Seat map (Bootstrap Grid) */
 .seat-map-wrapper {
     margin-top: var(--space-3);
 }
@@ -2504,29 +2504,25 @@ table {
 .legend-swatch.occupied  { background: var(--color-slate-300); border-color: var(--color-slate-300); }
 .legend-swatch.premium   { background: var(--color-blue-100); border-color: var(--color-blue-600); }
 
-.seat-map {
+/* Bootstrap Grid seat rows */
+#seatMap .seat-row {
     display: flex;
-    flex-direction: column;
-    gap: 6px;
+    justify-content: center;
     align-items: center;
 }
 
-.seat-row {
-    display: flex;
-    gap: 6px;
-    align-items: center;
-}
-
-.seat-row .row-label {
+.seat-row-label {
     width: 22px;
     text-align: center;
     font-size: 12px;
     font-weight: 700;
     color: var(--color-slate-500);
+    flex-shrink: 0;
 }
 
-.seat-row .aisle-gap {
+.aisle-gap {
     width: 18px;
+    flex-shrink: 0;
 }
 
 .seat {
@@ -2578,23 +2574,6 @@ table {
     cursor: not-allowed;
 }
 
-.seat[title]:hover::after {
-    content: attr(title);
-    position: absolute;
-    bottom: 110%;
-    left: 50%;
-    transform: translateX(-50%);
-    background: var(--color-navy);
-    color: var(--color-white);
-    font-size: 11px;
-    font-weight: 600;
-    padding: 4px 8px;
-    border-radius: var(--radius-sm);
-    white-space: nowrap;
-    z-index: 5;
-    pointer-events: none;
-}
-
 .selected-seat-display {
     margin-top: var(--space-3);
     font-size: 13px;
@@ -2639,6 +2618,13 @@ table {
 .extra-info .extra-desc {
     font-size: 12px;
     color: var(--color-slate-500);
+}
+
+.extra-tooltip-icon {
+    font-size: 12px;
+    color: var(--color-sky-400);
+    margin-left: 4px;
+    cursor: help;
 }
 
 .extra-control {
@@ -2824,6 +2810,69 @@ table {
         flex: 1 1 100%;
         order: -1;
     }
+}
+
+/* Seat Detail Modal */
+.seat-modal-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.seat-modal-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px dashed var(--color-slate-200);
+}
+
+.seat-modal-row:last-child {
+    border-bottom: none;
+}
+
+.seat-modal-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--color-slate-500);
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+.seat-modal-value {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--color-navy);
+}
+
+#seatDetailModal .btn-primary {
+    background: linear-gradient(135deg, var(--color-sky-600) 0%, var(--color-sky-400) 100%);
+    border: none;
+    font-weight: 700;
+    font-size: 13px;
+    box-shadow: 0 2px 8px rgba(2, 132, 199, 0.25);
+}
+
+#seatDetailModal .btn-primary:hover {
+    filter: brightness(1.06);
+    transform: translateY(-1px);
+}
+
+#seatDetailModal .btn-primary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* Bootstrap tooltip overrides for booking page */
+.tooltip-inner {
+    max-width: 260px;
+    text-align: left;
+    padding: 8px 12px;
+    font-size: 12px;
+    font-weight: 500;
+    border-radius: var(--radius-sm);
+    background-color: var(--color-navy);
 }
 
 
