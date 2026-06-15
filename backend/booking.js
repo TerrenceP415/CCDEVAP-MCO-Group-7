@@ -207,6 +207,8 @@ $(function () {
             $seat.addClass("selected");
             state.seat = $seat.data("seat");
             state.seatPrice = $seat.data("premium") ? 30 : 0;
+            // Clear seat-required error as soon as user picks a seat
+            $("#seatError").hide();
         }
 
         $("#selectedSeatLabel").text(state.seat ? state.seat : "None selected");
