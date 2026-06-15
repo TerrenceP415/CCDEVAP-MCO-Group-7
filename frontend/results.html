@@ -135,8 +135,62 @@
     </div>
 
     <script>
+    // ─── Read search parameters from URL ────────────────────────────────────
+    const urlParams = new URLSearchParams(window.location.search);
+    const searchOrigin = urlParams.get('origin') || '';
+    const searchDestination = urlParams.get('destination') || '';
+    const searchCabinClass = urlParams.get('cabin_class') || '';
+    const searchTripType = urlParams.get('trip_type') || '';
+    const searchAirline = urlParams.get('airline') || '';
+    const searchDirectOnly = urlParams.get('direct_flight') === 'yes';
+
+    // Map cabin_class form values to data.js class names
+    const classMap = {
+        'economy': 'Economy',
+        'premium_economy': 'Premium Economy',
+        'business': 'Business',
+        'first_class': 'First Class'
+    };
+
+    // ─── Filter flights based on search criteria ────────────────────────────
+    function getBaseFlights() {
+        return sampleFlights.filter(function (f) {
+            // Filter by origin
+            if (searchOrigin && f.origin !== searchOrigin) return false;
+            // Filter by destination
+            if (searchDestination && f.destination !== searchDestination) return false;
+            // Filter by cabin class
+            if (searchCabinClass && classMap[searchCabinClass] && f.class !== classMap[searchCabinClass]) return false;
+            // Filter by airline (from advanced search)
+            if (searchAirline && f.airlineName !== searchAirline) return false;
+            // Filter by direct flights only
+            if (searchDirectOnly && f.layovers > 0) return false;
+            return true;
+        });
+    }
+
+    const baseFlights = getBaseFlights();
+
+    // ─── Display search criteria banner ─────────────────────────────────────
+    (function showSearchBanner() {
+        const header = document.querySelector('.results-header p');
+        if (!header) return;
+        const parts = [];
+        if (searchOrigin) parts.push('From: <strong>' + searchOrigin + '</strong>');
+        if (searchDestination) parts.push('To: <strong>' + searchDestination + '</strong>');
+        if (searchCabinClass && classMap[searchCabinClass]) parts.push('Class: <strong>' + classMap[searchCabinClass] + '</strong>');
+        if (searchTripType) parts.push('Trip: <strong>' + searchTripType.replace('_', ' ') + '</strong>');
+        if (searchAirline) parts.push('Airline: <strong>' + searchAirline + '</strong>');
+        if (searchDirectOnly) parts.push('<strong>Direct only</strong>');
+        if (parts.length > 0) {
+            header.innerHTML = parts.join(' &nbsp;|&nbsp; ');
+        } else {
+            header.textContent = 'Showing all available flights.';
+        }
+    })();
+
     // ─── State ───────────────────────────────────────────────────────────────
-    let activeFlights = [...sampleFlights];   // current filtered+sorted list
+    let activeFlights = [...baseFlights];   // current filtered+sorted list
     let selectedAirlines = new Set();         // sidebar airline checkboxes
 
     // ─── Helpers ─────────────────────────────────────────────────────────────
@@ -244,7 +298,7 @@
         const maxStops      = document.getElementById('sidebar-stops').value;
         const departTime    = document.getElementById('sidebar-depart-time').value;
 
-        let result = sampleFlights.filter(f => {
+        let result = baseFlights.filter(f => {
             // Airline text filter (topbar)
             if (topbarAirline && !f.airlineName.toLowerCase().includes(topbarAirline)) return false;
             // Airline checkbox sidebar
@@ -269,7 +323,7 @@
 
     // ─── Build airline checkboxes from data ──────────────────────────────────
     function buildAirlineCheckboxes() {
-        const airlines = [...new Set(sampleFlights.map(f => f.airlineName))];
+        const airlines = [...new Set(baseFlights.map(f => f.airlineName))];
         const container = document.getElementById('airline-checkboxes');
         container.innerHTML = airlines.map(name => `
             <label>
@@ -290,7 +344,7 @@
     // ─── Wire up controls ────────────────────────────────────────────────────
     document.addEventListener('DOMContentLoaded', () => {
         buildAirlineCheckboxes();
-        renderFlights(sampleFlights);
+        renderFlights(baseFlights);
 
         ['topbar-airline','sort','price-min','price-max','sidebar-stops','sidebar-depart-time']
             .forEach(id => document.getElementById(id).addEventListener('input', applyFiltersAndSort));

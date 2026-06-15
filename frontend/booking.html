@@ -24,7 +24,15 @@
                 <li><a href="search.html">Search Flights</a></li>
                 <li><a href="booking.html" class="current">Book Flights</a></li>
                 <li><a href="reservations.html">My Reservations</a></li>
-                <li><a href="profile.html">User Profile</a></li>
+                <li><a href="profile.html">User Profile <i class="bi bi-chevron-down"></i></a>
+                    <div class="profile-dropdown">
+                        <ul>
+                            <li><a href="profile.html"><i class="bi bi-person"></i> Profile</a></li>
+                            <li><a href="#"><i class="bi bi-gear"></i> Settings</a></li>
+                            <li><a href="#"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
+                        </ul>
+                    </div>
+                </li>
                 <li><a href="admin-dashboard.html">Admin Panel</a></li>
                 <li><a class="login" href="#">Login</a></li>
             </ul>
@@ -245,10 +253,10 @@
             <h3><i class="bi bi-receipt"></i> Booking Summary</h3>
 
             <div class="summary-flight">
-                <strong id="summaryRoute">MNL &rarr; NRT</strong><br>
-                <span id="summaryAirline">SkyEase Airways</span><br>
-                <span id="summaryTime">06:00 AM - 11:30 AM (4h 30m)</span><br>
-                Class: <span id="summaryClass">Business</span>
+                <strong id="summaryRoute">Loading...</strong><br>
+                <span id="summaryAirline">Loading...</span><br>
+                <span id="summaryTime">Loading...</span><br>
+                Class: <span id="summaryClass">—</span>
             </div>
 
             <div class="summary-row">

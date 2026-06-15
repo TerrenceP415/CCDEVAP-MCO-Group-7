@@ -1579,6 +1579,226 @@ input[type="checkbox"] {
     color: var(--color-blue-600);
 }
 
+/* ─── Passenger Breakdown ────────────────────────────────────────────── */
+.passenger-breakdown {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    border: 1px solid var(--color-sky-200);
+    border-radius: var(--radius-md);
+    padding: var(--space-3);
+    background: var(--color-white);
+}
+
+.pax-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-2) var(--space-2);
+    border-radius: var(--radius-sm);
+    transition: background-color var(--transition-fast);
+}
+
+.pax-row:hover {
+    background-color: var(--color-sky-50);
+}
+
+.pax-row + .pax-row {
+    border-top: 1px solid var(--color-slate-100);
+}
+
+.pax-info {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+}
+
+.pax-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--color-navy);
+}
+
+.pax-hint {
+    font-size: 11px;
+    color: var(--color-slate-500);
+    font-weight: 400;
+}
+
+.pax-stepper {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    border: 1px solid var(--color-sky-200);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    background: var(--color-white);
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.06);
+}
+
+.pax-btn {
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    background: var(--color-slate-50);
+    color: var(--color-sky-600);
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    user-select: none;
+}
+
+.pax-btn:hover:not(.disabled) {
+    background: var(--color-sky-100);
+    color: var(--color-sky-600);
+}
+
+.pax-btn:active:not(.disabled) {
+    background: var(--color-sky-200);
+    transform: scale(0.92);
+}
+
+.pax-btn.disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+}
+
+.pax-stepper input[type="number"] {
+    width: 38px;
+    height: 34px;
+    text-align: center;
+    border: none;
+    border-left: 1px solid var(--color-sky-100);
+    border-right: 1px solid var(--color-sky-100);
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--color-navy);
+    background: var(--color-white);
+    font-family: var(--font-primary);
+    -moz-appearance: textfield;
+    padding: 0;
+}
+
+.pax-stepper input[type="number"]::-webkit-outer-spin-button,
+.pax-stepper input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+
+/* ─── Price Range Slider ─────────────────────────────────────────────── */
+.price-slider-wrap {
+    position: relative;
+    width: 100%;
+    height: 36px;
+    display: flex;
+    align-items: center;
+}
+
+.price-slider-wrap::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 6px;
+    transform: translateY(-50%);
+    background: var(--color-slate-200);
+    border-radius: 3px;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.price-slider-track {
+    position: absolute;
+    top: 50%;
+    height: 6px;
+    transform: translateY(-50%);
+    background: linear-gradient(135deg, var(--color-sky-500), var(--color-sky-400));
+    border-radius: 3px;
+    pointer-events: none;
+    z-index: 1;
+    transition: left 0.1s ease, width 0.1s ease;
+}
+
+.price-range-input {
+    position: absolute;
+    width: 100%;
+    height: 36px;
+    background: none;
+    pointer-events: none;
+    -webkit-appearance: none;
+    appearance: none;
+    z-index: 2;
+    margin: 0;
+    padding: 0;
+}
+
+.price-range-input::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--color-white);
+    border: 3px solid var(--color-sky-500);
+    box-shadow: 0 2px 6px rgba(14, 165, 233, 0.3);
+    cursor: pointer;
+    pointer-events: all;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.price-range-input::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+    box-shadow: 0 3px 10px rgba(14, 165, 233, 0.45);
+}
+
+.price-range-input::-webkit-slider-thumb:active {
+    transform: scale(1.1);
+    background: var(--color-sky-50);
+}
+
+.price-range-input::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--color-white);
+    border: 3px solid var(--color-sky-500);
+    box-shadow: 0 2px 6px rgba(14, 165, 233, 0.3);
+    cursor: pointer;
+    pointer-events: all;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.price-range-input::-moz-range-thumb:hover {
+    transform: scale(1.2);
+    box-shadow: 0 3px 10px rgba(14, 165, 233, 0.45);
+}
+
+.price-range-input::-webkit-slider-runnable-track {
+    height: 6px;
+    background: transparent;
+}
+
+.price-range-input::-moz-range-track {
+    height: 6px;
+    background: transparent;
+    border: none;
+}
+
+.price-slider-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--color-sky-600);
+    margin-top: var(--space-1);
+}
+
 /* ==== */
 
 .admin-status {
@@ -1966,12 +2186,24 @@ table {
     color: var(--color-slate-700);
 }
 
-.results-table tbody tr {
-    transition: background-color var(--transition-fast);
+.results-table tbody tr.flight-row {
+    transition: background-color var(--transition-fast),
+                box-shadow var(--transition-fast),
+                transform var(--transition-fast);
+    cursor: default;
+    border-left: 3px solid transparent;
 }
 
-.results-table tbody tr:hover {
+.results-table tbody tr.flight-row:hover {
     background: var(--color-sky-50);
+    box-shadow: inset 0 0 0 1px rgba(14, 165, 233, 0.12),
+                0 4px 12px rgba(14, 165, 233, 0.08);
+    border-left-color: var(--color-sky-400);
+    transform: translateY(-1px);
+}
+
+.results-table tbody tr.flight-row:hover td {
+    color: var(--color-navy);
 }
 
 .results-table img {
@@ -2027,11 +2259,12 @@ table {
     font-weight: 600;
     cursor: pointer;
     user-select: none;
-    transition: background-color 0.2s ease;
+    transition: background-color 0.2s ease, transform 0.15s ease;
 }
 
 .view-details-btn:hover {
     background: #0369a1;
+    transform: scale(1.04);
 }
 
 /* Hide all details rows by default */
@@ -2039,14 +2272,43 @@ table {
     display: none; 
 }
 
+/* Detail row: hidden by default, shown via :has() when toggle checked */
 .details-row {
     display: none;
-    background-color: #f8fafc;
+    background: linear-gradient(180deg, #f0f9ff 0%, #f8fafc 100%);
+    border-left: 3px solid var(--color-sky-300);
 }
 
-/* The Mechanism: If a row contains a checked toggle, display the immediate next .details-row */
 .flight-row:has(.details-toggle:checked) + .details-row {
     display: table-row;
+}
+
+/* Detail row inner panel */
+.details-row td {
+    padding: var(--space-1) 0 !important;
+    border-bottom: 1px solid var(--color-slate-200);
+}
+
+.extra-details-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 15px 30px;
+    text-align: left;
+    font-size: 14px;
+    color: #475569;
+    animation: detailSlideIn 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes detailSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 /* Dynamic Button Text: Uses CSS pseudoelements to add 'View' or 'Hide' based on toggle state */
@@ -2061,16 +2323,6 @@ table {
 /* Switches text instantly when open */
 .details-toggle:checked + .view-details-btn::before {
     content: "Hide ";
-}
-
-/* Formatting container for your inner aircraft specs */
-.extra-details-container {
-    display: flex;
-    gap: 40px;
-    padding: 15px 30px;
-    text-align: left;
-    font-size: 14px;
-    color: #475569;
 }
 
 .extra-details-container strong {
