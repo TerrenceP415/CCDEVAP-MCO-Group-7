@@ -55,4 +55,22 @@ document.addEventListener('DOMContentLoaded', () => {
     deleteButtons.forEach(button => {
         button.addEventListener('click', () => showToast('Entry Deleted Successfully!'));
     });
+
+    // ─── Pre-fill Destination From Index Promo Cards ────────────
+    
+    const urlParams = new URLSearchParams(window.location.search);
+    const destinationCode = urlParams.get('destination');
+
+    // Grab element references 
+    const originSelect = document.getElementById('origin');
+    const destinationSelect = document.getElementById('destination');
+
+    
+    if (destinationCode ) {
+        destinationSelect.value = destinationCode;
+        // Set the default origin (Replace MNL with selected user default)
+        originSelect.value = 'MNL';
+        
+        syncAirports(destinationSelect, originSelect); 
+    }
 });
