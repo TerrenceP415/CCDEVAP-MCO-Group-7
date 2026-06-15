@@ -1,4 +1,5 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -40,16 +41,24 @@
                 <div class="form-grid">
                     <label for="origin"><i class="bi bi-airplane"></i> Origin Airport</label>
                     <select name="origin" id="origin">
-                        <option value="NAIA">Ninoy Aquino International Airport (NAIA)</option>
-                        <option value="CHG">Clark International Airport (CHG)</option>
-                        <option value="DVO">Francisco Bangoy International Airport (DVO)</option>
+                        <option value="MNL">Manila - Ninoy Aquino International (MNL)</option>
+                        <option value="LAX">Los Angeles International (LAX)</option>
+                        <option value="SIN">Singapore Changi (SIN)</option>
+                        <option value="NRT">Tokyo Narita (NRT)</option>
+                        <option value="DXB">Dubai International (DXB)</option>
+                        <option value="HKG">Hong Kong International (HKG)</option>
+                        <option value="LHR">London Heathrow (LHR)</option>
                     </select>
 
                     <label for="destination"><i class="bi bi-airplane"></i> Destination Airport</label>
                     <select name="destination" id="destination">
-                        <option value="NAIA">Ninoy Aquino International Airport (NAIA)</option>
-                        <option value="CHG">Clark International Airport (CHG)</option>
-                        <option value="DVO">Francisco Bangoy International Airport (DVO)</option>
+                        <option value="MNL">Manila - Ninoy Aquino International (MNL)</option>
+                        <option value="LAX">Los Angeles International (LAX)</option>
+                        <option value="SIN">Singapore Changi (SIN)</option>
+                        <option value="NRT">Tokyo Narita (NRT)</option>
+                        <option value="DXB">Dubai International (DXB)</option>
+                        <option value="HKG">Hong Kong International (HKG)</option>
+                        <option value="LHR">London Heathrow (LHR)</option>
                     </select>
 
                     <div class="trip-type-row">
@@ -68,17 +77,47 @@
                     <label for="return_date"><i class="bi bi-calendar"></i> Return Date</label>
                     <input type="date" id="return_date" name="return_date">
 
-                    <label for="passengers"><i class="bi bi-person"></i> Passengers</label>
-                    <select name="passengers" id="passengers">
-                        <option value="1">1 Passenger</option>
-                        <option value="2">2 Passengers</option>
-                        <option value="3">3 Passengers</option>
-                        <option value="4">4 Passengers</option>
-                    </select>
+                    <label><i class="bi bi-people"></i> Passengers</label>
+                    <div class="passenger-breakdown">
+                        <div class="pax-row">
+                            <div class="pax-info">
+                                <span class="pax-label">Adults</span>
+                                <span class="pax-hint">12+ years</span>
+                            </div>
+                            <div class="pax-stepper">
+                                <button type="button" class="pax-btn pax-minus" data-target="adults" aria-label="Decrease adults">−</button>
+                                <input type="number" id="adults" name="adults" value="1" min="1" max="9" readonly>
+                                <button type="button" class="pax-btn pax-plus" data-target="adults" aria-label="Increase adults">+</button>
+                            </div>
+                        </div>
+                        <div class="pax-row">
+                            <div class="pax-info">
+                                <span class="pax-label">Children</span>
+                                <span class="pax-hint">2–11 years</span>
+                            </div>
+                            <div class="pax-stepper">
+                                <button type="button" class="pax-btn pax-minus" data-target="children" aria-label="Decrease children">−</button>
+                                <input type="number" id="children" name="children" value="0" min="0" max="9" readonly>
+                                <button type="button" class="pax-btn pax-plus" data-target="children" aria-label="Increase children">+</button>
+                            </div>
+                        </div>
+                        <div class="pax-row">
+                            <div class="pax-info">
+                                <span class="pax-label">Infants</span>
+                                <span class="pax-hint">Under 2 years</span>
+                            </div>
+                            <div class="pax-stepper">
+                                <button type="button" class="pax-btn pax-minus" data-target="infants" aria-label="Decrease infants">−</button>
+                                <input type="number" id="infants" name="infants" value="0" min="0" max="4" readonly>
+                                <button type="button" class="pax-btn pax-plus" data-target="infants" aria-label="Increase infants">+</button>
+                            </div>
+                        </div>
+                    </div>
 
                     <label for="cabin_class"><i class="bi bi-building"></i> Cabin Class</label>
                     <select name="cabin_class" id="cabin_class">
                         <option value="economy">Economy</option>
+                        <option value="premium_economy">Premium Economy</option>
                         <option value="business">Business</option>
                         <option value="first_class">First Class</option>
                     </select>
@@ -89,9 +128,11 @@
                     <div class="accordion-panel">
                         <label for="airline"><i class="bi bi-airplane"></i> Airline</label>
                         <select name="airline" id="airline">
-                            <option value="philippine_airlines">Philippine Airlines</option>
-                            <option value="cebu_pacific">Cebu Pacific</option>
-                            <option value="air_asia">Air Asia</option>
+                            <option value="">Any Airline</option>
+                            <option value="Philippine Airways">Philippine Airways</option>
+                            <option value="FlyFast Express">FlyFast Express</option>
+                            <option value="Pacific Star Airlines">Pacific Star Airlines</option>
+                            <option value="Global Jet">Global Jet</option>
                         </select>
 
                         <label class="checkbox-row" for="direct_flight">
@@ -104,8 +145,16 @@
                             <i class="bi bi-check-circle"></i> Flexible dates
                         </label>
 
-                        <label for="price_range"><i class="bi bi-currency-dollar"></i>  Range</label>
-                        <input type="text" id="price_range" name="price_range" placeholder="e.g. 5000-10000">
+                        <label for="price_range"><i class="bi bi-currency-dollar"></i> Price Range</label>
+                        <div class="price-slider-wrap">
+                            <div class="price-slider-track" id="price-slider-track"></div>
+                            <input type="range" id="price_min" name="price_min" min="0" max="3000" value="0" step="50" class="price-range-input price-range-min">
+                            <input type="range" id="price_max" name="price_max" min="0" max="3000" value="3000" step="50" class="price-range-input price-range-max">
+                        </div>
+                        <div class="price-slider-labels">
+                            <span id="price-min-label">$0</span>
+                            <span id="price-max-label">$3,000</span>
+                        </div>
                     </div>
                 </details>
 

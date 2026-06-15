@@ -1,17 +1,29 @@
 $(function () {
 
-    // ---------- Selected flight (dummy — would come from search results) ----------
-    var flight = (typeof sampleFlights !== "undefined") ? sampleFlights[2] : {
-        airlineName: "SkyEase Airways",
-        flightNumber: "PS-882",
-        origin: "MNL",
-        destination: "NRT",
-        departureTime: "06:00 AM",
-        arrivalTime: "11:30 AM",
-        duration: "4h 30m",
-        class: "Business",
-        price: 450.00
-    };
+    // ---------- Selected flight (read from URL ?flight=FL-XXX parameter) ----------
+    var urlParams = new URLSearchParams(window.location.search);
+    var flightId = urlParams.get("flight");
+
+    var flight = null;
+    if (typeof sampleFlights !== "undefined" && flightId) {
+        flight = sampleFlights.find(function (f) { return f.id === flightId; }) || null;
+    }
+    // Fallback if no matching flight found or no parameter provided
+    if (!flight) {
+        flight = (typeof sampleFlights !== "undefined" && sampleFlights.length > 0)
+            ? sampleFlights[0]
+            : {
+                airlineName: "SkyEase Airways",
+                flightNumber: "SE-001",
+                origin: "MNL",
+                destination: "LAX",
+                departureTime: "08:30 AM",
+                arrivalTime: "07:15 PM",
+                duration: "14h 45m",
+                class: "Economy",
+                price: 850.00
+            };
+    }
 
     $("#summaryRoute").text(flight.origin + " \u2192 " + flight.destination);
     $("#summaryAirline").text(flight.airlineName + " \u00b7 " + flight.flightNumber);
