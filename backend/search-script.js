@@ -1,9 +1,11 @@
-// NOT SURE IF THIS WORKS
 document.addEventListener('DOMContentLoaded', () => {
     const tripTypeRadios = document.querySelectorAll('input[name="trip_type"]');
     const returnDateInput = document.getElementById('return_date');
+    const departureDateInput = document.getElementById('departure_date');
     const originSelect = document.getElementById('origin');
     const destinationSelect = document.getElementById('destination');
+    const returnDateError = document.getElementById('return-date-error');
+    const searchForm = document.getElementById('searchForm');
 
     function updateReturnDateState() {
         const oneWaySelected = document.getElementById('one_way').checked;
@@ -11,6 +13,8 @@ document.addEventListener('DOMContentLoaded', () => {
             returnDateInput.disabled = oneWaySelected;
             if (oneWaySelected) {
                 returnDateInput.value = '';
+                // Clear any date error when switching to one-way
+                if (returnDateError) returnDateError.style.display = 'none';
             }
         }
     }
@@ -20,16 +24,61 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     updateReturnDateState();
 
+    // ─── Airport Sync (fixed: re-enable all options before applying new restriction) ───
     function syncAirports(changed, other) {
         if (!changed || !other) return;
+        // First, re-enable ALL options in the other select
         Array.from(other.options).forEach((option) => {
-            option.disabled = option.value === changed.value;
+            option.disabled = false;
+        });
+        // Then disable only the matching option
+        Array.from(other.options).forEach((option) => {
+            if (option.value === changed.value) {
+                option.disabled = true;
+            }
         });
     }
 
     if (originSelect && destinationSelect) {
         originSelect.addEventListener('change', () => syncAirports(originSelect, destinationSelect));
         destinationSelect.addEventListener('change', () => syncAirports(destinationSelect, originSelect));
+        // Run sync on page load for initial state (origin only)
+        syncAirports(originSelect, destinationSelect);
+    }
+
+    // ─── Date Validation ─────────────────────────────────────────────────
+    function validateDates() {
+        if (!departureDateInput || !returnDateInput || !returnDateError) return true;
+        // Skip validation if one-way or return date not set
+        if (returnDateInput.disabled || !returnDateInput.value || !departureDateInput.value) {
+            returnDateError.style.display = 'none';
+            return true;
+        }
+        const depDate = new Date(departureDateInput.value);
+        const retDate = new Date(returnDateInput.value);
+        if (retDate <= depDate) {
+            returnDateError.style.display = 'block';
+            return false;
+        }
+        returnDateError.style.display = 'none';
+        return true;
+    }
+
+    if (departureDateInput) {
+        departureDateInput.addEventListener('change', validateDates);
+    }
+    if (returnDateInput) {
+        returnDateInput.addEventListener('change', validateDates);
+    }
+
+    // Prevent form submission if date validation fails
+    if (searchForm) {
+        searchForm.addEventListener('submit', (e) => {
+            if (!validateDates()) {
+                e.preventDefault();
+                returnDateInput.focus();
+            }
+        });
     }
 
     // ─── Passenger Stepper ──────────────────────────────────────────────
