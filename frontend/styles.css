@@ -2366,86 +2366,68 @@ table {
     background-color: var(--color-slate-50);
 }
 
-.content-wrapper {
-    margin-top: var(--space-10);
-    margin-bottom: var(--space-16);
+.reservations-container {
     max-width: 900px;
+    margin: var(--space-12) auto;
+    padding: 0 var(--space-4);
 }
 
-.page-title {
+.reservations-title {
     color: var(--color-navy);
     font-weight: 700;
-    font-size: 24px;
+    font-size: 1.75rem;
     margin-bottom: var(--space-6);
-    display: flex;
-    align-items: center;
-    gap: var(--space-2);
 }
 
-.page-title i {
+.reservations-title i {
     color: var(--color-sky-500);
 }
 
-/* --- Accordion Card --- */
+/* --- Clean Card & Accordion Styling --- */
 .reservation-card {
     background-color: var(--color-white);
-    border: 1px solid var(--color-slate-100) !important;
+    border: 1px solid var(--color-slate-200) !important;
     border-radius: var(--radius-lg) !important;
     box-shadow: var(--shadow-sm);
     overflow: hidden;
     margin-bottom: var(--space-4);
-    transition: box-shadow var(--transition-fast);
+    transition: box-shadow var(--transition-fast), border-color var(--transition-fast);
 }
 
 .reservation-card:hover {
     box-shadow: var(--shadow-md);
+    border-color: var(--color-slate-300) !important;
 }
 
-.basic-header {
-    padding: var(--space-4) var(--space-5) !important;
-    border-bottom: none !important;
-}
-
-.btn-accordion-trigger {
+.accordion-trigger-btn {
     background: none;
     border: none;
     color: var(--color-navy) !important;
     font-weight: 700;
-    font-size: 16px;
+    font-size: 1.1rem;
     text-decoration: none !important;
     display: flex;
     align-items: center;
-    padding: 0;
-}
-
-.btn-accordion-trigger:focus, 
-.btn-accordion-trigger:hover {
-    text-decoration: none !important;
-    color: var(--color-sky-600) !important;
-}
-
-.route-txt {
-    color: var(--color-slate-500);
-    font-weight: 400;
-    margin-left: var(--space-3);
-    font-size: 14px;
+    padding: var(--space-4) var(--space-5);
+    width: 100%;
+    text-align: left;
 }
 
 /* Chevron Rotation Graphic Animation */
-.chevron-icon {
+.chevron-icon-anim {
     display: inline-block;
-    margin-right: var(--space-2);
-    transition: transform var(--transition-med);
+    margin-right: var(--space-3);
     color: var(--color-sky-500);
+    transition: transform var(--transition-med);
 }
 
-.btn-accordion-trigger[aria-expanded="true"] .chevron-icon {
+.accordion-trigger-btn[aria-expanded="true"] .chevron-icon-anim {
     transform: rotate(180deg);
 }
 
-/* --- Status Badges Synchronization --- */
-.badge-status {
-    font-size: 12px;
+/* --- Pill Status Badges --- */
+.status-badge-pill {
+    font-size: 0.75rem;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.5px;
@@ -2453,96 +2435,85 @@ table {
     padding: var(--space-2) var(--space-4) !important;
 }
 
-.status-confirmed {
+.badge-confirmed {
     background-color: var(--color-green-100) !important;
     color: var(--color-green-600) !important;
 }
 
-.status-pending {
-    background-color: #fef3c7 !important; /* Elegant Warm Amber tint */
-    color: #d97706 !important;
+.badge-pending {
+    background-color: #fef3c7 !important; /* Soft Amber background */
+    color: #d97706 !important; /* Dark Amber text */
 }
 
-.status-cancelled {
+.badge-cancelled {
     background-color: var(--color-slate-100) !important;
     color: var(--color-slate-500) !important;
 }
 
-/* --- Content Field Layouts --- */
-.info-label {
+/* --- Interior Card Info Rows --- */
+.info-row-heading {
     color: var(--color-slate-500);
-    font-size: 11px;
+    font-size: 0.75rem;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.8px;
     margin-bottom: var(--space-1);
 }
 
-.info-value {
+.info-row-data {
     color: var(--color-navy);
     font-weight: 600;
-    font-size: 15px;
+    font-size: 0.95rem;
+    margin-bottom: 0;
 }
 
-.price-tag {
+.price-display-tag {
     color: var(--color-sky-600) !important;
-    font-size: 18px;
+    font-size: 1.25rem;
 }
 
-.card-divider {
+.card-inner-divider {
     border-top: 1px solid var(--color-slate-100);
     margin-top: var(--space-4);
-    margin-bottom: var(--space-2);
+    margin-bottom: var(--space-4);
 }
 
-/* Action Control Alignment */
-.btn-outline-action {
-    font-size: 13px;
+/* --- Control Action Buttons --- */
+.btn-action-outline {
+    font-size: 0.85rem;
     font-weight: 600;
     padding: var(--space-2) var(--space-4);
     border-radius: var(--radius-md);
     transition: all var(--transition-fast);
 }
 
-.btn-modify {
+.btn-action-modify {
     border-color: var(--color-sky-500);
     color: var(--color-sky-600);
 }
 
-.btn-modify:hover {
+.btn-action-modify:hover {
     background-color: var(--color-sky-500);
     color: var(--color-white);
 }
 
-.btn-cancel {
+.btn-action-cancel {
     border-color: var(--color-red-400);
     color: var(--color-red-500);
 }
 
-.btn-cancel:hover {
+.btn-action-cancel:hover {
     background-color: var(--color-red-500);
     color: var(--color-white);
 }
 
-.alert-status-msg {
+.cancelled-status-box {
     background-color: var(--color-slate-50);
     border: 1px solid var(--color-slate-200);
-    color: var(--color-slate-700);
+    color: var(--color-slate-600);
     border-radius: var(--radius-md);
-    font-size: 13px;
-}
-
-/* Modals Alignment */
-.standard-modal {
-    border-radius: var(--radius-lg);
-    border: none;
-    box-shadow: var(--shadow-xl);
-}
-
-.modal-field-label {
-    font-size: 13px;
+    font-size: 0.85rem;
     font-weight: 600;
-    color: var(--color-slate-700);
 }
 
 /* BOOKING PAGE */
