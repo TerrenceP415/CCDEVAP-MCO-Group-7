@@ -33,6 +33,12 @@ $(function () {
     var basePrice = flight.price;
 
     // ---------- State ----------
+    // Read passenger count from URL query params
+    var adults = parseInt(urlParams.get("adults")) || 1;
+    var children = parseInt(urlParams.get("children")) || 0;
+    var infants = parseInt(urlParams.get("infants")) || 0;
+    var totalPassengers = adults + children + infants;
+
     var state = {
         seat: null,
         seatPrice: 0,
@@ -42,7 +48,7 @@ $(function () {
         priorityBoarding: false,
         travelInsurance: false,
         loungeAccess: false,
-        passengerCount: 1
+        passengerCount: totalPassengers
     };
 
     var BAGGAGE_PRICE = 25;
@@ -269,12 +275,12 @@ $(function () {
         $("#summaryPassengers").text(state.passengerCount);
 
         $("#summaryMeal").text(meals.find(function (m) { return m.id === state.meal; }).name);
-        $("#summaryExtras").text(
+        var extrasText =
             (state.baggage > 0 ? state.baggage + " extra bag(s) " : "") +
             (state.priorityBoarding ? "Priority " : "") +
             (state.travelInsurance ? "Insurance " : "") +
-            (state.loungeAccess ? "Lounge " : "") || "None"
-        );
+            (state.loungeAccess ? "Lounge " : "");
+        $("#summaryExtras").text(extrasText.trim());
         if (!state.baggage && !state.priorityBoarding && !state.travelInsurance && !state.loungeAccess) {
             $("#summaryExtras").text("None");
         }
@@ -298,7 +304,25 @@ $(function () {
         });
     }
 
-    $sections.on("toggle", refreshStepper);
+    // Enforce seat selection before Section 3 (Meal & Extras) can open
+    $sections.on("toggle", function (e) {
+        var $this = $(this);
+        var sectionIndex = $sections.index($this);
+
+        // If trying to open Section 3 (index 2) without a seat selected
+        if (sectionIndex === 2 && $this.prop("open") && !state.seat) {
+            // Prevent opening by closing it immediately
+            $this.prop("open", false);
+            // Show seat error
+            $("#seatError").show();
+            // Open Section 2 instead
+            $sections.eq(1).prop("open", true);
+            $("#seatError")[0].scrollIntoView({ behavior: "smooth", block: "center" });
+            return;
+        }
+
+        refreshStepper();
+    });
     refreshStepper();
 
     // ---------- Inline validation ----------
