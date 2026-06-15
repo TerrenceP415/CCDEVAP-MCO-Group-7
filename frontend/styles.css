@@ -2108,7 +2108,190 @@ table {
     .filter-sidebar { width: 100%; position: static; }
 }
 
+/* RESERVATION PAGE */
 
+.reservations-page {
+    background-color: var(--color-slate-50);
+}
+
+.content-wrapper {
+    margin-top: var(--space-10);
+    margin-bottom: var(--space-16);
+    max-width: 900px;
+}
+
+.page-title {
+    color: var(--color-navy);
+    font-weight: 700;
+    font-size: 24px;
+    margin-bottom: var(--space-6);
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+}
+
+.page-title i {
+    color: var(--color-sky-500);
+}
+
+/* --- Accordion Card --- */
+.reservation-card {
+    background-color: var(--color-white);
+    border: 1px solid var(--color-slate-100) !important;
+    border-radius: var(--radius-lg) !important;
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+    margin-bottom: var(--space-4);
+    transition: box-shadow var(--transition-fast);
+}
+
+.reservation-card:hover {
+    box-shadow: var(--shadow-md);
+}
+
+.basic-header {
+    padding: var(--space-4) var(--space-5) !important;
+    border-bottom: none !important;
+}
+
+.btn-accordion-trigger {
+    background: none;
+    border: none;
+    color: var(--color-navy) !important;
+    font-weight: 700;
+    font-size: 16px;
+    text-decoration: none !important;
+    display: flex;
+    align-items: center;
+    padding: 0;
+}
+
+.btn-accordion-trigger:focus, 
+.btn-accordion-trigger:hover {
+    text-decoration: none !important;
+    color: var(--color-sky-600) !important;
+}
+
+.route-txt {
+    color: var(--color-slate-500);
+    font-weight: 400;
+    margin-left: var(--space-3);
+    font-size: 14px;
+}
+
+/* Chevron Rotation Graphic Animation */
+.chevron-icon {
+    display: inline-block;
+    margin-right: var(--space-2);
+    transition: transform var(--transition-med);
+    color: var(--color-sky-500);
+}
+
+.btn-accordion-trigger[aria-expanded="true"] .chevron-icon {
+    transform: rotate(180deg);
+}
+
+/* --- Status Badges Synchronization --- */
+.badge-status {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-radius: var(--radius-pill);
+    padding: var(--space-2) var(--space-4) !important;
+}
+
+.status-confirmed {
+    background-color: var(--color-green-100) !important;
+    color: var(--color-green-600) !important;
+}
+
+.status-pending {
+    background-color: #fef3c7 !important; /* Elegant Warm Amber tint */
+    color: #d97706 !important;
+}
+
+.status-cancelled {
+    background-color: var(--color-slate-100) !important;
+    color: var(--color-slate-500) !important;
+}
+
+/* --- Content Field Layouts --- */
+.info-label {
+    color: var(--color-slate-500);
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: var(--space-1);
+}
+
+.info-value {
+    color: var(--color-navy);
+    font-weight: 600;
+    font-size: 15px;
+}
+
+.price-tag {
+    color: var(--color-sky-600) !important;
+    font-size: 18px;
+}
+
+.card-divider {
+    border-top: 1px solid var(--color-slate-100);
+    margin-top: var(--space-4);
+    margin-bottom: var(--space-2);
+}
+
+/* Action Control Alignment */
+.btn-outline-action {
+    font-size: 13px;
+    font-weight: 600;
+    padding: var(--space-2) var(--space-4);
+    border-radius: var(--radius-md);
+    transition: all var(--transition-fast);
+}
+
+.btn-modify {
+    border-color: var(--color-sky-500);
+    color: var(--color-sky-600);
+}
+
+.btn-modify:hover {
+    background-color: var(--color-sky-500);
+    color: var(--color-white);
+}
+
+.btn-cancel {
+    border-color: var(--color-red-400);
+    color: var(--color-red-500);
+}
+
+.btn-cancel:hover {
+    background-color: var(--color-red-500);
+    color: var(--color-white);
+}
+
+.alert-status-msg {
+    background-color: var(--color-slate-50);
+    border: 1px solid var(--color-slate-200);
+    color: var(--color-slate-700);
+    border-radius: var(--radius-md);
+    font-size: 13px;
+}
+
+/* Modals Alignment */
+.standard-modal {
+    border-radius: var(--radius-lg);
+    border: none;
+    box-shadow: var(--shadow-xl);
+}
+
+.modal-field-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--color-slate-700);
+}
 
 /* BOOKING PAGE */
 .booking-shell {
