@@ -1121,7 +1121,7 @@ span.admin-status {
     color: var(--color-navy);
     font-family: var(--font-primary);
     border-radius: var(--radius-lg);
-    background: linear-gradient(135deg, var(--color-blue-50) 0%, var(--color-white) 100%);
+    background: transparent;
     transition: transform 0.18s ease, background 0.18s ease;
 }
 
