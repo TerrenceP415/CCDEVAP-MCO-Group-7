@@ -1,3 +1,4 @@
+// Search page: trip type toggling, airport sync, date validation, passenger steppers, and price slider
 document.addEventListener('DOMContentLoaded', () => {
     const tripTypeRadios = document.querySelectorAll('input[name="trip_type"]');
     const returnDateInput = document.getElementById('return_date');
@@ -7,6 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const returnDateError = document.getElementById('return-date-error');
     const searchForm = document.getElementById('searchForm');
 
+    // Disable return date field when "One Way" is selected
     function updateReturnDateState() {
         const oneWaySelected = document.getElementById('one_way').checked;
         if (returnDateInput) {
@@ -24,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     updateReturnDateState();
 
-    // ─── Airport Sync (fixed: re-enable all options before applying new restriction) ───
+    // Prevents picking the same airport for origin and destination
     function syncAirports(changed, other) {
         if (!changed || !other) return;
         // First, re-enable ALL options in the other select
@@ -46,7 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
         syncAirports(originSelect, destinationSelect);
     }
 
-    // ─── Date Validation ─────────────────────────────────────────────────
+    // Return date must be after departure date
     function validateDates() {
         if (!departureDateInput || !returnDateInput || !returnDateError) return true;
         // Skip validation if one-way or return date not set
@@ -81,7 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // ─── Passenger Stepper ──────────────────────────────────────────────
+    // +/- buttons for Adults, Children, Infants counts
     document.querySelectorAll('.pax-btn').forEach(btn => {
         btn.addEventListener('click', () => {
             const input = document.getElementById(btn.dataset.target);
@@ -101,6 +103,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    // Grey out +/- buttons when at their min/max limits
     function updateStepperStates() {
         document.querySelectorAll('.pax-stepper').forEach(stepper => {
             const input = stepper.querySelector('input');
@@ -114,7 +117,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     updateStepperStates();
 
-    // ─── Price Range Slider ─────────────────────────────────────────────
+    // Dual-thumb price range slider in advanced options
     const priceMin = document.getElementById('price_min');
     const priceMax = document.getElementById('price_max');
     const priceTrack = document.getElementById('price-slider-track');
@@ -131,7 +134,7 @@ document.addEventListener('DOMContentLoaded', () => {
         let hi = parseInt(priceMax.value);
         const total = parseInt(priceMin.max);
 
-        // Prevent crossing
+        // Swap values if handles cross each other
         if (lo > hi) {
             [lo, hi] = [hi, lo];
             priceMin.value = lo;

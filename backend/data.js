@@ -1,4 +1,4 @@
-// Sample Flight Search Results Dummy Data (8-10 flights required)
+// Flight catalog used across search results and booking pages
 const sampleFlights = [
   {
     id: "FL-001",
@@ -122,7 +122,7 @@ const sampleFlights = [
   }
 ];
 
-// Sample Optional Meal Packages Data
+// Meal add-ons available during booking
 const mealPackages = [
   { id: "M01", name: "Standard Meal", description: "Chef's selection hot meal with beverage", price: 0.00 },
   { id: "M02", name: "Vegetarian", description: "Plant-based meal excluding meat and seafood", price: 5.00 },
@@ -132,7 +132,7 @@ const mealPackages = [
   { id: "M06", name: "Gluten-Free", description: "Meals designed without gluten-containing elements", price: 7.00 }
 ];
 
-// Sample Reservations Data (for My Reservations page UI simulation)
+// Reservation records shown on the My Reservations page
 const sampleReservations = [
   {
     bookingReference: "BK-83921",
@@ -160,7 +160,7 @@ const sampleReservations = [
   }
 ];
 
+// Homepage "at a glance" statistics
 const availableFlights =100;
 const activeBookings = 10;
 const destinations = 5;
-

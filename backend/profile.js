@@ -1,7 +1,7 @@
-// Profile page — Edit / Save / Add Passenger logic
+// Profile page: handles editing personal info, profile image upload, and saved passengers
 document.addEventListener("DOMContentLoaded", function () {
 
-    // ── Toast helper (defined first so all handlers can reference it) ──
+    // Shows a brief success toast at the bottom of the page
     function showProfileToast(message) {
         var container = document.getElementById("toastContainer");
         if (!container) {
@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }, 3500);
     }
 
-    // ── Profile Image Upload ─────────────────────────────────
+    // Profile image upload via hidden file input
     var editImageBtn = document.getElementById("editImageBtn");
     var profileImage = document.querySelector(".profile-image");
 
@@ -56,7 +56,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // ── Personal Information ─────────────────────────────────
+    // Personal information edit/save toggle
     var editPersonalBtn  = document.getElementById("editPersonalBtn");
     var savePersonalBtn  = document.getElementById("savePersonalBtn");
     var personalForm     = document.getElementById("personalForm");
@@ -80,7 +80,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // ── Saved Passengers ─────────────────────────────────────
+    // Saved passengers edit/save/add
     var editPassengerBtn  = document.getElementById("editPassengerBtn");
     var savePassengerBtn  = document.getElementById("savePassengerBtn");
     var addPassengerBtn   = document.getElementById("addPassengerBtn");
@@ -115,7 +115,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             passengerList.appendChild(field);
 
-            // Enter edit mode: enable ALL passenger fields (existing + new)
+            // Auto-enable edit mode when adding a new passenger
             var allFields = passengerList.querySelectorAll(".passenger-input");
             allFields.forEach(function (f) { f.disabled = false; });
             savePassengerBtn.disabled = false;

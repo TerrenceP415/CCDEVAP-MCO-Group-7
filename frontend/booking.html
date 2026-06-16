@@ -6,15 +6,18 @@
     <!-- Bootstrap -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <!-- CSS -->
     <link rel="stylesheet" href="styles.css">
     <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha384-xBuQ/xzmlsLoJpyjoggmTEz8OWUFM0/RC5BsqQBDX2v5cMvDHcMakNTNrHIW2I5f" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <!-- JS -->
     <script src="../backend/data.js"></script>
     <script src="../backend/scripts.js" defer></script>
 </head>
 
 <body>
+    <!-- Navigation Bar -->
     <header>
 
         <nav class="nav">
@@ -24,6 +27,7 @@
                 <li><a href="search.html">Search Flights</a></li>
                 <li><a href="booking.html" class="current">Book Flights</a></li>
                 <li><a href="reservations.html">My Reservations</a></li>
+                <!-- Profile Dropdown Menu -->
                 <li><a href="#">User Profile <i class="bi bi-chevron-down"></i></a>
                     <div class="profile-dropdown">
                         <ul>
@@ -36,6 +40,7 @@
                 <li><a href="admin-dashboard.html">Admin Panel</a></li>
                 <li><a class="login" href="#">Login</a></li>
             </ul>
+            <!-- Hamburger Menu Toggle (Mobile) -->
             <div class="hamburger">
                 <span class="bar"></span>
                 <span class="bar"></span>
@@ -44,6 +49,7 @@
         </nav>
     </header>
 
+    <!-- Main Booking Content -->
     <main class="booking-shell">
         <section class="booking-main">
             <div class="booking-card">
@@ -51,7 +57,7 @@
                 <h1><i class="bi bi-ticket-perforated"></i> Book Your Flight</h1>
                 <p class="booking-copy">Complete each step below to finish your booking. Your total updates in real time on the right.</p>
 
-                <!-- Progress Stepper -->
+                <!-- Booking progress steps -->
                 <div class="booking-stepper">
                     <div class="step active">
                         <div class="step-circle">1</div>
@@ -69,25 +75,28 @@
                     </div>
                 </div>
 
+                <!-- Booking Form (validated by booking.js) -->
                 <form class="booking-form" id="bookingForm" novalidate>
 
-                    <!-- SECTION 1: PASSENGER INFORMATION -->
+                    <!-- Step 1: Passenger Information -->
                     <details class="booking-section" open>
                         <summary><span><i class="bi bi-person-vcard"></i> Passenger Information</span></summary>
                         <div class="booking-section-body">
-
+                            <!-- Last Name Field -->
                             <div class="booking-field">
                                 <label for="last_name"><i class="bi bi-person"></i> Last Name</label>
                                 <input type="text" id="last_name" name="last_name" placeholder="Enter last name" required>
                                 <span class="field-error">Last name is required.</span>
                             </div>
 
+                            <!-- First Name Field -->
                             <div class="booking-field">
                                 <label for="first_name"><i class="bi bi-person"></i> First Name</label>
                                 <input type="text" id="first_name" name="first_name" placeholder="Enter first name" required>
                                 <span class="field-error">First name is required.</span>
                             </div>
 
+                            <!-- Email Address Field -->
                             <div class="booking-field">
                                 <label for="email_address"><i class="bi bi-envelope"></i> Email Address</label>
                                 <input type="email" id="email_address" name="email_address" placeholder="Enter email address" required>
@@ -123,6 +132,7 @@
                                 <span class="field-error">Date of birth is required.</span>
                             </div>
 
+                            <!-- Gender Selection -->
                             <div class="booking-field">
                                 <label><i class="bi bi-gender-ambiguous"></i> Gender</label>
                                 <div class="radio-group">
@@ -145,7 +155,7 @@
                         </div>
                     </details>
 
-                    <!-- SECTION 2: SEAT SELECTION -->
+                    <!-- Step 2: Seat Selection -->
                     <details class="booking-section">
                         <summary><span><i class="bi bi-grid-3x3"></i> Seat Selection</span></summary>
                         <div class="booking-section-body">
@@ -154,6 +164,7 @@
                             </p>
 
                             <div class="seat-map-wrapper">
+                                <!-- Seat Legend (color key for seat types) -->
                                 <div class="seat-legend">
                                     <div class="legend-item"><span class="legend-swatch available"></span> Available</div>
                                     <div class="legend-item"><span class="legend-swatch selected"></span> Selected</div>
@@ -161,7 +172,7 @@
                                     <div class="legend-item"><span class="legend-swatch occupied"></span> Occupied</div>
                                 </div>
 
-                                <!-- Seat map using Bootstrap Grid -->
+                                <!-- Seat map (built dynamically by booking.js) -->
                                 <div class="container-fluid px-0" id="seatMap"></div>
 
                                 <div class="selected-seat-display">
@@ -172,17 +183,20 @@
                         </div>
                     </details>
 
-                    <!-- SECTION 3: MEAL & EXTRAS -->
+                    <!-- Step 3: Meal & Extra Services -->
                     <details class="booking-section">
                         <summary><span><i class="bi bi-bag-check"></i> Meal &amp; Extra Services</span></summary>
                         <div class="booking-section-body">
 
+                            <!-- Meal Preference (options built by booking.js from data.js) -->
                             <label style="font-size:13px; font-weight:700; color: var(--color-slate-700);">
                                 <i class="bi bi-cup-hot"></i> Meal Preference
                             </label>
                             <div class="meal-options" id="mealOptions"></div>
 
+                            <!-- Extra Services (Baggage, Priority, Insurance, Lounge) -->
                             <div class="extras-list">
+                                <!-- Additional Baggage -->
                                 <div class="extra-row" data-toggle="tooltip" data-placement="top" data-html="true" title="<strong>Additional Baggage</strong><br>Each item allows 20 kg of checked luggage. You can add up to 5 extra bags per booking.">
                                     <div class="extra-info">
                                         <span class="extra-title"><i class="bi bi-suitcase"></i> Additional Baggage <i class="bi bi-info-circle extra-tooltip-icon"></i></span>
@@ -198,6 +212,7 @@
                                     </div>
                                 </div>
 
+                                <!-- Priority Boarding -->
                                 <div class="extra-row" data-toggle="tooltip" data-placement="top" data-html="true" title="<strong>Priority Boarding</strong><br>Be among the first to board the aircraft. Enjoy early overhead bin access and a stress-free boarding experience.">
                                     <div class="extra-info">
                                         <span class="extra-title"><i class="bi bi-lightning-charge"></i> Priority Boarding <i class="bi bi-info-circle extra-tooltip-icon"></i></span>
@@ -212,6 +227,7 @@
                                     </div>
                                 </div>
 
+                                <!-- Travel Insurance -->
                                 <div class="extra-row" data-toggle="tooltip" data-placement="top" data-html="true" title="<strong>Travel Insurance</strong><br>Comprehensive coverage including trip cancellations, delays, lost baggage, and medical emergencies up to $50,000.">
                                     <div class="extra-info">
                                         <span class="extra-title"><i class="bi bi-shield-check"></i> Travel Insurance <i class="bi bi-info-circle extra-tooltip-icon"></i></span>
@@ -226,6 +242,7 @@
                                     </div>
                                 </div>
 
+                                <!-- Lounge Access -->
                                 <div class="extra-row" data-toggle="tooltip" data-placement="top" data-html="true" title="<strong>Lounge Access</strong><br>Relax in our premium airport lounge with complimentary refreshments, Wi-Fi, charging stations, and comfortable seating before departure.">
                                     <div class="extra-info">
                                         <span class="extra-title"><i class="bi bi-cup-straw"></i> Lounge Access <i class="bi bi-info-circle extra-tooltip-icon"></i></span>
@@ -243,15 +260,17 @@
                         </div>
                     </details>
 
+                    <!-- Submit Button -->
                     <button type="submit" class="booking-submit">Confirm Booking &amp; View Reservations</button>
                 </form>
             </div>
         </section>
 
-        <!-- BOOKING SUMMARY SIDEBAR -->
+        <!-- Price summary sidebar -->
         <aside class="booking-summary">
             <h3><i class="bi bi-receipt"></i> Booking Summary</h3>
 
+            <!-- Flight Info (populated by booking.js) -->
             <div class="summary-flight">
                 <strong id="summaryRoute">Loading...</strong><br>
                 <span id="summaryAirline">Loading...</span><br>
@@ -277,6 +296,7 @@
                 <span id="summaryExtras">None</span>
             </div>
 
+            <!-- Expandable Price Breakdown -->
             <button type="button" class="summary-breakdown-toggle" id="breakdownToggle">
                 <i class="bi bi-chevron-down"></i> Show price breakdown
             </button>
@@ -289,6 +309,7 @@
                 <div class="summary-row"><span>Taxes &amp; Fees (12%)</span><span id="priceTaxes">$0.00</span></div>
             </div>
 
+            <!-- Grand Total -->
             <div class="summary-total">
                 <span class="total-label">Grand Total</span>
                 <span class="total-value" id="priceTotal">$0.00</span>
@@ -296,7 +317,7 @@
         </aside>
     </main>
 
-    <!-- Seat Detail Modal -->
+    <!-- Seat detail popup modal -->
     <div class="modal fade" id="seatDetailModal" tabindex="-1" role="dialog" aria-labelledby="seatDetailModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
             <div class="modal-content">
@@ -342,8 +363,10 @@
         </div>
     </div>
 
+    <!-- Toast Notification Container -->
     <div class="toast-container" id="toastContainer"></div>
 
+    <!-- Booking Logic -->
     <script src="../backend/booking.js"></script>
 </body>
 </html>

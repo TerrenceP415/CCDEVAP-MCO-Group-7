@@ -1,4 +1,4 @@
-// Enable Mobile Hamburger Menu on Click
+// Mobile nav toggle
 var hamburger = document.querySelector('.hamburger');
 var navLinks = document.querySelector('.nav-links');
 
@@ -9,14 +9,14 @@ if (hamburger && navLinks) {
     });
 } 
 
-// Toast Notification handler
+// Toast notifications for CRUD actions across admin pages
 document.addEventListener('DOMContentLoaded', () => {
     const createButtons = document.querySelectorAll('.btnCreate');
     const saveButtons = document.querySelectorAll('.btnSave');
     const deleteButtons = document.querySelectorAll('.btnDelete');
     const toastContainer = document.getElementById('toastContainer');
 
-    // Takes in a message string variable and generates and display a toast notification
+    // Creates and shows a temporary toast message
     function showToast(message) {
         if (!toastContainer) return;
 
@@ -56,8 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
         button.addEventListener('click', () => showToast('Entry Deleted Successfully!'));
     });
 
-    // ─── Pre-fill Destination From Index Promo Cards ────────────
-    
+    // Pre-fill search fields when arriving from homepage promo cards
     const urlParams = new URLSearchParams(window.location.search);
     const destinationCode = urlParams.get('destination');
 
@@ -65,7 +64,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const originSelect = document.getElementById('origin');
     const destinationSelect = document.getElementById('destination');
 
-    
     if (destinationCode ) {
         destinationSelect.value = destinationCode;
         // Set the default origin (Replace MNL with selected user default)

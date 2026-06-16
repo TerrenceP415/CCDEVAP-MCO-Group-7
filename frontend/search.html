@@ -7,12 +7,14 @@
     <!-- Bootstrap -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <!-- CSS -->
     <link rel="stylesheet" href="styles.css">
     <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha384-xBuQ/xzmlsLoJpyjoggmTEz8OWUFM0/RC5BsqQBDX2v5cMvDHcMakNTNrHIW2I5f" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </head>
 
+<!-- Navigation Bar -->
 <body>
     <header>
     
@@ -23,6 +25,7 @@
                 <li><a href="search.html" class="current">Search Flights</a></li>
                 <li><a href="booking.html">Book Flights</a></li>
                 <li><a href="reservations.html">My Reservations</a></li>
+                <!-- Profile Dropdown Menu -->
                 <li><a href="#">User Profile <i class="bi bi-chevron-down"></i></a>
                     <div class="profile-dropdown">
                         <ul>
@@ -35,6 +38,7 @@
                 <li><a href="admin-dashboard.html">Admin Panel</a></li>
                 <li><a class="login" href="#">Login</a></li>
             </ul>
+            <!-- Hamburger Menu Toggle (Mobile) -->
             <div class="hamburger">
                 <span class="bar"></span>
                 <span class="bar"></span>
@@ -44,6 +48,7 @@
     </header>
 
 
+    <!-- Search Form -->
     <main class="search-shell">
         <section class="search-container">
             <form class="search-card" action="results.html" method="get" id="searchForm">
@@ -51,7 +56,9 @@
                 <h1><i class="bi bi-search"></i> Search flights</h1>
                 <p class="search-copy">Plan your trip quickly with SkyEase.</p>
 
+                <!-- Search Fields -->
                 <div class="form-grid">
+                    <!-- Origin Airport -->
                     <label for="origin"><i class="bi bi-airplane"></i> Origin Airport</label>
                     <select name="origin" id="origin">
                         <option value="MNL">Manila - Ninoy Aquino International (MNL)</option>
@@ -63,6 +70,7 @@
                         <option value="LHR">London Heathrow (LHR)</option>
                     </select>
 
+                    <!-- Destination Airport -->
                     <label for="destination"><i class="bi bi-airplane"></i> Destination Airport</label>
                     <select name="destination" id="destination">
                         <option value="MNL">Manila - Ninoy Aquino International (MNL)</option>
@@ -74,6 +82,7 @@
                         <option value="LHR">London Heathrow (LHR)</option>
                     </select>
 
+                    <!-- Trip Type (One Way / Round Trip) -->
                     <div class="trip-type-row">
                         <label><i class="bi bi-info-circle"></i> Trip Type</label>
                         <div class="select-container">
@@ -84,13 +93,16 @@
                         </div>
                     </div>
 
+                    <!-- Departure Date -->
                     <label for="departure_date"><i class="bi bi-calendar"></i> Departure Date</label>
                     <input type="date" id="departure_date" name="departure_date">
 
+                    <!-- Return Date (disabled if one-way) -->
                     <label for="return_date"><i class="bi bi-calendar"></i> Return Date</label>
                     <input type="date" id="return_date" name="return_date">
                     <span class="field-error" id="return-date-error" style="display:none; color:#e53e3e; font-size:12px; margin-top:-8px;">Return date must be after the departure date.</span>
 
+                    <!-- Passenger Count Steppers (Adults, Children, Infants) -->
                     <label><i class="bi bi-people"></i> Passengers</label>
                     <div class="passenger-breakdown">
                         <div class="pax-row">
@@ -128,6 +140,7 @@
                         </div>
                     </div>
 
+                    <!-- Cabin Class -->
                     <label for="cabin_class"><i class="bi bi-building"></i> Cabin Class</label>
                     <select name="cabin_class" id="cabin_class">
                         <option value="economy">Economy</option>
@@ -137,9 +150,11 @@
                     </select>
                 </div>
 
+                <!-- Advanced Search Options (collapsible) -->
                 <details class="accordion-container">
                     <summary><i class="bi bi-gear"></i> Advanced search options</summary>
                     <div class="accordion-panel">
+                        <!-- Airline Filter -->
                         <label for="airline"><i class="bi bi-airplane"></i> Airline</label>
                         <select name="airline" id="airline">
                             <option value="">Any Airline</option>
@@ -159,6 +174,7 @@
                             <i class="bi bi-check-circle"></i> Flexible dates
                         </label>
 
+                        <!-- Dual-Thumb Price Slider -->
                         <label for="price_range"><i class="bi bi-currency-dollar"></i> Price Range</label>
                         <div class="price-slider-wrap">
                             <div class="price-slider-track" id="price-slider-track"></div>
@@ -172,13 +188,16 @@
                     </div>
                 </details>
 
+                <!-- Submit Button -->
                 <button type="submit" class="search-button">Search flights</button>
             </form>
         </section>
     </main>
 
+    <!-- Toast Notification Container -->
     <div class="toast-container" id="toastContainer"></div>
 
+<!-- JS -->
 <script src="../backend/scripts.js" defer></script>
 <script src="../backend/search-script.js"></script>
 </body>

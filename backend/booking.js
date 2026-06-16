@@ -1,6 +1,6 @@
 $(function () {
 
-    // ---------- Selected flight (read from URL ?flight=FL-XXX parameter) ----------
+    // Read selected flight ID from URL (?flight=FL-XXX)
     var urlParams = new URLSearchParams(window.location.search);
     var flightId = urlParams.get("flight");
 
@@ -8,7 +8,7 @@ $(function () {
     if (typeof sampleFlights !== "undefined" && flightId) {
         flight = sampleFlights.find(function (f) { return f.id === flightId; }) || null;
     }
-    // Fallback if no matching flight found or no parameter provided
+    // Use first available flight if none matched, hardcoded fallback
     if (!flight) {
         flight = (typeof sampleFlights !== "undefined" && sampleFlights.length > 0)
             ? sampleFlights[0]
@@ -25,6 +25,7 @@ $(function () {
             };
     }
 
+    // Populate the sidebar flight summary
     $("#summaryRoute").text(flight.origin + " \u2192 " + flight.destination);
     $("#summaryAirline").text(flight.airlineName + " \u00b7 " + flight.flightNumber);
     $("#summaryTime").text(flight.departureTime + " - " + flight.arrivalTime + " (" + flight.duration + ")");
@@ -32,13 +33,13 @@ $(function () {
 
     var basePrice = flight.price;
 
-    // ---------- State ----------
-    // Read passenger count from URL query params
+    // Passenger counts from URL query params (defaults: 1 adult, 0 children, 0 infants)
     var adults = parseInt(urlParams.get("adults")) || 1;
     var children = parseInt(urlParams.get("children")) || 0;
     var infants = parseInt(urlParams.get("infants")) || 0;
     var totalPassengers = adults + children + infants;
 
+    // Tracks all user selections that affect the final price
     var state = {
         seat: null,
         seatPrice: 0,
@@ -51,13 +52,14 @@ $(function () {
         passengerCount: totalPassengers
     };
 
+    // Per-unit pricing for extras
     var BAGGAGE_PRICE = 25;
     var PRIORITY_PRICE = 15;
     var INSURANCE_PRICE = 20;
     var LOUNGE_PRICE = 35;
     var TAX_RATE = 0.12;
 
-    // ---------- Meal package selection ----------
+    // Build meal package options from data.js
     var $mealOptions = $("#mealOptions");
     var meals = (typeof mealPackages !== "undefined") ? mealPackages : [
         { id: "M01", name: "Standard Meal", description: "Chef's selection hot meal with beverage", price: 0.00 }
@@ -94,17 +96,16 @@ $(function () {
     // Default to Standard Meal
     selectMeal($mealOptions.find('.meal-option[data-id="M01"]'));
 
-    // ---------- Seat map (Bootstrap Grid) ----------
+    // Build the 6-row, 6-column (A-F) seat map
     var rows = 6;
     var cols = ["A", "B", "C", "D", "E", "F"];
     var occupied = ["1C", "1D", "2A", "3F", "4B", "4C", "5E", "6A"];
     var $seatMap = $("#seatMap");
 
     for (var r = 1; r <= rows; r++) {
-        // Create a Bootstrap row for each aircraft row
         var $row = $('<div class="row no-gutters seat-row justify-content-center align-items-center mb-1"></div>');
 
-        // Row label column
+        // Row number label
         $row.append('<div class="col-auto seat-row-label">' + r + '</div>');
 
         cols.forEach(function (col, i) {
@@ -137,7 +138,7 @@ $(function () {
             );
             $row.append($seat);
 
-            // Aisle gap after column C
+            // Aisle gap between columns C and D
             if (i === 2) {
                 $row.append('<div class="col-auto aisle-gap"></div>');
             }
@@ -149,7 +150,7 @@ $(function () {
     // Initialize ALL Bootstrap tooltips (seats + extra services)
     $('[data-toggle="tooltip"]').tooltip();
 
-    // ---------- Seat Detail Modal ----------
+    // Seat detail modal: shows seat info and select/deselect action
     var modalSeatId = null;
 
     $seatMap.on("click", ".seat", function () {
@@ -184,12 +185,10 @@ $(function () {
 
         // Hide the tooltip before opening modal
         $seat.tooltip('hide');
-
-        // Show the modal
         $("#seatDetailModal").modal("show");
     });
 
-    // Modal select/deselect button
+    // Handle seat select/deselect from the modal
     $("#modalSelectSeatBtn").on("click", function () {
         if (!modalSeatId) return;
 
@@ -219,7 +218,7 @@ $(function () {
         $("#seatDetailModal").modal("hide");
     });
 
-    // ---------- Extra services ----------
+    // Extra service controls (baggage quantity, toggles)
     $("#baggageDecrease").on("click", function () {
         if (state.baggage > 0) {
             state.baggage--;
@@ -248,14 +247,14 @@ $(function () {
         updateSummary();
     });
 
-    // ---------- Summary breakdown toggle ----------
+    // Toggle price breakdown panel in sidebar
     $("#breakdownToggle").on("click", function () {
         $("#summaryBreakdown").toggleClass("open");
         var open = $("#summaryBreakdown").hasClass("open");
         $(this).find("i").attr("class", open ? "bi bi-chevron-up" : "bi bi-chevron-down");
     });
 
-    // ---------- Price calculation ----------
+    // Recalculates and updates all price fields in the sidebar
     function updateSummary() {
         var extrasTotal = (state.baggage * BAGGAGE_PRICE) +
             (state.priorityBoarding ? PRIORITY_PRICE : 0) +
@@ -288,7 +287,7 @@ $(function () {
         }
     }
 
-    // ---------- Stepper highlighting ----------
+    // Stepper indicator: highlights which booking section is active/complete
     var $sections = $(".booking-section");
     var $steps = $(".booking-stepper .step");
 
@@ -306,18 +305,15 @@ $(function () {
         });
     }
 
-    // Enforce seat selection before Section 3 (Meal & Extras) can open
+    // Block opening "Meal & Extras" section until a seat is selected
     $sections.on("toggle", function (e) {
         var $this = $(this);
         var sectionIndex = $sections.index($this);
 
         // If trying to open Section 3 (index 2) without a seat selected
         if (sectionIndex === 2 && $this.prop("open") && !state.seat) {
-            // Prevent opening by closing it immediately
             $this.prop("open", false);
-            // Show seat error
             $("#seatError").show();
-            // Open Section 2 instead
             $sections.eq(1).prop("open", true);
             $("#seatError")[0].scrollIntoView({ behavior: "smooth", block: "center" });
             return;
@@ -327,7 +323,7 @@ $(function () {
     });
     refreshStepper();
 
-    // ---------- Inline validation ----------
+    // Form validation rules per field
     var $form = $("#bookingForm");
 
     var validators = {
@@ -351,6 +347,7 @@ $(function () {
         return valid;
     }
 
+    // Validate on blur so users get immediate feedback
     Object.keys(validators).forEach(function (name) {
         $form.on("blur", '[name="' + name + '"]', function () {
             validateField($(this));
@@ -359,6 +356,7 @@ $(function () {
 
     $("#genderError").hide();
 
+    // Final submit: validate everything, scroll to first error if any
     $form.on("submit", function (e) {
         e.preventDefault();
         var allValid = true;
@@ -380,7 +378,6 @@ $(function () {
         }
 
         if (!allValid) {
-            // Open the first section containing an error
             if ($(".booking-field.invalid, #seatError:visible").length) {
                 $(".booking-field.invalid, #seatError:visible").first().closest("details.booking-section").prop("open", true);
                 $(".booking-field.invalid, #seatError:visible").first()[0].scrollIntoView({ behavior: "smooth", block: "center" });
@@ -388,7 +385,7 @@ $(function () {
             return;
         }
 
-        // Mark all sections complete and proceed
+        // All valid — mark sections complete and redirect to reservations
         $sections.attr("data-complete", "true").prop("open", false);
         refreshStepper();
         $steps.last().addClass("active");
