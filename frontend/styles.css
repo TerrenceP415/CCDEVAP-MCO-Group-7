@@ -2691,26 +2691,50 @@ table {
     border: 1px solid;
 }
 
+/* Base Button Styling */
+.btn-action-modify,
+.btn-action-cancel {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 6px;
+    transition: all 0.2s ease-in-out;
+    cursor: pointer;
+}
+
+/* Modify Booking Button - Solid Blue */
 .btn-action-modify {
-    color: var(--color-sky-600);
-    border-color: var(--color-sky-200);
+    background-color: #0284c7; /* Solid sky blue background */
+    color: #ffffff; /* White text */
+    border: 1px solid #0284c7;
 }
 
 .btn-action-modify:hover {
-    background-color: var(--color-sky-50);
-    color: var(--color-sky-600);
-    border-color: var(--color-sky-400);
+    background-color: #0369a1; /* Darker blue on hover */
+    border-color: #0369a1;
+    color: #ffffff;
 }
 
+/* Cancel Booking Button - Solid Red */
 .btn-action-cancel {
-    color: var(--color-red-500);
-    border-color: rgba(239, 68, 68, 0.3);
+    background-color: #ef4444; /* Solid red background */
+    color: #ffffff; /* White text */
+    border: 1px solid #ef4444;
 }
 
 .btn-action-cancel:hover {
-    background-color: rgba(239, 68, 68, 0.05);
-    color: var(--color-red-500);
-    border-color: var(--color-red-500);
+    background-color: #dc2626; /* Darker red on hover */
+    border-color: #dc2626;
+    color: #ffffff;
+}
+
+/* Ensure icons inherit the white text color */
+.btn-action-modify i,
+.btn-action-cancel i {
+    color: #ffffff;
 }
 
 /* Cancelled Status Alert Box */
