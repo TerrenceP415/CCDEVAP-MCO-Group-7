@@ -2758,6 +2758,36 @@ table {
     z-index: 1055;
 }
 
+/* Filter Control Styling */
+.reservations-container {
+    padding: var(--space-8) 8%;
+}
+
+#searchReservations,
+#statusFilter {
+    border: 1px solid var(--color-slate-200);
+    border-radius: var(--radius-md);
+    padding: var(--space-2) var(--space-3);
+    line-height: 1.5;
+    font-size: 14px;
+    width: 100%;
+}
+
+#searchReservations:focus,
+#statusFilter:focus {
+    border-color: var(--color-sky-400);
+    box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
+}
+
+#applyFilters {
+    background: linear-gradient(135deg, var(--color-sky-600) 0%, var(--color-sky-400) 100%);
+    border: none;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 13px;
+    height: 42px; /* Matching the height of form-control */
+}
+
 /* ===================== BOOKING PAGE — UPGRADED ===================== */
 
 .booking-shell {

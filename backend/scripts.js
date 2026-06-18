@@ -72,3 +72,19 @@ document.addEventListener('DOMContentLoaded', () => {
         syncAirports(destinationSelect, originSelect); 
     }
 });
+
+document.getElementById('applyFilters').addEventListener('click', function() {
+    const searchTerm = document.getElementById('searchReservations').value.toLowerCase();
+    const filterStatus = document.getElementById('statusFilter').value;
+    const cards = document.querySelectorAll('.reservation-card');
+
+    cards.forEach(card => {
+        const text = card.innerText.toLowerCase();
+        const status = card.querySelector('.badge').innerText.toLowerCase();
+        
+        const matchesSearch = text.includes(searchTerm);
+        const matchesStatus = (filterStatus === 'all' || status.includes(filterStatus));
+
+        card.style.display = (matchesSearch && matchesStatus) ? '' : 'none';
+    });
+});
