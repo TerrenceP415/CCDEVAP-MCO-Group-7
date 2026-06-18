@@ -39,7 +39,7 @@
                     </div>
                 </li>
                 <li><a href="admin-dashboard.html">Admin Panel</a></li>
-                <li><a class="login" href="#">Login</a></li>
+                <li><a class="login" href="login.html">Login</a></li>
             </ul>
             <!-- Hamburger Menu Toggle (Mobile) -->
             <div class="hamburger">
@@ -53,7 +53,24 @@
     <!-- Reservations Content -->
     <main class="reservations-container">
         <h2 class="reservations-title"><i class="bi bi-journal-bookmark-fill"></i> My Reservations</h2>
-        
+        <div class="row mb-4 align-items-end">
+    <div class="col-md-6">
+        <label class="small font-weight-bold text-muted text-uppercase" for="searchReservations">Search Reservations</label>
+        <input type="text" class="form-control" id="searchReservations" placeholder="e.g. LAX or SIN">
+    </div>
+    <div class="col-md-4">
+        <label class="small font-weight-bold text-muted text-uppercase" for="statusFilter">Filter by Status</label>
+        <select class="form-control" id="statusFilter">
+            <option value="all">All Statuses</option>
+            <option value="confirmed">Confirmed</option>
+            <option value="pending">Pending</option>
+            <option value="cancelled">Cancelled</option>
+        </select>
+    </div>
+    <div class="col-md-2">
+        <button class="btn btn-primary w-100" id="applyFilters">Filter</button>
+    </div>
+</div>
         <!-- Reservations Accordion -->
         <div class="accordion" id="reservationsAccordion">
             

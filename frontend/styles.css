@@ -276,6 +276,7 @@ header {
     font-family: var(--font-primary);
 }
 
+
 .carousel-caption p {
     font-size: 18px;
     color: var(--color-white);
@@ -2391,6 +2392,7 @@ table {
     font-size: 1.75rem;
 }
 
+
 .booking-card .booking-copy {
     color: var(--color-slate-500);
     margin-bottom: var(--space-6);
@@ -2756,6 +2758,36 @@ table {
     bottom: 20px;
     right: 20px;
     z-index: 1055;
+}
+
+/* Filter Control Styling */
+.reservations-container {
+    padding: var(--space-8) 8%;
+}
+
+#searchReservations,
+#statusFilter {
+    border: 1px solid var(--color-slate-200);
+    border-radius: var(--radius-md);
+    padding: var(--space-2) var(--space-3);
+    line-height: 1.5;
+    font-size: 14px;
+    width: 100%;
+}
+
+#searchReservations:focus,
+#statusFilter:focus {
+    border-color: var(--color-sky-400);
+    box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
+}
+
+#applyFilters {
+    background: linear-gradient(135deg, var(--color-sky-600) 0%, var(--color-sky-400) 100%);
+    border: none;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 13px;
+    height: 42px; /* Matching the height of form-control */
 }
 
 /* ===================== BOOKING PAGE — UPGRADED ===================== */
@@ -3777,3 +3809,54 @@ body.admin-page {
     color: #10b981;
     font-size: 18px;
 }
+
+  .login-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 60px 20px;
+    position: relative;
+    overflow: hidden;
+    
+  }
+
+
+  .login-main{
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 440px;
+    background: #ffffff;
+    border-radius: 22px;
+    padding: 3px;
+    box-shadow: 0 25px 60px -15px rgba(2, 8, 30, 0.55);
+    border-top: 8px solid #0284c7;
+  }
+  .login-card{
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 44px 40px 36px;
+    text-align: center;
+  }
+    .login-field{
+    margin-bottom: 18px;
+  }
+  .login-field label{
+    display: block;
+    font-size: 12.5px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+    color: #475569;
+    margin-bottom: 7px;
+  }
+
+  .login-card h1{
+    font-family: var(--font-primary);
+    font-weight: 700;
+    font-size: 26px;
+    margin: 0 0 10px;
+    letter-spacing: -0.3px;
+  }
+
