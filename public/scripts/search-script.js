@@ -158,3 +158,5 @@ document.addEventListener('DOMContentLoaded', () => {
         updatePriceSlider();
     }
 });
+
+//Condition for departure time and arrival time if the flight is on different date
