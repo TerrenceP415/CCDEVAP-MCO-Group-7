@@ -2,7 +2,7 @@
 const sampleFlights = [
   {
     id: "FL-001",
-    airlineLogo: "airline/philippine-airlines.png",
+    airlineLogo: "public/airline/philippine-airlines.png",
     airlineName: "Philippine Arlines",
     flightNumber: "PR-102",
     origin: "MNL",
@@ -17,7 +17,7 @@ const sampleFlights = [
   },
   {
     id: "FL-002",
-    airlineLogo: "airline/cebu-pacific.png",
+    airlineLogo: "public/airline/cebu-pacific.png",
     airlineName: "Cebu Pacific",
     flightNumber: "FF-305",
     origin: "MNL",
@@ -32,8 +32,8 @@ const sampleFlights = [
   },
   {
     id: "FL-003",
-    airlineLogo: "airline/singapore-airlines.png",
-    airlineName: "Sinagpore Airlines",
+    airlineLogo: "public/airline/singapore-airlines.png",
+    airlineName: "Singapore Airlines",
     flightNumber: "PS-882",
     origin: "MNL",
     destination: "NRT",
@@ -47,7 +47,7 @@ const sampleFlights = [
   },
   {
     id: "FL-004",
-    airlineLogo: "airline/philippine-airlines.png",
+    airlineLogo: "public/airline/philippine-airlines.png",
     airlineName: "Philippine Airlines",
     flightNumber: "PR-426",
     origin: "MNL",
@@ -62,7 +62,7 @@ const sampleFlights = [
   },
   {
     id: "FL-005",
-    airlineLogo: "airline/emirates.png",
+    airlineLogo: "public/airline/emirates.png",
     airlineName: "Emirates",
     flightNumber: "GJ-011",
     origin: "MNL",
@@ -77,8 +77,8 @@ const sampleFlights = [
   },
   {
     id: "FL-006",
-    airlineLogo: "airline/singapore-airlines.png",
-    airlineName: "Sinagpore Airlines",
+    airlineLogo: "public/airline/singapore-airlines.png",
+    airlineName: "Singapore Airlines",
     flightNumber: "PS-009",
     origin: "MNL",
     destination: "LAX",
@@ -92,7 +92,7 @@ const sampleFlights = [
   },
   {
     id: "FL-007",
-    airlineLogo: "airline/cebu-pacific.png",
+    airlineLogo: "public/airline/cebu-pacific.png",
     airlineName: "Cebu Pacific",
     flightNumber: "FF-112",
     origin: "MNL",
@@ -107,7 +107,7 @@ const sampleFlights = [
   },
   {
     id: "FL-008",
-    airlineLogo: "airline/emirates.png",
+    airlineLogo: "public/airline/emirates.png",
     airlineName: "Emirates",
     flightNumber: "GJ-702",
     origin: "MNL",

@@ -1,0 +1,26 @@
+{
+  "name": "ccdevap-mco-group-7",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/TerrenceP415/CCDEVAP-MCO-Group-7#readme",
+  "bugs": {
+    "url": "https://github.com/TerrenceP415/CCDEVAP-MCO-Group-7/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TerrenceP415/CCDEVAP-MCO-Group-7.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "handlebars": "^4.7.9",
+    "mongoose": "^9.7.4"
+  }
+}
