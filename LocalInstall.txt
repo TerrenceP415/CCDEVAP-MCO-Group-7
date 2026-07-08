@@ -1,8 +1,20 @@
-download node js and mongodb
+1. Clone & Navigate
 
-pull from github and open cmd sa folder nyo
+Clone the repository and move into the project folder:
 
-type nyo: 
+2. Install Dependencies
+
+Run the standard installation command to install all required packages listed in the package.json file:
+Bash
+
 npm install
 
-configure .env file for DB credentials
+3. Handle the .env File
+
+If the project uses environment variables (like database credentials or API keys):
+
+    Look for a .env.example file in the project root.
+
+    Copy and rename it to exactly .env.
+
+    Open it and fill in your local configuration values.
