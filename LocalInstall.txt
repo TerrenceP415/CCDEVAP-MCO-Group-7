@@ -1,0 +1,5 @@
+download node js and mongodb
+
+pull and open cmd on the directory
+
+npm install
