@@ -1,7 +1,8 @@
 download node js and mongodb
 
-pull and open cmd on the directory
+pull from github and open cmd sa folder nyo
 
+type nyo: 
 npm install
 
 configure .env file for DB credentials
