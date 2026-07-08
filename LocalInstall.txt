@@ -5,9 +5,8 @@ Clone the repository and move into the project folder:
 2. Install Dependencies
 
 Run the standard installation command to install all required packages listed in the package.json file:
-Bash
-
-npm install
+in CMD on the project folder:
+"npm install"
 
 3. Handle the .env File
 
