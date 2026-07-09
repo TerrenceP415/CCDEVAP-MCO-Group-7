@@ -19,6 +19,7 @@ exports.postRegister = async (req, res) => {
     req.flash('success', 'Account created! Please log in.');
     res.redirect('/login');
   } catch (err) {
+    console.error('Registration Error:', err); // Helpful for debugging
     req.flash('error', 'Something went wrong.');
     res.redirect('/register');
   }
@@ -82,3 +83,4 @@ exports.updateProfile = async (req, res) => {
     res.redirect('/profile');
   }
 };
+
