@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const flightController = require('../controllers/flightController');
+const flightController = require('../controllers/flightControllers');
 
 router.get('/', flightController.index);
 router.get('/new', flightController.newFlightForm);

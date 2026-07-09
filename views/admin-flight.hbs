@@ -1,0 +1,211 @@
+<table class="admin-table">
+  <tr>
+    <th>Flight Number</th>
+    <th>Airline</th>
+    <th>Origin</th>
+    <th>Destination</th>
+    <th>Departure Time</th>
+    <th>Arrival Time</th>
+    <th>Seats</th>
+    <th>Price</th>
+    <th>Actions</th>
+  </tr>
+
+  {{#each flights}}
+  <tr data-id="{{this._id}}">
+    <td>{{this.flightNumber}}</td>
+    <td>{{this.airline}}</td>
+    <td>{{this.origin}}</td>
+    <td>{{this.destination}}</td>
+    <td>{{this.departureDateTime}}</td>
+    <td>{{this.arrivalDateTime}}</td>
+    <td>{{this.availableSeats}} / {{this.totalSeats}}</td>
+    <td>{{this.ticketPrice}}</td>
+    <td>
+      <button
+        class="btn btn-primary action-btn-admin btn-edit"
+        data-id="{{this._id}}"
+        data-flight-number="{{this.flightNumber}}"
+        data-airline="{{this.airline}}"
+        data-origin="{{this.origin}}"
+        data-destination="{{this.destination}}"
+        data-departure="{{this.departureDateTime}}"
+        data-arrival="{{this.arrivalDateTime}}"
+        data-available-seats="{{this.availableSeats}}"
+        data-total-seats="{{this.totalSeats}}"
+        data-ticket-price="{{this.ticketPrice}}"
+        data-toggle="modal"
+        data-target="#editFlightModal"
+      >Edit</button>
+
+      <button
+        class="btn btn-danger action-btn-admin btn-delete"
+        data-id="{{this._id}}"
+        data-toggle="modal"
+        data-target="#deleteConfirmationModal"
+      >Delete</button>
+    </td>
+  </tr>
+  {{/each}}
+</table>
+
+<form id="addFlightForm" action="/admin/flights" method="POST">
+  <div class="form-group">
+    <label for="flightNumber">Flight Number</label>
+    <input name="flightNumber" type="text" class="form-control" id="flightNumber" required>
+  </div>
+  <div class="form-group">
+    <label for="airline">Airline</label>
+    <input name="airline" type="text" class="form-control" id="airline" required>
+  </div>
+  <div class="form-group">
+    <label for="origin">Origin</label>
+    <input name="origin" type="text" class="form-control" id="origin" required>
+  </div>
+  <div class="form-group">
+    <label for="destination">Destination</label>
+    <input name="destination" type="text" class="form-control" id="destination" required>
+  </div>
+  <div class="form-group">
+    <label for="departureDateTime">Departure Time</label>
+    <input name="departureDateTime" type="datetime-local" class="form-control" id="departureDateTime" required>
+  </div>
+  <div class="form-group">
+    <label for="arrivalDateTime">Arrival Time</label>
+    <input name="arrivalDateTime" type="datetime-local" class="form-control" id="arrivalDateTime" required>
+  </div>
+  <div class="form-group">
+    <label for="availableSeats">Available Seats</label>
+    <input name="availableSeats" type="number" class="form-control" id="availableSeats" min="0" required>
+  </div>
+  <div class="form-group">
+    <label for="totalSeats">Total Seats</label>
+    <input name="totalSeats" type="number" class="form-control" id="totalSeats" min="0" required>
+  </div>
+  <div class="form-group">
+    <label for="ticketPrice">Ticket Price</label>
+    <input name="ticketPrice" type="number" class="form-control" id="ticketPrice" min="0" required>
+  </div>
+  <button type="submit" class="btn btn-success">Add Flight</button>
+</form>
+
+<form id="editFlightForm">
+  <input type="hidden" id="editFlightId">
+  <div class="form-group">
+    <label for="editFlightNumber">Flight Number</label>
+    <input name="flightNumber" type="text" class="form-control" id="editFlightNumber" required>
+  </div>
+  <div class="form-group">
+    <label for="editAirline">Airline</label>
+    <input name="airline" type="text" class="form-control" id="editAirline" required>
+  </div>
+  <div class="form-group">
+    <label for="editOrigin">Origin</label>
+    <input name="origin" type="text" class="form-control" id="editOrigin" required>
+  </div>
+  <div class="form-group">
+    <label for="editDestination">Destination</label>
+    <input name="destination" type="text" class="form-control" id="editDestination" required>
+  </div>
+  <div class="form-group">
+    <label for="editDepartureDateTime">Departure Time</label>
+    <input name="departureDateTime" type="datetime-local" class="form-control" id="editDepartureDateTime" required>
+  </div>
+  <div class="form-group">
+    <label for="editArrivalDateTime">Arrival Time</label>
+    <input name="arrivalDateTime" type="datetime-local" class="form-control" id="editArrivalDateTime" required>
+  </div>
+  <div class="form-group">
+    <label for="editAvailableSeats">Available Seats</label>
+    <input name="availableSeats" type="number" class="form-control" id="editAvailableSeats" min="0" required>
+  </div>
+  <div class="form-group">
+    <label for="editTotalSeats">Total Seats</label>
+    <input name="totalSeats" type="number" class="form-control" id="editTotalSeats" min="0" required>
+  </div>
+  <div class="form-group">
+    <label for="editTicketPrice">Ticket Price</label>
+    <input name="ticketPrice" type="number" class="form-control" id="editTicketPrice" min="0" required>
+  </div>
+  <button type="button" id="saveFlightChanges" class="btn btn-success">Save Changes</button>
+</form>
+
+<button type="button" id="confirmDeleteFlight" class="btn btn-danger">Delete Flight</button>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  let deleteFlightId = null;
+
+  document.querySelectorAll('.btn-edit').forEach(button => {
+    button.addEventListener('click', function () {
+      document.getElementById('editFlightId').value = this.dataset.id;
+      document.getElementById('editFlightNumber').value = this.dataset.flightNumber;
+      document.getElementById('editAirline').value = this.dataset.airline;
+      document.getElementById('editOrigin').value = this.dataset.origin;
+      document.getElementById('editDestination').value = this.dataset.destination;
+      document.getElementById('editDepartureDateTime').value = this.dataset.departure;
+      document.getElementById('editArrivalDateTime').value = this.dataset.arrival;
+      document.getElementById('editAvailableSeats').value = this.dataset.availableSeats;
+      document.getElementById('editTotalSeats').value = this.dataset.totalSeats;
+      document.getElementById('editTicketPrice').value = this.dataset.ticketPrice;
+    });
+  });
+
+  document.getElementById('saveFlightChanges').addEventListener('click', function () {
+    const flightId = document.getElementById('editFlightId').value;
+    const flightData = {
+      flightNumber: document.getElementById('editFlightNumber').value,
+      airline: document.getElementById('editAirline').value,
+      origin: document.getElementById('editOrigin').value,
+      destination: document.getElementById('editDestination').value,
+      departureDateTime: document.getElementById('editDepartureDateTime').value,
+      arrivalDateTime: document.getElementById('editArrivalDateTime').value,
+      availableSeats: document.getElementById('editAvailableSeats').value,
+      totalSeats: document.getElementById('editTotalSeats').value,
+      ticketPrice: document.getElementById('editTicketPrice').value
+    };
+
+    fetch(`/admin/flights/${flightId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(flightData)
+    })
+    .then(response => {
+      if (response.ok) {
+        window.location.reload();
+      } else {
+        return response.text().then(text => { throw new Error(text || 'Could not update flight') });
+      }
+    })
+    .catch(error => alert(error.message));
+  });
+
+  document.querySelectorAll('.btn-delete').forEach(button => {
+    button.addEventListener('click', function () {
+      deleteFlightId = this.dataset.id;
+    });
+  });
+
+  document.getElementById('confirmDeleteFlight').addEventListener('click', function () {
+    if (!deleteFlightId) return;
+
+    fetch(`/admin/flights/${deleteFlightId}`, { method: 'DELETE' })
+      .then(async response => {
+        if (!response.ok) {
+          const data = await response.json().catch(() => ({}));
+          throw new Error(data.message || 'Could not delete flight');
+        }
+
+        const row = document.querySelector(`tr[data-id="${deleteFlightId}"]`);
+        if (row) row.remove();
+        deleteFlightId = null;
+
+        const modalEl = document.getElementById('deleteConfirmationModal');
+        if (modalEl && typeof $ === 'function') {
+          $(modalEl).modal('hide');
+        }
+      })
+      .catch(error => alert(error.message));
+  });
+});
+</script>
