@@ -1,6 +1,8 @@
 const express = require('express');
 const { engine } = require('express-handlebars');
 const mongoose = require('mongoose');
+const session = require('express-session');
+const flash = require('connect-flash');
 const path = require('path');
 require('dotenv').config();
 
@@ -21,6 +23,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'views'))); 
 
 // ─── Session ──────────────────────────────────────────
 app.use(session({
@@ -52,6 +55,8 @@ const authRoutes = require('./routes/authRoutes');
 app.use('/', authRoutes);
 
 // Member 2 - Flight routes (admin flight management)
+const flightRoutes = require('./routes/flights');
+app.use('/admin/flights', flightRoutes);
 
 // Member 3 - Search and booking routes
 // const bookingRoutes = require('./routes/bookingRoutes');
