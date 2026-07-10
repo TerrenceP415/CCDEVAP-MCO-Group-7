@@ -1,23 +1,35 @@
 <div class="container mt-5" style="max-width: 500px;">
   <h2 class="mb-4">Create Account</h2>
+
+{{!-- Not sure if kailangan pa ng error message since we can't check if login na daw ba or hindi --}}
+
+  {{#if error}}
+    <div class="alert alert-danger">{{ error }}</div>
+  {{/if}}
+  {{#if success}}
+    <div class="alert alert-success">{{ success }}</div>
+  {{/if}}
+
   <form action="/register" method="POST">
     <div class="mb-3">
       <label class="form-label">Full Name</label>
-      <input type="text" name="fullName" class="form-control" required>
+      <input type="text" name="fullName" class="form-control"
+             value="{{ body.fullName }}" required>
     </div>
     <div class="mb-3">
       <label class="form-label">Email</label>
-      <input type="email" name="email" class="form-control" required>
+      <input type="email" name="email" class="form-control"
+             value="{{ body.email }}" required>
     </div>
     <div class="mb-3">
       <label class="form-label">Passport Number</label>
-      <input type="text" name="passportNumber" class="form-control" required>
+      <input type="text" name="passportNumber" class="form-control"
+             value="{{ body.passportNumber }}" required>
     </div>
     <div class="mb-3">
       <label class="form-label">Password</label>
       <input type="password" name="password" class="form-control" required>
     </div>
     <button type="submit" class="btn btn-primary w-100">Register</button>
-    <p class="mt-3 text-center">Already have an account? <a href="/login">Login</a></p>
   </form>
 </div>

@@ -1,8 +1,6 @@
 const express = require('express');
 const { engine } = require('express-handlebars');
 const mongoose = require('mongoose');
-const session = require('express-session');
-const flash = require('connect-flash');
 const path = require('path');
 require('dotenv').config();
 
@@ -23,7 +21,6 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(express.static(path.join(__dirname, 'views'))); 
 
 // ─── Session ──────────────────────────────────────────
 app.use(session({
@@ -50,25 +47,23 @@ mongoose.connect(process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/skyEase')
 
 // ─── Routes ───────────────────────────────────────────
 
-// Member 1 - Auth routes (login, register, profile, logout)
+// Member 1 - Auth routes (register, profile)
 const authRoutes = require('./routes/authRoutes');
 app.use('/', authRoutes);
 
 // Member 2 - Flight routes (admin flight management)
-const flightRoutes = require('./routes/flights');
-app.use('/admin/flights', flightRoutes);
 
-// Member 3 - Add search and booking routes here
+// Member 3 - Search and booking routes
+// const bookingRoutes = require('./routes/bookingRoutes');
+// app.use('/', bookingRoutes);
 
-// Member 4 - Add reservation routes here
+// Member 4 - Reservation routes
+// const reservationRoutes = require('./routes/reservationRoutes');
+// app.use('/', reservationRoutes);
 
 // ─── Legacy Static HTML Routes (from MCO1) ────────────
-// These will be replaced by .hbs versions as each member converts them
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'views', 'index.html'));
-});
-app.get('/search', (req, res) => {
-  res.sendFile(path.join(__dirname, 'views', 'search.html'));
 });
 
 app.listen(port, () => {
