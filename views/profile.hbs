@@ -1,18 +1,41 @@
 <div class="container mt-5" style="max-width: 550px;">
   <h2 class="mb-4">My Profile</h2>
-  <form action="/profile" method="POST">
-    <div class="mb-3">
-      <label class="form-label">Full Name</label>
-      <input type="text" name="fullName" class="form-control" value="{{ user.fullName }}" required>
-    </div>
-    <div class="mb-3">
-      <label class="form-label">Email</label>
-      <input type="email" class="form-control" value="{{ user.email }}" disabled>
-    </div>
-    <div class="mb-3">
-      <label class="form-label">Passport Number</label>
-      <input type="text" name="passportNumber" class="form-control" value="{{ user.passportNumber }}" required>
-    </div>
-    <button type="submit" class="btn btn-primary">Save Changes</button>
-  </form>
+
+  {{#if error}}
+    <div class="alert alert-danger">{{ error }}</div>
+  {{/if}}
+  {{#if success}}
+    <div class="alert alert-success">{{ success }}</div>
+  {{/if}}
+
+  {{#unless user}}
+    <form action="/profile" method="GET" class="mb-4">
+      <div class="input-group">
+        <input type="email" name="email" class="form-control"
+               placeholder="Enter your email to view profile" required>
+        <button type="submit" class="btn btn-primary">Find</button>
+      </div>
+    </form>
+  {{/unless}}
+
+  {{#if user}}
+    <form action="/profile" method="POST">
+      <input type="hidden" name="email" value="{{ user.email }}">
+      <div class="mb-3">
+        <label class="form-label">Full Name</label>
+        <input type="text" name="fullName" class="form-control"
+               value="{{ user.fullName }}" required>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Email</label>
+        <input type="email" class="form-control" value="{{ user.email }}" disabled>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Passport Number</label>
+        <input type="text" name="passportNumber" class="form-control"
+               value="{{ user.passportNumber }}" required>
+      </div>
+      <button type="submit" class="btn btn-primary">Save Changes</button>
+    </form>
+  {{/if}}
 </div>
