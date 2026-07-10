@@ -23,6 +23,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'views'))); 
 
 // ─── Session ──────────────────────────────────────────
 app.use(session({
@@ -43,7 +44,7 @@ app.use((req, res, next) => {
 });
 
 // ─── MongoDB Connection ───────────────────────────────
-mongoose.connect(process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/   ')
+mongoose.connect(process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/skyEase')
   .then(() => console.log('MongoDB connected'))
   .catch(err => console.error('MongoDB connection error:', err));
 
@@ -54,6 +55,8 @@ const authRoutes = require('./routes/authRoutes');
 app.use('/', authRoutes);
 
 // Member 2 - Flight routes (admin flight management)
+const flightRoutes = require('./routes/flights');
+app.use('/admin/flights', flightRoutes);
 
 // Member 3 - Add search and booking routes here
 

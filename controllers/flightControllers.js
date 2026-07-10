@@ -2,8 +2,8 @@ const Flight = require('../models/Flight');
 
 exports.index = async (req, res) => {
   try {
-    const flights = await Flight.find().sort({ departureDateTime: 1 });
-    res.render('admin-flights', { flights });
+    const flights = await Flight.find().sort({ departureDateTime: 1 }).lean();
+    res.render('admin-flight', { flights });
   } catch (err) {
     console.error(err);
     res.status(500).send('Unable to load flights');
