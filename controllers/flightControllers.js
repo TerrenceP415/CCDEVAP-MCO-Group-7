@@ -136,7 +136,7 @@ exports.updateFlight = async (req, res) => {
         totalSeats,
         ticketPrice,
       },
-      { new: true, runValidators: true }
+      { returnDocument: 'after', runValidators: true }
     );
 
     if (!flight) {
