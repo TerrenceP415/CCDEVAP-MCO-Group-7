@@ -22,6 +22,12 @@ app.set('views', path.join(__dirname, 'views'));
 // ─── Middleware ───────────────────────────────────────
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use((req, res, next) => {
+  if (req.method === 'POST' && req.body && req.body._method) {
+    req.method = req.body._method.toUpperCase();
+  }
+  next();
+});
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'views'))); 
 
@@ -69,6 +75,34 @@ app.use('/admin/flights', flightRoutes);
 // ─── Legacy Static HTML Routes (from MCO1) ────────────
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'views', 'index.html'));
+});
+
+app.get('/admin', (req, res) => {
+  res.redirect('/admin/flights');
+});
+
+app.get('/admin-dashboard', (req, res) => {
+  res.sendFile(path.join(__dirname, 'views', 'admin-dashboard.html'));
+});
+
+app.get('/admin-dashboard.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'views', 'admin-dashboard.html'));
+});
+
+app.get('/admin-flights', (req, res) => {
+  res.redirect('/admin/flights');
+});
+
+app.get('/admin-flights.html', (req, res) => {
+  res.redirect('/admin/flights');
+});
+
+app.get('/admin-flight', (req, res) => {
+  res.redirect('/admin/flights');
+});
+
+app.get('/admin-flight.html', (req, res) => {
+  res.redirect('/admin/flights');
 });
 
 app.listen(port, () => {

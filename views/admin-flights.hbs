@@ -250,6 +250,14 @@
 document.addEventListener('DOMContentLoaded', function () {
   let deleteFlightId = null;
 
+  const formatDateTimeLocal = (value) => {
+    if (!value) return '';
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) return '';
+    const pad = (num) => String(num).padStart(2, '0');
+    return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
+  };
+
   document.querySelectorAll('.btn-edit').forEach(button => {
     button.addEventListener('click', function () {
       document.getElementById('editFlightId').value = this.dataset.id;
@@ -257,8 +265,8 @@ document.addEventListener('DOMContentLoaded', function () {
       document.getElementById('editAirline').value = this.dataset.airline;
       document.getElementById('editOrigin').value = this.dataset.origin;
       document.getElementById('editDestination').value = this.dataset.destination;
-      document.getElementById('editDepartureDateTime').value = this.dataset.departure;
-      document.getElementById('editArrivalDateTime').value = this.dataset.arrival;
+      document.getElementById('editDepartureDateTime').value = formatDateTimeLocal(this.dataset.departure);
+      document.getElementById('editArrivalDateTime').value = formatDateTimeLocal(this.dataset.arrival);
       document.getElementById('editAvailableSeats').value = this.dataset.availableSeats;
       document.getElementById('editTotalSeats').value = this.dataset.totalSeats;
       document.getElementById('editTicketPrice').value = this.dataset.ticketPrice;
@@ -286,11 +294,12 @@ document.addEventListener('DOMContentLoaded', function () {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(flightData)
       })
-      .then(response => {
-        if (response.ok) {
+      .then(async response => {
+        const data = await response.json().catch(() => ({}));
+        if (response.ok && data.success) {
           window.location.reload();
         } else {
-          return response.text().then(text => { throw new Error(text || 'Could not update flight') });
+          throw new Error(data.message || 'Could not update flight');
         }
       })
       .catch(error => alert(error.message));

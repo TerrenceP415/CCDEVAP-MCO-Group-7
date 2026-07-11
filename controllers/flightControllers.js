@@ -1,9 +1,19 @@
-const Flight = require('../models/Flight');
+const Flight = require('../models/flight');
+
+const formatDateTimeLocal = (value) => {
+  if (!value) return '';
+  const date = new Date(value);
+  const pad = (num) => String(num).padStart(2, '0');
+  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
+};
 
 exports.index = async (req, res) => {
   try {
     const flights = await Flight.find().sort({ departureDateTime: 1 }).lean();
-    res.render('admin-flight', { flights });
+    res.render('admin-flights', {
+      title: 'Admin Flights',
+      flights,
+    });
   } catch (err) {
     console.error(err);
     res.status(500).send('Unable to load flights');
@@ -12,6 +22,7 @@ exports.index = async (req, res) => {
 
 exports.newFlightForm = (req, res) => {
   res.render('flight-form', {
+    title: 'Add Flight',
     flight: {},
     action: '/admin/flights',
     method: 'POST',
@@ -69,9 +80,12 @@ exports.editFlightForm = async (req, res) => {
     }
 
     res.render('flight-form', {
+      title: 'Edit Flight',
       flight,
       action: `/admin/flights/${flight._id}`,
       method: 'PUT',
+      departureDateTimeValue: formatDateTimeLocal(flight.departureDateTime),
+      arrivalDateTimeValue: formatDateTimeLocal(flight.arrivalDateTime),
     });
   } catch (err) {
     console.error(err);
@@ -93,8 +107,12 @@ exports.updateFlight = async (req, res) => {
       ticketPrice,
     } = req.body;
 
+    if (!flightNumber || !airline || !origin || !destination || !departureDateTime || !arrivalDateTime) {
+      return res.status(400).json({ success: false, message: 'Please fill in all required fields.' });
+    }
+
     if (new Date(departureDateTime) >= new Date(arrivalDateTime)) {
-      return res.status(400).send('Departure must be before arrival');
+      return res.status(400).json({ success: false, message: 'Departure must be before arrival.' });
     }
 
     const duplicate = await Flight.findOne({
@@ -102,7 +120,7 @@ exports.updateFlight = async (req, res) => {
       _id: { $ne: req.params.id },
     });
     if (duplicate) {
-      return res.status(400).send('A flight with that number already exists');
+      return res.status(400).json({ success: false, message: 'A flight with that number already exists.' });
     }
 
     const flight = await Flight.findByIdAndUpdate(
@@ -122,13 +140,13 @@ exports.updateFlight = async (req, res) => {
     );
 
     if (!flight) {
-      return res.status(404).send('Flight not found');
+      return res.status(404).json({ success: false, message: 'Flight not found.' });
     }
 
-    res.redirect('/admin/flights');
+    res.json({ success: true, message: 'Flight updated successfully.' });
   } catch (err) {
     console.error(err);
-    res.status(500).send('Could not update flight');
+    res.status(500).json({ success: false, message: 'Could not update flight.' });
   }
 };
 
