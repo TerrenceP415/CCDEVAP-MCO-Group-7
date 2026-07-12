@@ -58,12 +58,9 @@ mongoose.connect(process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/skyEase')
 // ─── Routes ───────────────────────────────────────────
 
 // Member 1 - Auth routes (register, profile)
-const authRoutes = require('./routes/authRoutes');
-app.use('/', authRoutes);
 
 // Member 2 - Flight routes (admin flight management)
-const flightRoutes = require('./routes/flights');
-app.use('/admin/flights', flightRoutes);
+
 
 // Member 3 - Search and booking routes
 // const bookingRoutes = require('./routes/bookingRoutes');
@@ -79,37 +76,25 @@ app.get('/', (req, res) => {
 });
 
 app.get('/admin', (req, res) => {
-  res.redirect('/admin/dashboard');
+  res.redirect('/admin/dashboard',);
 });
 
 app.get('/admin/dashboard', (req, res) => {
-  res.render('admin-dashboard', { title: 'Admin Dashboard' });
+  res.render('admin-dashboard', { title: 'Admin Dashboard', layout: 'admin' });
 });
 
 app.get('/admin/flights', (req, res) => {
-  res.redirect('/admin/flights');
+  res.render('admin-flights', { title: 'Admin Flights', layout: 'admin' });
 });
-
-app.get('/admin/flights.html', (req, res) => {
-  res.redirect('/admin/flights');
-});
-
-app.get('/admin/flight', (req, res) => {
-  res.redirect('/admin/flights');
-});
-
-app.get('/admin-flight.html', (req, res) => {
-  res.redirect('/admin/flights');
-});
-
 
 
 app.get('/my-reservations', (req, res) => {
-  res.render('reservations', { title: 'My Reservations' });
+  res.render('reservations', { title: 'My Reservations', layout: 'main' });
 });
 app.get('/admin/reservations', (req, res) => {
-  res.render('admin-reservations', { title: 'Admin Reservations' });
+  res.render('admin-reservations', { title: 'Admin Reservations', layout: 'admin' });
 });
+
 
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
