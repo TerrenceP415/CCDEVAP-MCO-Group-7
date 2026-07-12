@@ -99,8 +99,25 @@ app.get('/admin/flights', (req, res) => {
 app.get('/my-reservations', (req, res) => {
   res.render('reservations', { title: 'My Reservations', layout: 'main' });
 });
+
 app.get('/admin/reservations', (req, res) => {
   res.render('admin-reservations', { title: 'Admin Reservations', layout: 'admin' });
+});
+
+app.get('/booking', (req, res) => {
+  res.render('booking.html');
+});
+
+app.get('/login', (req, res) => {
+  res.render('login', { title: 'Login', layout: 'main' });
+});
+
+app.get('/register', (req, res) => {
+  res.render('register', { title: 'Register', layout: 'main' });
+});
+
+app.get('/settings', (req, res) => {
+  res.render('settings.html');
 });
 
 
