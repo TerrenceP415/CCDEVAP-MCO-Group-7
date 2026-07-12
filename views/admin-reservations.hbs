@@ -200,7 +200,7 @@
             </div>
 
             <div class="modal-body">
-                <form action="/admin/reservations" method="POST">
+                <form action="/admin/reservations/create" method="POST">
                 <div class="row">
                     <div class="col-md-6">
                     <div class="form-group">
@@ -282,8 +282,8 @@
         </div>
         </div>
      
-     <!-- Edit Reservation -->
-      <div class="modal fade" id="editReservationModal" tabindex="-1" role="dialog" aria-labelledby="editReservationModalTitle" aria-hidden="true">
+      <!-- Edit Reservation -->
+       <div class="modal fade" id="editReservationModal" tabindex="-1" role="dialog" aria-labelledby="editReservationModalTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -293,44 +293,44 @@
                     </button>
                 </div>
 
-            <div class="modal-body">
-                <form>
+            <form action="/admin/reservations/update" method="POST">
+                <div class="modal-body">
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="editReservationNumber">Reservation Number</label>
-                                <input type="text" class="form-control" id="editReservationNumber" readonly>
+                                <input name="reservationNumber" type="text" class="form-control" id="editReservationNumber" readonly>
                             </div>
                             <div class="form-group">
                                 <label for="editOrigin">Origin</label>
-                                <input type="text" class="form-control" id="editOrigin" placeholder="Enter origin">
+                                <input name="origin" type="text" class="form-control" id="editOrigin" placeholder="Enter origin" required>
                             </div>
                             <div class="form-group">
                                 <label for="editDestination">Destination</label>
-                                <input type="text" class="form-control" id="editDestination" placeholder="Enter destination">
+                                <input name="destination" type="text" class="form-control" id="editDestination" placeholder="Enter destination" required>
                             </div>
                             <div class="form-group">
                                 <label for="editDepartureTime">Departure Time</label>
-                                <input type="datetime-local" class="form-control" id="editDepartureTime">
+                                <input name="departureTime" type="datetime-local" class="form-control" id="editDepartureTime" required>
                             </div>
                             <div class="form-group">
                                 <label for="editArrivalTime">Arrival Time</label>
-                                <input type="datetime-local" class="form-control" id="editArrivalTime">
+                                <input name="arrivalTime" type="datetime-local" class="form-control" id="editArrivalTime" required>
                             </div>
                         </div>
 
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="editSeatNumber">Seat Number(s)</label>
-                                <input type="text" class="form-control" id="editSeatNumber" placeholder="e.g., 12A, 12B, 12C">
+                                <input name="seatNumber" type="text" class="form-control" id="editSeatNumber" placeholder="e.g., 12A, 12B, 12C" required>
                             </div>
                             <div class="form-group">
                                 <label for="editTotalPrice">Total Price</label>
-                                <input type="text" class="form-control" id="editTotalPrice" placeholder="Enter price">
+                                <input name="totalPrice" type="text" class="form-control" id="editTotalPrice" placeholder="Enter price" required>
                             </div>
                             <div class="form-group">
                                 <label for="editReservationStatus">Status</label>
-                                <select class="form-control" id="editReservationStatus">
+                                <select name="status" class="form-control" id="editReservationStatus" required>
                                     <option value="Pending">Pending</option>
                                     <option value="Confirmed">Confirmed</option>
                                     <option value="Cancelled">Cancelled</option>
@@ -338,7 +338,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="editPassengerCount">Passenger Count</label>
-                                <input type="text" class="form-control" id="editPassengerCount" placeholder="e.g., 3 Adults, 0 Children">
+                                <input name="passengerCount" type="text" class="form-control" id="editPassengerCount" placeholder="e.g., 3 Adults, 0 Children" required>
                             </div>
                         </div>
                     </div>
@@ -349,32 +349,29 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label for="editPassengerNames">Passenger Names (One per line)</label>
-                                <textarea class="form-control" id="editPassengerNames" rows="3" placeholder="Enter passenger names"></textarea>
+                                <textarea name="passengerNames" class="form-control" id="editPassengerNames" rows="3" placeholder="Enter passenger names" required></textarea>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="editMealPackage">Meal Package</label>
-                                <input type="text" class="form-control" id="editMealPackage" placeholder="e.g., 2x Standard, 1x Vegetarian">
+                                <input name="mealPackage" type="text" class="form-control" id="editMealPackage" placeholder="e.g., 2x Standard, 1x Vegetarian">
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="editExtraServices">Extra Services</label>
-                                <input type="text" class="form-control" id="editExtraServices" placeholder="e.g., 1x Extra Baggage, Priority Boarding">
+                                <input name="extraServices" type="text" class="form-control" id="editExtraServices" placeholder="e.g., 1x Extra Baggage, Priority Boarding">
                             </div>
                         </div>
                     </div>
-                </form>
-            </div>
+                </div>
             
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Discard</button>
-
-                        <!-- Handle Edit -->
-
-                        <button type="button" class="btn btn-success btnSave" data-dismiss="modal">Save Changes</button>
-                    </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Discard</button>
+                    <button type="submit" class="btn btn-success btnSave">Save Changes</button>
+                </div>
+            </form>
             </div>
         </div>
     </div>
