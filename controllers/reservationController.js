@@ -6,39 +6,30 @@ exports.getAdminReservations = async (req, res) => {
     try {
         const reservations = await Reservation.find()
             .populate('flight')
-            .lean();
-
-        const formattedReservations = [];
-        // loop through each reservation to format the seat numbers and status flags
-        for (let i = 0; i < reservations.length; i++) {
-            const reservation = reservations[i];
-
+            .lean(); 
+        
+        const formattedReservations = reservations.map(resObj => {
             // Calculate seat string
-            // seat numbers is held as part of passengers array
-            // verify passengers array exist, join their seat numbers with a comma; otherwise, display 'N/A'
             let seatDisplay = 'N/A';
-            if (reservation.passengers && reservation.passengers.length > 0) {
-                const seatNumbers = [];
-                for (let j = 0; j < reservation.passengers.length; j++) {
-                    seatNumbers.push(reservation.passengers[j].seatNumber);
-                }
-                seatDisplay = seatNumbers.join(', ');
+
+            
+            if (resObj.passengers && resObj.passengers.length > 0) {
+                seatDisplay = resObj.passengers.map(p => p.seatNumber).join(', ');
             }
 
-            formattedReservations.push({
-                reservation,
+            return {
+                ...resObj,
                 seatDisplay,
-                // Status flag check for button css
-                isConfirmed: reservation.status === 'Confirmed',
-                isCancelled: reservation.status === 'Cancelled',
-                isPending: reservation.status === 'Pending'
-            });
-        }
+                // Create native JS boolean flags for the statuses
+                isConfirmed: resObj.status === 'Confirmed',
+                isCancelled: resObj.status === 'Cancelled',
+                isPending: resObj.status === 'Pending'
+            };
+        });
 
-        // send the formatted reservations to the view
-        res.render('admin-reservations', { title: 'Admin Reservations',
-            layout: 'admin',
-            reservations: formattedReservations
+        res.render('admin-reservations', { 
+            layout: 'admin', 
+            reservations: formattedReservations 
         });
 
     } catch (err) {

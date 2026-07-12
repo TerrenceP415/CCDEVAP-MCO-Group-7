@@ -38,6 +38,62 @@
                             <td><span class="admin-status badge badge-{{#if this.isConfirmed}}success{{else if this.isCancelled}}danger{{else}}warning{{/if}}">{{this.status}}</span></td>
                             
                         </tr>
+                        <tr class="details-collapse-row">
+                            <td colspan="10" class="p-0 border-top-0">
+                                <!-- Match id to data-target of the parent clickable row using MongoDB _id -->
+                                <div id="details-{{this._id}}" class="collapse" data-parent="#reservationsTable">
+                                    <div class="p-3 bg-light border-bottom">
+                                        <div class="row">
+                                            <!-- Passenger Name List -->
+                                            <div class="col-md-3">
+                                                <strong>Passenger Names:</strong>
+                                                {{#each this.passengers}}
+                                                    <p class="mb-1 text-muted">{{this.fullName}} <small class="text-secondary">({{this.seatNumber}})</small></p>
+                                                {{else}}
+                                                    <p class="mb-1 text-muted text-italic">No passengers listed</p>
+                                                {{/each}}
+                                            </div>
+
+                                            <!-- Passenger Count -->
+                                            <div class="col-md-2">
+                                                <strong>Passenger Count:</strong>
+                                                <p class="mb-2 text-muted">
+                                                    {{#if this.passengers.length}}
+                                                        {{this.passengers.length}} Passenger(s)
+                                                    {{else}}
+                                                        0 Passengers
+                                                    {{/if}}
+                                                </p>
+                                            </div>
+
+                                            <!--  Meal Package -->
+                                            <div class="col-md-3">
+                                                <strong>Meal Package:</strong>
+                                                <p class="mb-2 text-muted">
+                                                    {{#if this.mealPackage}}
+                                                        {{this.mealPackage}}
+                                                    {{else}}
+                                                        None Selected
+                                                    {{/if}}
+                                                </p>
+                                            </div>
+
+                                            <!-- Dynamic Extra Services -->
+                                            <div class="col-md-4">
+                                                <strong>Extra Services:</strong>
+                                                <p class="mb-2 text-muted">
+                                                    {{#if this.extraServices}}
+                                                        {{this.extraServices}}
+                                                    {{else}}
+                                                        No Add-ons Selected
+                                                    {{/if}}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
                         {{/each}}
                 </tbody>
             </table>
