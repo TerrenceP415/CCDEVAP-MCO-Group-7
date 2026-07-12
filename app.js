@@ -14,11 +14,13 @@ app.engine('hbs', engine({
   extname: 'hbs',
   defaultLayout: 'main',
   layoutsDir: path.join(__dirname, 'views/layouts'),
-  partialsDir: path.join(__dirname, 'views/partials')
+  partialsDir: path.join(__dirname, 'views/partials'),
+
 }));
 app.set('view engine', 'hbs');
 app.set('views', path.join(__dirname, 'views'));
 const hbs = require('hbs');
+
 
 // ─── Middleware ───────────────────────────────────────
 app.use(express.json());
@@ -73,8 +75,8 @@ app.use('/admin/flights', (req, res, next) => {
 // app.use('/', bookingRoutes);
 
 // Member 4 - Reservation routes
-// const reservationRoutes = require('./routes/reservationRoutes');
-// app.use('/', reservationRoutes);
+const reservationRoutes = require('./routes/reservationRoutes');
+app.use('/', reservationRoutes);
 
 // ─── Legacy Static HTML Routes (from MCO1) ────────────
 app.get('/', (req, res) => {

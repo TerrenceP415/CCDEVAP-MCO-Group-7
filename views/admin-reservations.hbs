@@ -23,159 +23,22 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- Example reservation row -->
-
-
-                    <!-- Remember to match aria controls, id, data target (check reference numbers) -->
-                    <tr class="details-clickable-row" data-toggle="collapse" data-target="#details-RN321" aria-expanded="false" aria-controls="details-RN321" style="cursor: pointer;">
-                        
-                        <td class="details-chevron"><i class="bi bi-chevron-right"></i></td>
-                        <td>RN321</td>
-                        <td>New York (JFK)</td>
-                        <td>Los Angeles (LAX)</td>
-                        <td>2024-07-01 08:00</td>
-                        <td>2024-07-01 11:00</td>
-                        <td>12A, 12B, 12C</td>
-                        <td>$350</td>
-                        <td><span class="admin-status badge badge-success">Confirmed</span></td>
-                        <td>
-                            <button id="editReservation" type="button" class="btn btn-primary action-btn-admin" data-toggle="modal" data-target="#editReservationModal">Edit</button>
-                            <button id="deleteReservation" type="button" class="btn btn-primary action-btn-admin" data-toggle="modal" data-target="#deleteConfirmationModal">Delete</button>
-                        </td>
-                    </tr>
-                    <!-- Example Details Row -->
-                    <tr class="details-collapse-row">
-                        <td colspan="10" class="p-0 border-top-0">
-
-                            <!-- Remember to match aria controls, id, data target (check reference numbers) -->
-                            <div id="details-RN321" class="collapse" data-parent="#reservationsTable">
-                                
-                                <div class="p-3 bg-light border-bottom">
-                                    <div class="row">
-                                        <div class="col-md-3">
-                                            <strong>Passenger Name:</strong>
-                                            <p class="mb-2 text-muted">John Doe</p>
-                                            <p class="mb-2 text-muted">Jane Doe</p>
-                                            <p class="mb-2 text-muted">Ronald Donald</p>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <strong>Passenger Count:</strong>
-                                            <p class="mb-2 text-muted">3 Adults, 0 Children</p>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <strong>Meal Package:</strong>
-                                            <p class="mb-2 text-muted">2x Standard, 1x Vegetarian</p>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <strong>Extra Services:</strong>
-                                            <p class="mb-2 text-muted">1x Extra Baggage, Priority Boarding</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                    
-
-                    <!-- Example reservation row -->
-                     <!-- Remember to match aria controls, id, data target (check reference numbers) -->
-                    <tr class="details-clickable-row" data-toggle="collapse" data-target="#details-RN123" aria-expanded="false" aria-controls="details-RN123" style="cursor: pointer;">
-                        <td class="details-chevron"><i class="bi bi-chevron-right"></i></td>
-                        <td>RN123</td>
-                        <td>New York (JFK)</td>
-                        <td>Los Angeles (LAX)</td>
-                        <td>2024-07-01 08:00</td>
-                        <td>2024-07-01 11:00</td>
-                        <td>12A, 12B, 12C</td>
-                        <td>$350</td>
-                        <td><span class="admin-status badge badge-warning">Pending</span></td>
-                        <td>
-                            <button id="editReservation" type="button" class="btn btn-primary action-btn-admin" data-toggle="modal" data-target="#editReservationModal">Edit</button>
-                            <button id="deleteReservation" type="button" class="btn btn-primary action-btn-admin" data-toggle="modal" data-target="#deleteConfirmationModal">Delete</button>
-                        </td>
-                    </tr>
-                    <!-- Example Details Row -->
-                    <tr class="details-collapse-row">
-                        <td colspan="10" class="p-0 border-top-0">
-
-                            <!-- Remember to match aria controls, id, data target (check reference numbers) -->
-                            <div id="details-RN123" class="collapse" data-parent="#reservationsTable">
-                                <div class="p-3 bg-light border-bottom">
-                                    <div class="row">
-                                        <div class="col-md-3">
-                                            <strong>Passenger Name:</strong>
-                                            <p class="mb-2 text-muted">John Doe</p>
-                                            <p class="mb-2 text-muted">Jane Doe</p>
-                                            <p class="mb-2 text-muted">Ronald Donald</p>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <strong>Passenger Count:</strong>
-                                            <p class="mb-2 text-muted">3 Adults, 0 Children</p>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <strong>Meal Package:</strong>
-                                            <p class="mb-2 text-muted">2x Standard, 1x Vegetarian</p>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <strong>Extra Services:</strong>
-                                            <p class="mb-2 text-muted">1x Extra Baggage, Priority Boarding</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-
-                    <!-- Example reservation row -->
-                     <!-- Remember to match aria controls, id, data target (check reference numbers) -->
-                    <tr class="details-clickable-row" data-toggle="collapse" data-target="#details-RN456" aria-expanded="false" aria-controls="details-RN456" style="cursor: pointer;">
-                        <td class="details-chevron"><i class="bi bi-chevron-right"></i></td>
-                        <td>RN456</td>
-                        <td>New York (JFK)</td>
-                        <td>Los Angeles (LAX)</td>
-                        <td>2024-07-01 08:00</td>
-                        <td>2024-07-01 11:00</td>
-                        <td>12A, 12B, 12C</td>
-                        <td>$350</td>
-                        <td><span class="admin-status badge badge-danger">Cancelled</span></td>
-                        <td>
-                            <button id="editReservation" type="button" class="btn btn-primary action-btn-admin" data-toggle="modal" data-target="#editReservationModal">Edit</button>
-                            <button id="deleteReservation" type="button" class="btn btn-primary action-btn-admin" data-toggle="modal" data-target="#deleteConfirmationModal">Delete</button>
-                        </td>
-                    </tr>
-                    <!-- Example Details Row -->
-                    <tr class="details-collapse-row">
-                        <td colspan="10" class="p-0 border-top-0">
-
-                            <!-- Detail Row ID -->
-                             <!-- Remember to match aria controls, id, data target (check reference numbers) -->
-                            <div id="details-RN456" class="collapse" data-parent="#reservationsTable">
-                                <div class="p-3 bg-light border-bottom">
-                                    <div class="row">
-                                        <div class="col-md-3">
-                                            <strong>Passenger Name:</strong>
-                                            <p class="mb-2 text-muted">John Doe</p>
-                                            <p class="mb-2 text-muted">Jane Doe</p>
-                                            <p class="mb-2 text-muted">Ronald Donald</p>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <strong>Passenger Count:</strong>
-                                            <p class="mb-2 text-muted">3 Adults, 0 Children</p>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <strong>Meal Package:</strong>
-                                            <p class="mb-2 text-muted">2x Standard, 1x Vegetarian</p>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <strong>Extra Services:</strong>
-                                            <p class="mb-2 text-muted">1x Extra Baggage, Priority Boarding</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-
+                    <!-- Loop through reservations and display them in the table -->
+                    {{#each reservations}}
+                        <tr class="details-clickable-row" data-toggle="collapse" data-target="#details-{{this._id}}"
+                            aria-expanded="false" aria-controls="details-{{this._id}}" style="cursor: pointer;">
+                            <td class="details-chevron"><i class="bi bi-chevron-right"></i></td>
+                            <td>{{this.reservationNumber}}</td>
+                            <td>{{this.flight.origin}}</td>
+                            <td>{{this.flight.destination}}</td>
+                            <td>{{this.flight.departureDateTime}}</td>
+                            <td>{{this.flight.arrivalDateTime}}</td>
+                            <td>{{this.seatNumber}}</td>
+                            <td>${{this.totalPrice}}</td>
+                            <td><span class="admin-status badge badge-{{#ifEquals this.status 'confirmed'}}success{{else ifEquals this.status 'cancelled'}}danger{{else}}warning{{/ifEquals}}">{{this.status}}</span></td>
+                            ...
+                        </tr>
+                        {{/each}}
                 </tbody>
             </table>
 
