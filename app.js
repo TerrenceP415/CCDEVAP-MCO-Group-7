@@ -18,6 +18,7 @@ app.engine('hbs', engine({
 }));
 app.set('view engine', 'hbs');
 app.set('views', path.join(__dirname, 'views'));
+const hbs = require('hbs');
 
 // ─── Middleware ───────────────────────────────────────
 app.use(express.json());
@@ -105,6 +106,9 @@ app.get('/admin-flight.html', (req, res) => {
   res.redirect('/admin/flights');
 });
 
+app.get('/my-reservations', (req, res) => {
+  res.render('reservations', { title: 'My Reservations' });
+});
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });
