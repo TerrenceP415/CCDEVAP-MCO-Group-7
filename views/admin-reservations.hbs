@@ -8,6 +8,10 @@
     
         <h3><i class="bi bi-airplane"></i> Admin Reservations</h3>
         <p>Manage all reservations and bookings.</p>
+        <button id="addUser" class="action-btn-admin" data-toggle="modal" data-target="#addUserModal"
+                    style="background: linear-gradient(135deg, #0284c7 0%, #0ea5e9 100%); box-shadow: 0 2px 8px rgba(2,132,199,0.25);">
+                    <i class="bi bi-person-plus"></i> Add New Reservation
+                </button>
         <div class="admin-table-wrapper" id="reservationsTableWrapper">
             
         <table class="admin-table table" id="reservationsTable">
@@ -183,6 +187,100 @@
 
 
             <!-- Modals -->
+
+            <!-- Add Reservation Modal -->
+        <div class="modal fade" id="addUserModal" tabindex="-1" role="dialog" aria-labelledby="addReservationModalTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addReservationModalTitle">Add New Reservation</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <form action="/admin/reservations" method="POST">
+                <div class="row">
+                    <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="addReservationNumber">Reservation Number</label>
+                        <input name="reservationNumber" type="text" class="form-control" id="addReservationNumber" placeholder="e.g., RN789" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="addOrigin">Origin</label>
+                        <input name="origin" type="text" class="form-control" id="addOrigin" placeholder="Enter origin" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="addDestination">Destination</label>
+                        <input name="destination" type="text" class="form-control" id="addDestination" placeholder="Enter destination" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="addDepartureTime">Departure Time</label>
+                        <input name="departureTime" type="datetime-local" class="form-control" id="addDepartureTime" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="addArrivalTime">Arrival Time</label>
+                        <input name="arrivalTime" type="datetime-local" class="form-control" id="addArrivalTime" required>
+                    </div>
+                    </div>
+
+                    <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="addSeatNumber">Seat Number(s)</label>
+                        <input name="seatNumber" type="text" class="form-control" id="addSeatNumber" placeholder="e.g., 12A, 12B, 12C" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="addTotalPrice">Total Price</label>
+                        <input name="totalPrice" type="text" class="form-control" id="addTotalPrice" placeholder="e.g., $350" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="addReservationStatus">Status</label>
+                        <select name="status" class="form-control" id="addReservationStatus" required>
+                        <option value="Pending" selected>Pending</option>
+                        <option value="Confirmed">Confirmed</option>
+                        <option value="Cancelled">Cancelled</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="addPassengerCount">Passenger Count</label>
+                        <input name="passengerCount" type="text" class="form-control" id="addPassengerCount" placeholder="e.g., 3 Adults, 0 Children" required>
+                    </div>
+                    </div>
+                </div>
+
+                <hr>
+
+                <div class="row">
+                    <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="addPassengerNames">Passenger Names (One per line)</label>
+                        <textarea name="passengerNames" class="form-control" id="addPassengerNames" rows="3" placeholder="Enter passenger names" required></textarea>
+                    </div>
+                    </div>
+                    <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="addMealPackage">Meal Package</label>
+                        <input name="mealPackage" type="text" class="form-control" id="addMealPackage" placeholder="e.g., 2x Standard, 1x Vegetarian">
+                    </div>
+                    </div>
+                    <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="addExtraServices">Extra Services</label>
+                        <input name="extraServices" type="text" class="form-control" id="addExtraServices" placeholder="e.g., 1x Extra Baggage, Priority Boarding">
+                    </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Discard</button>
+                    <button type="submit" class="btn btn-success">Add Reservation</button>
+                </div>
+                </form>
+            </div>
+            </div>
+        </div>
+        </div>
      
      <!-- Edit Reservation -->
       <div class="modal fade" id="editReservationModal" tabindex="-1" role="dialog" aria-labelledby="editReservationModalTitle" aria-hidden="true">
