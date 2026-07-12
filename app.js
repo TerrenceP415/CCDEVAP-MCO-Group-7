@@ -58,9 +58,15 @@ mongoose.connect(process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/skyEase')
 // ─── Routes ───────────────────────────────────────────
 
 // Member 1 - Auth routes (register, profile)
+const authRoutes = require('./routes/authRoutes');
+app.use('/', authRoutes);
 
 // Member 2 - Flight routes (admin flight management)
-
+const flightRoutes = require('./routes/flights');
+app.use('/admin/flights', (req, res, next) => {
+  res.locals.layout = 'admin';
+  next();
+}, flightRoutes);
 
 // Member 3 - Search and booking routes
 // const bookingRoutes = require('./routes/bookingRoutes');
