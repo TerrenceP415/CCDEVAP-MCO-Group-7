@@ -1,40 +1,11 @@
 <div class="admin-page">
-  <header>
-    <nav class="nav">
-      <h1 class="logo">Sky<span class="ease">Ease</span></h1>
-
-      <ul class="nav-links">
-        <li><a href="/index.html">Home</a></li>
-        <li><a href="/search.html">Search Flights</a></li>
-        <li><a href="/booking.html">Book Flights</a></li>
-        <li><a href="/reservations.html">My Reservations</a></li>
-        <li>
-          <a href="#">User Profile <i class="bi bi-chevron-down"></i></a>
-          <div class="profile-dropdown">
-            <ul>
-              <li><a href="/profile.html"><i class="bi bi-person"></i> Profile</a></li>
-              <li><a href="/settings.html">Settings</a></li>
-              <li><a href="#">Logout</a></li>
-            </ul>
-          </div>
-        </li>
-        <li><a href="/admin-dashboard.html" class="current">Admin Panel</a></li>
-        <li><a class="login" href="/login.html">Login</a></li>
-      </ul>
-
-      <div class="hamburger">
-        <span class="bar"></span>
-        <span class="bar"></span>
-        <span class="bar"></span>
-      </div>
-    </nav>
-  </header>
+  
 
   <div class="tab-selector">
-    <button class="tablinks" onclick="window.location.href='/admin-dashboard.html'">Analytics</button>
+    <button class="tablinks" onclick="window.location.href='/admin/dashboard'">Analytics</button>
     <button class="tablinks tab-active" onclick="window.location.href='/admin/flights'">Flights</button>
-    <button class="tablinks" onclick="window.location.href='/admin-users.html'">Users</button>
-    <button class="tablinks" onclick="window.location.href='/admin-reservations.html'">Reservations</button>
+    <button class="tablinks" onclick="window.location.href='/admin-users'">Users</button>
+    <button class="tablinks" onclick="window.location.href='/admin/reservations.html'">Reservations</button>
   </div>
 
   <main class="tabcontent" id="admin-Flight">

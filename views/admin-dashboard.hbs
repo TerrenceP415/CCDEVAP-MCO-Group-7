@@ -1,0 +1,58 @@
+<div class="tab-selector">
+        <button class="tablinks tab-active" onclick="window.location.href='/admin/dashboard'">Analytics</button>
+        <button class="tablinks" onclick="window.location.href='/admin/flights'">Flights</button>
+        <button class="tablinks" onclick="window.location.href='/admin/users'">Users</button>
+        <button class="tablinks" onclick="window.location.href='/admin/reservations'">Reservations</button>
+    </div>
+
+<div id="Analytics" class="tabcontent">
+    <div class="analytics-header">
+        <h3><i class="bi bi-graph-up-arrow"></i> System Analytics</h3>
+        <p>Real-time overview of bookings, income performance, and user traffic routes.</p>
+    </div>
+
+    <!-- Bookings and Revenue Cards -->
+    <div class="analytics-cards-container">
+        <div class="analytics-card">
+            <h4>TOTAL BOOKINGS</h4>
+            <p class="stat-number">1,234</p>
+        </div>
+        <div class="analytics-card">
+            <h4>TOTAL REVENUE</h4>
+            <p class="stat-number">$567,890</p>
+        </div>
+    </div>
+
+    <!-- Popular Destinations Table -->
+    <div class="analytics-table-wrapper">
+        <h4>Popular Destinations</h4>
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>Destination</th>
+                    <th>Number of Bookings</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Sample Data; Loop through destinations -->
+                <tr>
+                    <td>New York City (JFK)</td>
+                    <td>300</td>
+                </tr>
+                <tr>
+                    <td>Los Angeles (LAX)</td>
+                    <td>250</td>
+                </tr>
+                <tr>
+                    <td>San Francisco (SFO)</td>
+                    <td>200</td>
+                </tr>
+                <tr>
+                    <td>Tokyo (HND)</td>
+                    <td>180</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>  
+    

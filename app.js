@@ -79,26 +79,22 @@ app.get('/', (req, res) => {
 });
 
 app.get('/admin', (req, res) => {
+  res.redirect('/admin/dashboard');
+});
+
+app.get('/admin/dashboard', (req, res) => {
+  res.render('admin-dashboard', { title: 'Admin Dashboard' });
+});
+
+app.get('/admin/flights', (req, res) => {
   res.redirect('/admin/flights');
 });
 
-app.get('/admin-dashboard', (req, res) => {
-  res.sendFile(path.join(__dirname, 'views', 'admin-dashboard.html'));
-});
-
-app.get('/admin-dashboard.html', (req, res) => {
-  res.sendFile(path.join(__dirname, 'views', 'admin-dashboard.html'));
-});
-
-app.get('/admin-flights', (req, res) => {
+app.get('/admin/flights.html', (req, res) => {
   res.redirect('/admin/flights');
 });
 
-app.get('/admin-flights.html', (req, res) => {
-  res.redirect('/admin/flights');
-});
-
-app.get('/admin-flight', (req, res) => {
+app.get('/admin/flight', (req, res) => {
   res.redirect('/admin/flights');
 });
 
@@ -106,9 +102,15 @@ app.get('/admin-flight.html', (req, res) => {
   res.redirect('/admin/flights');
 });
 
+
+
 app.get('/my-reservations', (req, res) => {
   res.render('reservations', { title: 'My Reservations' });
 });
+app.get('/admin/reservations', (req, res) => {
+  res.render('admin-reservations', { title: 'Admin Reservations' });
+});
+
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });
