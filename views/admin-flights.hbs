@@ -209,9 +209,11 @@
 </div>
 
 <script>
+  // JavaScript for handling flight edit and delete actions
 document.addEventListener('DOMContentLoaded', function () {
   let deleteFlightId = null;
 
+// Function to format date-time for input fields
   const formatDateTimeLocal = (value) => {
     if (!value) return '';
     const date = new Date(value);
@@ -220,6 +222,7 @@ document.addEventListener('DOMContentLoaded', function () {
     return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
   };
 
+// Event listener for edit buttons to populate the edit modal with flight data
   document.querySelectorAll('.btn-edit').forEach(button => {
     button.addEventListener('click', function () {
       document.getElementById('editFlightId').value = this.dataset.id;
@@ -235,6 +238,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 
+// Event listener for save button in the edit modal to send updated flight data to the server
   const saveBtn = document.getElementById('saveFlightChanges');
   if (saveBtn) {
     saveBtn.addEventListener('click', function () {
@@ -251,6 +255,7 @@ document.addEventListener('DOMContentLoaded', function () {
         ticketPrice: document.getElementById('editTicketPrice').value
       };
 
+// Send a PUT request to update the flight data
       fetch(`/admin/flights/${flightId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
@@ -268,12 +273,14 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
+// Event listener for delete buttons to set the flight ID for deletion
   document.querySelectorAll('.btn-delete').forEach(button => {
     button.addEventListener('click', function () {
       deleteFlightId = this.dataset.id;
     });
   });
 
+// Event listener for confirm delete button to send a DELETE request to the server
   const deleteConfirmBtn = document.getElementById('confirmDeleteFlight');
   if (deleteConfirmBtn) {
     deleteConfirmBtn.addEventListener('click', function () {

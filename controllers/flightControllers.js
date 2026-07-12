@@ -1,5 +1,6 @@
 const Flight = require('../models/flight');
 
+// Helper function to format date for input[type="datetime-local"]
 const formatDateTimeLocal = (value) => {
   if (!value) return '';
   const date = new Date(value);
@@ -9,6 +10,7 @@ const formatDateTimeLocal = (value) => {
 
 exports.index = async (req, res) => {
   try {
+    // Fetch all flights and sort by departureDateTime
     const flights = await Flight.find().sort({ departureDateTime: 1 }).lean();
     res.render('admin-flights', {
       title: 'Admin Flights',
@@ -21,6 +23,7 @@ exports.index = async (req, res) => {
 };
 
 exports.newFlightForm = (req, res) => {
+  // Render the flight form for creating a new flight
   res.render('flight-form', {
     title: 'Add Flight',
     flight: {},
@@ -30,6 +33,7 @@ exports.newFlightForm = (req, res) => {
 };
 
 exports.createFlight = async (req, res) => {
+  // Validate and create a new flight
   try {
     const {
       flightNumber,
@@ -73,12 +77,14 @@ exports.createFlight = async (req, res) => {
 };
 
 exports.editFlightForm = async (req, res) => {
+  // Render the flight form for editing an existing flight
   try {
     const flight = await Flight.findById(req.params.id);
     if (!flight) {
       return res.status(404).send('Flight not found');
     }
 
+  // Render the flight form with existing flight data
     res.render('flight-form', {
       title: 'Edit Flight',
       flight,
@@ -94,6 +100,7 @@ exports.editFlightForm = async (req, res) => {
 };
 
 exports.updateFlight = async (req, res) => {
+  // Validate and update an existing flight
   try {
     const {
       flightNumber,
@@ -107,6 +114,7 @@ exports.updateFlight = async (req, res) => {
       ticketPrice,
     } = req.body;
 
+    // Validate required fields
     if (!flightNumber || !airline || !origin || !destination || !departureDateTime || !arrivalDateTime) {
       return res.status(400).json({ success: false, message: 'Please fill in all required fields.' });
     }
@@ -115,6 +123,7 @@ exports.updateFlight = async (req, res) => {
       return res.status(400).json({ success: false, message: 'Departure must be before arrival.' });
     }
 
+    // Check for duplicate flight number, excluding the current flight
     const duplicate = await Flight.findOne({
       flightNumber,
       _id: { $ne: req.params.id },
@@ -123,6 +132,7 @@ exports.updateFlight = async (req, res) => {
       return res.status(400).json({ success: false, message: 'A flight with that number already exists.' });
     }
 
+      // Update the flight in the database
     const flight = await Flight.findByIdAndUpdate(
       req.params.id,
       {

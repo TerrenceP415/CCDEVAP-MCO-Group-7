@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const flightController = require('../controllers/flightControllers');
 
+// Admin flight routes
 router.get('/', flightController.index);
 router.get('/new', flightController.newFlightForm);
 router.post('/', flightController.createFlight);
