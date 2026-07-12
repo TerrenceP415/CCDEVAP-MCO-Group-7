@@ -33,10 +33,10 @@
                             <td>{{this.flight.destination}}</td>
                             <td>{{this.flight.departureDateTime}}</td>
                             <td>{{this.flight.arrivalDateTime}}</td>
-                            <td>{{this.seatNumber}}</td>
+                            <td>{{this.seatDisplay}}</td>
                             <td>${{this.totalPrice}}</td>
-                            <td><span class="admin-status badge badge-{{#ifEquals this.status 'confirmed'}}success{{else ifEquals this.status 'cancelled'}}danger{{else}}warning{{/ifEquals}}">{{this.status}}</span></td>
-                            ...
+                            <td><span class="admin-status badge badge-{{#if this.isConfirmed}}success{{else if this.isCancelled}}danger{{else}}warning{{/if}}">{{this.status}}</span></td>
+                            
                         </tr>
                         {{/each}}
                 </tbody>

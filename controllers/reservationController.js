@@ -3,13 +3,37 @@ const Flight = require('../models/flight');
 
 
 exports.getAdminReservations = async (req, res) => {
-  try {
-    const reservations = await Reservation.find().populate('flight');
-    res.render('admin-reservations', { title: 'Admin Reservations', layout: 'admin', reservations });
-  } catch (err) {
-    console.log(err);
-    res.render('admin-reservations', { title: 'Admin Reservations', layout: 'admin', error: 'Something went wrong.' });
-  }
+    try {
+        const reservations = await Reservation.find()
+            .populate('flight')
+            .lean(); 
+        
+        const formattedReservations = reservations.map(resObj => {
+            // Calculate seat string
+            let seatDisplay = 'N/A';
+            if (resObj.passengers && resObj.passengers.length > 0) {
+                seatDisplay = resObj.passengers.map(p => p.seatNumber).join(', ');
+            }
+
+            return {
+                ...resObj,
+                seatDisplay,
+                // Create native JS boolean flags for the statuses
+                isConfirmed: resObj.status === 'Confirmed',
+                isCancelled: resObj.status === 'Cancelled',
+                isPending: resObj.status === 'Pending'
+            };
+        });
+
+        res.render('admin-reservations', { 
+            layout: 'admin', 
+            reservations: formattedReservations 
+        });
+
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Server Error loading data');
+    }
 };
 
 exports.createAdminReservations = async (req, res) => {
