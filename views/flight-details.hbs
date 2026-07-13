@@ -1,0 +1,67 @@
+<!-- Flight Details Page -->
+<main class="flight-details-shell">
+    <section class="flight-details-container">
+        <div class="flight-details-card">
+            <p class="eyebrow">SkyEase</p>
+            <h1><i class="bi bi-airplane"></i> Flight Details</h1>
+
+            <!-- Flight Info Grid -->
+            <div class="flight-info-grid">
+                <div class="flight-info-item">
+                    <span class="info-label"><i class="bi bi-hash"></i> Flight Number</span>
+                    <span class="info-value">{{ flight.flightNumber }}</span>
+                </div>
+                <div class="flight-info-item">
+                    <span class="info-label"><i class="bi bi-building"></i> Airline</span>
+                    <span class="info-value">{{ flight.airline }}</span>
+                </div>
+                <div class="flight-info-item">
+                    <span class="info-label"><i class="bi bi-geo-alt"></i> Origin</span>
+                    <span class="info-value">{{ flight.origin }}</span>
+                </div>
+                <div class="flight-info-item">
+                    <span class="info-label"><i class="bi bi-geo-alt-fill"></i> Destination</span>
+                    <span class="info-value">{{ flight.destination }}</span>
+                </div>
+                <div class="flight-info-item">
+                    <span class="info-label"><i class="bi bi-calendar-event"></i> Departure</span>
+                    <span class="info-value">{{ formatDate flight.departureDateTime }}</span>
+                </div>
+                <div class="flight-info-item">
+                    <span class="info-label"><i class="bi bi-calendar-check"></i> Arrival</span>
+                    <span class="info-value">{{ formatDate flight.arrivalDateTime }}</span>
+                </div>
+                <div class="flight-info-item">
+                    <span class="info-label"><i class="bi bi-people"></i> Available Seats</span>
+                    <span class="info-value {{#if (eq flight.availableSeats 0)}}text-danger{{/if}}">
+                        {{#if (eq flight.availableSeats 0)}}
+                            Sold Out
+                        {{else}}
+                            {{ flight.availableSeats }} / {{ flight.totalSeats }}
+                        {{/if}}
+                    </span>
+                </div>
+                <div class="flight-info-item">
+                    <span class="info-label"><i class="bi bi-currency-dollar"></i> Ticket Price</span>
+                    <span class="info-value price-display-tag">${{ formatCurrency flight.ticketPrice }}</span>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flight-details-actions">
+                {{#if (eq flight.availableSeats 0)}}
+                    <button class="booking-submit" disabled style="opacity:.5;cursor:not-allowed;">
+                        <i class="bi bi-x-circle"></i> Sold Out
+                    </button>
+                {{else}}
+                    <a href="/flights/{{ flight._id }}/book" class="booking-submit" style="text-decoration:none;text-align:center;">
+                        <i class="bi bi-ticket-perforated"></i> Book This Flight
+                    </a>
+                {{/if}}
+                <a href="/search" class="search-button" style="text-decoration:none;text-align:center;background:var(--color-slate-600);">
+                    <i class="bi bi-arrow-left"></i> Back to Search
+                </a>
+            </div>
+        </div>
+    </section>
+</main>

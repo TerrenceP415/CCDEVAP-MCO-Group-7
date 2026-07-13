@@ -1,0 +1,154 @@
+<!-- Main Booking Content -->
+<main class="booking-shell">
+    <section class="booking-main">
+        <div class="booking-card">
+            <p class="eyebrow">SkyEase</p>
+            <h1><i class="bi bi-ticket-perforated"></i> Book Your Flight</h1>
+            <p class="booking-copy">
+                Booking <strong>{{ flight.flightNumber }}</strong> &mdash;
+                {{ flight.origin }} &rarr; {{ flight.destination }}
+            </p>
+
+            <!-- Server-side validation errors -->
+            {{#if errors}}
+                <div class="alert alert-danger" style="margin-bottom:16px;">
+                    <strong>Please fix the following:</strong>
+                    <ul style="margin:8px 0 0 16px;">
+                        {{#each errors}}
+                            <li>{{ this }}</li>
+                        {{/each}}
+                    </ul>
+                </div>
+            {{/if}}
+
+            <!-- Booking progress steps -->
+            <div class="booking-stepper">
+                <div class="step active">
+                    <div class="step-circle">1</div>
+                    <div class="step-label">Passenger Info</div>
+                </div>
+                <div class="step-line"></div>
+                <div class="step">
+                    <div class="step-circle">2</div>
+                    <div class="step-label">Seat Selection</div>
+                </div>
+            </div>
+
+            <!-- Booking Form -->
+            <form class="booking-form" id="bookingForm" method="POST" action="/flights/{{ flight._id }}/book" novalidate>
+
+                <!-- Step 1: Passenger Information -->
+                <details class="booking-section" open>
+                    <summary><span><i class="bi bi-person-vcard"></i> Passenger Information</span></summary>
+                    <div class="booking-section-body">
+                        <!-- Full Name -->
+                        <div class="booking-field">
+                            <label for="fullName"><i class="bi bi-person"></i> Full Name</label>
+                            <input type="text" id="fullName" name="fullName"
+                                   placeholder="Enter your full name"
+                                   value="{{#if body}}{{ body.fullName }}{{/if}}" required>
+                            <span class="field-error" id="fullNameError">Full name is required.</span>
+                        </div>
+
+                        <!-- Email Address -->
+                        <div class="booking-field">
+                            <label for="email"><i class="bi bi-envelope"></i> Email Address</label>
+                            <input type="email" id="email" name="email"
+                                   placeholder="Enter email address"
+                                   value="{{#if body}}{{ body.email }}{{/if}}" required>
+                            <span class="field-error" id="emailError">Enter a valid email address.</span>
+                        </div>
+
+                        <!-- Passport Number -->
+                        <div class="booking-field">
+                            <label for="passportNumber"><i class="bi bi-passport"></i> Passport Number</label>
+                            <input type="text" id="passportNumber" name="passportNumber"
+                                   placeholder="Enter passport number"
+                                   value="{{#if body}}{{ body.passportNumber }}{{/if}}" required>
+                            <span class="field-error" id="passportError">Passport number must be at least 6 characters.</span>
+                        </div>
+                    </div>
+                </details>
+
+                <!-- Step 2: Seat Selection -->
+                <details class="booking-section">
+                    <summary><span><i class="bi bi-grid-3x3"></i> Seat Selection</span></summary>
+                    <div class="booking-section-body">
+                        <p class="booking-copy" style="margin-bottom: var(--space-3);">
+                            Choose your seat below. Occupied seats are grayed out.
+                            Total seats: <strong>{{ flight.totalSeats }}</strong> |
+                            Available: <strong>{{ flight.availableSeats }}</strong>
+                        </p>
+
+                        <div class="seat-map-wrapper">
+                            <!-- Seat Legend -->
+                            <div class="seat-legend">
+                                <div class="legend-item"><span class="legend-swatch available"></span> Available</div>
+                                <div class="legend-item"><span class="legend-swatch selected"></span> Selected</div>
+                                <div class="legend-item"><span class="legend-swatch occupied"></span> Occupied</div>
+                            </div>
+
+                            <!-- Seat map (built dynamically by booking-client.js) -->
+                            <div class="container-fluid px-0" id="seatMap">
+                                <p class="text-muted text-center" style="padding:20px;">
+                                    <i class="bi bi-arrow-repeat spin"></i> Loading seat map...
+                                </p>
+                            </div>
+
+                            <div class="selected-seat-display">
+                                Selected Seat: <span id="selectedSeatLabel">None selected</span>
+                            </div>
+
+                            <!-- Hidden field for seat number -->
+                            <input type="hidden" name="seatNumber" id="seatNumberInput"
+                                   value="{{#if body}}{{ body.seatNumber }}{{/if}}">
+                            <span class="field-error" id="seatError" style="display:none;">Please select a seat.</span>
+                        </div>
+                    </div>
+                </details>
+
+                <!-- Submit Button -->
+                <button type="submit" class="booking-submit">
+                    <i class="bi bi-check-circle"></i> Confirm Booking
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Price summary sidebar -->
+    <aside class="booking-summary">
+        <h3><i class="bi bi-receipt"></i> Booking Summary</h3>
+
+        <div class="summary-flight">
+            <strong>{{ flight.origin }} &rarr; {{ flight.destination }}</strong><br>
+            <span>{{ flight.airline }}</span><br>
+            <span>{{ flight.flightNumber }}</span><br>
+            <span>{{ formatDate flight.departureDateTime }}</span>
+        </div>
+
+        <div class="summary-row">
+            <span>Ticket Price</span>
+            <span>${{ formatCurrency flight.ticketPrice }}</span>
+        </div>
+        <div class="summary-row">
+            <span>Seat</span>
+            <span id="summarySeat">Not selected</span>
+        </div>
+
+        <div class="summary-total">
+            <span class="total-label">Total</span>
+            <span class="total-value">${{ formatCurrency flight.ticketPrice }}</span>
+        </div>
+    </aside>
+</main>
+
+<!-- Toast Notification Container -->
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- Booking Client Script (seat map + validation) -->
+<script>
+    // Pass flight ID to client JS
+    var FLIGHT_ID = '{{ flight._id }}';
+    var TOTAL_SEATS = {{ flight.totalSeats }};
+</script>
+<script src="/scripts/booking-client.js"></script>

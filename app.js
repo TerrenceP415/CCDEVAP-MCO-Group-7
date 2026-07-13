@@ -15,7 +15,19 @@ app.engine('hbs', engine({
   defaultLayout: 'main',
   layoutsDir: path.join(__dirname, 'views/layouts'),
   partialsDir: path.join(__dirname, 'views/partials'),
-
+  helpers: {
+    eq: function (a, b) { return a === b; },
+    formatDate: function (date) {
+      if (!date) return '';
+      var d = new Date(date);
+      return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) +
+        ' ' + d.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+    },
+    formatCurrency: function (val) {
+      if (val == null) return '0.00';
+      return Number(val).toFixed(2);
+    },
+  },
 }));
 app.set('view engine', 'hbs');
 app.set('views', path.join(__dirname, 'views'));
@@ -71,8 +83,10 @@ app.use('/admin/flights', (req, res, next) => {
 }, flightRoutes);
 
 // Member 3 - Search and booking routes
-// const bookingRoutes = require('./routes/bookingRoutes');
-// app.use('/', bookingRoutes);
+const searchRoutes = require('./routes/searchRoutes');
+const bookingRoutes = require('./routes/bookingRoutes');
+app.use('/', searchRoutes);
+app.use('/', bookingRoutes);
 
 // Member 4 - Reservation routes
 const reservationRoutes = require('./routes/reservationRoutes');
@@ -104,8 +118,10 @@ app.get('/admin/reservations', (req, res) => {
   res.render('admin-reservations', { title: 'Admin Reservations', layout: 'admin' });
 });
 
+// Legacy /booking route removed — now handled by bookingRoutes.js
+// Redirect old /booking URL to search page
 app.get('/booking', (req, res) => {
-  res.render('booking.html');
+  res.redirect('/search');
 });
 
 app.get('/login', (req, res) => {

@@ -8,6 +8,11 @@ const reservationSchema = new mongoose.Schema(
       unique: true,
       trim: true,
     },
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      default: null,
+    },
     flight: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Flight',

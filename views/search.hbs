@@ -1,0 +1,194 @@
+<!-- Search Form -->
+<main class="search-shell">
+    <section class="search-container">
+        <form class="search-card" id="searchForm" novalidate>
+            <p class="eyebrow">SkyEase</p>
+            <h1><i class="bi bi-search"></i> Search Flights</h1>
+            <p class="search-copy">Find your perfect flight. Results load instantly below.</p>
+
+            <!-- Search Fields -->
+            <div class="form-grid">
+                <!-- Origin Airport -->
+                <label for="origin"><i class="bi bi-airplane"></i> Origin Airport</label>
+                <select name="origin" id="origin">
+                    <option value="">Any Origin</option>
+                    <option value="MNL">Manila - Ninoy Aquino International (MNL)</option>
+                    <option value="LAX">Los Angeles International (LAX)</option>
+                    <option value="SIN">Singapore Changi (SIN)</option>
+                    <option value="NRT">Tokyo Narita (NRT)</option>
+                    <option value="DXB">Dubai International (DXB)</option>
+                    <option value="HKG">Hong Kong International (HKG)</option>
+                    <option value="LHR">London Heathrow (LHR)</option>
+                </select>
+
+                <!-- Destination Airport -->
+                <label for="destination"><i class="bi bi-airplane"></i> Destination Airport</label>
+                <select name="destination" id="destination">
+                    <option value="">Any Destination</option>
+                    <option value="MNL">Manila - Ninoy Aquino International (MNL)</option>
+                    <option value="LAX">Los Angeles International (LAX)</option>
+                    <option value="SIN">Singapore Changi (SIN)</option>
+                    <option value="NRT">Tokyo Narita (NRT)</option>
+                    <option value="DXB">Dubai International (DXB)</option>
+                    <option value="HKG">Hong Kong International (HKG)</option>
+                    <option value="LHR">London Heathrow (LHR)</option>
+                </select>
+
+                <!-- Departure Date -->
+                <label for="departure_date"><i class="bi bi-calendar"></i> Departure Date</label>
+                <input type="date" id="departure_date" name="departure_date">
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="search-button">Search Flights</button>
+        </form>
+    </section>
+
+    <!-- AJAX Search Results Container -->
+    <section class="search-results-section" id="searchResultsSection" style="display:none;">
+        <div class="results-header">
+            <h3><i class="bi bi-search"></i> Search Results</h3>
+            <p id="resultsSubtitle">Showing available flights based on your search criteria.</p>
+        </div>
+        <div id="searchResults" class="search-results-grid"></div>
+        <div id="noResults" class="no-results" style="display:none;">
+            <i class="bi bi-airplane-engines"></i>
+            <strong>No flights found.</strong>
+            <p>Try adjusting your search criteria.</p>
+        </div>
+        <div id="searchLoading" class="search-loading" style="display:none;">
+            <i class="bi bi-arrow-repeat spin"></i>
+            <span>Searching flights...</span>
+        </div>
+    </section>
+</main>
+
+<!-- Toast Notification Container -->
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- AJAX Flight Search Script -->
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const form = document.getElementById('searchForm');
+    const resultsSection = document.getElementById('searchResultsSection');
+    const resultsContainer = document.getElementById('searchResults');
+    const noResults = document.getElementById('noResults');
+    const loadingIndicator = document.getElementById('searchLoading');
+    const subtitle = document.getElementById('resultsSubtitle');
+
+    form.addEventListener('submit', function (e) {
+        e.preventDefault(); // Prevent page refresh — AJAX requirement
+
+        const origin = document.getElementById('origin').value;
+        const destination = document.getElementById('destination').value;
+        const date = document.getElementById('departure_date').value;
+
+        // Client-side: at least one filter should be set
+        if (!origin && !destination && !date) {
+            showToast('Please enter at least one search criterion.', 'warning');
+            return;
+        }
+
+        // Show results section and loading state
+        resultsSection.style.display = 'block';
+        resultsContainer.innerHTML = '';
+        noResults.style.display = 'none';
+        loadingIndicator.style.display = 'flex';
+
+        // Build query string
+        const params = new URLSearchParams();
+        if (origin) params.set('origin', origin);
+        if (destination) params.set('destination', destination);
+        if (date) params.set('date', date);
+
+        // AJAX call — flight search results load without page refresh
+        fetch('/api/flights/search?' + params.toString())
+            .then(function (response) { return response.json(); })
+            .then(function (data) {
+                loadingIndicator.style.display = 'none';
+
+                if (!data.success || !data.flights || data.flights.length === 0) {
+                    noResults.style.display = 'block';
+                    subtitle.textContent = 'No flights match your search.';
+                    return;
+                }
+
+                subtitle.textContent = data.flights.length + ' flight' + (data.flights.length !== 1 ? 's' : '') + ' found.';
+                noResults.style.display = 'none';
+
+                // Render result cards dynamically
+                resultsContainer.innerHTML = data.flights.map(function (flight) {
+                    var depDate = new Date(flight.departureDateTime);
+                    var arrDate = new Date(flight.arrivalDateTime);
+
+                    var depStr = depDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) +
+                        ' ' + depDate.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+                    var arrStr = arrDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) +
+                        ' ' + arrDate.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+
+                    var seatClass = flight.availableSeats <= 0 ? 'seats-none' :
+                        flight.availableSeats <= 5 ? 'seats-few' : 'seats-many';
+                    var seatText = flight.availableSeats <= 0 ? 'Sold Out' :
+                        flight.availableSeats + ' seat' + (flight.availableSeats !== 1 ? 's' : '') + ' left';
+
+                    var bookBtn = flight.availableSeats <= 0 ?
+                        '<button class="book-btn" disabled style="opacity:.5;cursor:not-allowed;">Sold Out</button>' :
+                        '<a href="/flights/' + flight._id + '/book" class="book-btn">Book Now</a>';
+
+                    return '<div class="result-card">' +
+                        '<div class="result-card-header">' +
+                            '<div class="result-airline">' +
+                                '<i class="bi bi-airplane" style="font-size:20px;color:#0ea5e9;"></i>' +
+                                '<div>' +
+                                    '<strong>' + flight.flightNumber + '</strong>' +
+                                    '<span class="result-airline-name">' + flight.airline + '</span>' +
+                                '</div>' +
+                            '</div>' +
+                            '<span class="result-price">$' + flight.ticketPrice.toFixed(2) + '</span>' +
+                        '</div>' +
+                        '<div class="result-card-body">' +
+                            '<div class="result-route">' +
+                                '<div class="route-point">' +
+                                    '<span class="route-code">' + flight.origin + '</span>' +
+                                    '<span class="route-time">' + depStr + '</span>' +
+                                '</div>' +
+                                '<div class="route-arrow"><i class="bi bi-arrow-right"></i></div>' +
+                                '<div class="route-point">' +
+                                    '<span class="route-code">' + flight.destination + '</span>' +
+                                    '<span class="route-time">' + arrStr + '</span>' +
+                                '</div>' +
+                            '</div>' +
+                            '<div class="result-meta">' +
+                                '<span class="seats-badge ' + seatClass + '">' + seatText + '</span>' +
+                            '</div>' +
+                        '</div>' +
+                        '<div class="result-card-actions">' +
+                            '<a href="/flights/' + flight._id + '" class="details-link"><i class="bi bi-info-circle"></i> View Details</a>' +
+                            bookBtn +
+                        '</div>' +
+                    '</div>';
+                }).join('');
+            })
+            .catch(function (err) {
+                loadingIndicator.style.display = 'none';
+                noResults.style.display = 'block';
+                subtitle.textContent = 'An error occurred while searching.';
+                console.error('Search error:', err);
+            });
+    });
+
+    // Toast helper
+    function showToast(message, type) {
+        var container = document.getElementById('toastContainer');
+        var toast = document.createElement('div');
+        toast.className = 'toast toast-' + (type || 'info');
+        toast.textContent = message;
+        container.appendChild(toast);
+        setTimeout(function () { toast.classList.add('toast-visible'); }, 10);
+        setTimeout(function () {
+            toast.classList.remove('toast-visible');
+            setTimeout(function () { toast.remove(); }, 300);
+        }, 3000);
+    }
+});
+</script>
