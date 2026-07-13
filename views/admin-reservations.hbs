@@ -25,7 +25,7 @@
                 <tbody>
                     <!-- Loop through reservations and display them in the table -->
                     {{#each reservations}}
-                        <tr class="details-clickable-row" data-toggle="collapse" data-target="#details-{{this._id}}"
+                        <tr class="details-clickable-row" id="reservationRow-{{this._id}}" data-toggle="collapse" data-target="#details-{{this._id}}"
                             aria-expanded="false" aria-controls="details-{{this._id}}" style="cursor: pointer;">
                             <td class="details-chevron"><i class="bi bi-chevron-right"></i></td>
                             <td>{{this.reservationNumber}}</td>
@@ -36,6 +36,10 @@
                             <td>{{this.seatDisplay}}</td>
                             <td>${{this.totalPrice}}</td>
                             <td><span class="admin-status badge badge-{{#if this.isConfirmed}}success{{else if this.isCancelled}}danger{{else}}warning{{/if}}">{{this.status}}</span></td>
+                            <td>
+                            <button id="editReservation" type="button" class="btn btn-primary action-btn-admin" data-toggle="modal" data-target="#editReservationModal">Edit</button>
+                            <button id="deleteReservation" type="button" class="btn btn-primary action-btn-admin btn-delete-reservation" data-toggle="modal" data-target="#deleteConfirmationModal" data-id="{{this._id}}" data-reservation-number="{{this.reservationNumber}}">Delete</button>
+                            </td>
                             
                         </tr>
                         <tr class="details-collapse-row">
@@ -304,7 +308,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                Are you sure you want to delete this reservation?
+                Are you sure you want to delete reservation <strong id="deleteReservationNumber"></strong>?
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -317,5 +321,82 @@
             </div>
         </div>
         </div>
-        <!-- Delete Toast Notification -->
-        <div class="toast-container" id="toastContainer"></div>
+
+        <script>
+        (function () {
+            var deleteModal = document.getElementById('deleteConfirmationModal');
+            var reservationNumberLabel = document.getElementById('deleteReservationNumber');
+            var confirmDeleteBtn = deleteModal.querySelector('.btnDelete');
+            var pendingDeleteId = null;
+
+            // Capture which reservation was targeted when a Delete button opens the modal
+            document.querySelectorAll('.btn-delete-reservation').forEach(function (btn) {
+                btn.addEventListener('click', function () {
+                    pendingDeleteId = btn.getAttribute('data-id');
+                    reservationNumberLabel.textContent = btn.getAttribute('data-reservation-number') || '';
+                });
+            });
+
+            confirmDeleteBtn.addEventListener('click', function () {
+                if (!pendingDeleteId) return;
+                var idToDelete = pendingDeleteId;
+
+                fetch('/admin/reservations/delete/' + idToDelete, {
+                    method: 'DELETE',
+                    headers: { 'Content-Type': 'application/json' }
+                })
+                    .then(function (response) {
+                        return response.json().then(function (data) {
+                            return { ok: response.ok, data: data };
+                        });
+                    })
+                    .then(function (result) {
+                        if (!result.ok || !result.data.success) {
+                            throw new Error(result.data.message || 'Failed to delete reservation');
+                        }
+
+                        // Remove both the summary row and its details row without a page refresh
+                        var row = document.getElementById('reservationRow-' + idToDelete);
+                        var detailsRow = document.getElementById('details-' + idToDelete);
+                        if (row) {
+                            var detailsWrapperRow = detailsRow ? detailsRow.closest('tr') : null;
+                            row.remove();
+                            if (detailsWrapperRow) detailsWrapperRow.remove();
+                        }
+
+                        showToast('Reservation deleted successfully', 'success');
+                    })
+                    .catch(function (err) {
+                        console.error(err);
+                        showToast('Error deleting reservation', 'danger');
+                    })
+                    .finally(function () {
+                        pendingDeleteId = null;
+                    });
+            });
+
+            function showToast(message, variant) {
+                var container = document.getElementById('toastContainer');
+                if (!container) return;
+
+                var toast = document.createElement('div');
+                toast.className = 'toast align-items-center text-white bg-' + variant + ' border-0';
+                toast.setAttribute('role', 'alert');
+                toast.innerHTML =
+                    '<div class="d-flex">' +
+                    '<div class="toast-body">' + message + '</div>' +
+                    '<button type="button" class="close mr-2 m-auto text-white" data-dismiss="toast">&times;</button>' +
+                    '</div>';
+
+                container.appendChild(toast);
+
+                if (window.jQuery && jQuery.fn.toast) {
+                    jQuery(toast).toast({ delay: 3000 }).toast('show');
+                    jQuery(toast).on('hidden.bs.toast', function () { toast.remove(); });
+                } else {
+                    toast.style.display = 'block';
+                    setTimeout(function () { toast.remove(); }, 3000);
+                }
+            }
+        })();
+        </script>

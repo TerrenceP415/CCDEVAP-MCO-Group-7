@@ -102,3 +102,27 @@ exports.createAdminReservations = async (req, res) => {
         res.status(500).send('Error creating reservation entry');
     }
 };
+
+exports.deleteAdminReservations = async (req, res) => {
+    try {
+
+        const { id } = req.params;
+
+        // Clean ID validation to ensure it's a valid MongoDB ObjectId
+
+        if (!id.match(/^[0-9a-fA-F]{24}$/)) {
+            return res.status(400).json({ success: false, message: 'Invalid reservation id' });
+        }
+        // Attempt to delete the reservation by ID, returns the deleted document if found, or null if not found
+        const deleted = await Reservation.findByIdAndDelete(id);
+        if (!deleted) {
+            return res.status(404).json({ success: false, message: 'Reservation not found' });
+        }
+        
+        
+        res.status(200).json({ success: true, message: 'Reservation deleted successfully' });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ success: false, message: 'Error deleting reservation' });
+    }
+}
