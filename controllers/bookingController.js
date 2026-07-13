@@ -18,12 +18,24 @@ exports.searchFlights = async (req, res) => {
     if (destination && destination.trim()) {
       filter.destination = { $regex: destination.trim(), $options: 'i' };
     }
+    const now = new Date();
+
     if (date && date.trim()) {
-      // Match flights departing on the given date (any time that day)
-      const startOfDay = new Date(date.trim());
-      const endOfDay = new Date(date.trim());
-      endOfDay.setDate(endOfDay.getDate() + 1);
-      filter.departureDateTime = { $gte: startOfDay, $lt: endOfDay };
+      // Build the day boundaries in LOCAL time (not UTC) so a date like
+      // "2026-07-14" means midnight-to-midnight in the server's local
+      // timezone, matching what the user picked in the <input type="date">.
+      // (new Date("2026-07-14")) would parse as UTC midnight instead,
+      // which can shift the window by several hours depending on timezone.
+      const [year, month, day] = date.trim().split('-').map(Number);
+      const startOfDay = new Date(year, month - 1, day, 0, 0, 0, 0);
+      const endOfDay = new Date(year, month - 1, day + 1, 0, 0, 0, 0);
+
+      // If searching "today", never show flights that have already departed.
+      const lowerBound = startOfDay > now ? startOfDay : now;
+      filter.departureDateTime = { $gte: lowerBound, $lt: endOfDay };
+    } else {
+      // No date filter: still only show upcoming flights, not past ones.
+      filter.departureDateTime = { $gte: now };
     }
 
     const flights = await Flight.find(filter)
