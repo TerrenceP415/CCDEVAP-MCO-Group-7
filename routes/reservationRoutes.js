@@ -9,5 +9,5 @@ router.put('/admin/reservations/update/:id', reservationController.updateAdminRe
 router.delete('/admin/reservations/delete/:id', reservationController.deleteAdminReservations);
 router.get('/admin/dashboard', reservationController.getAdminDashboard);
 router.get('/my-reservations', reservationController.getUserReservations);
-
+router.patch('/reservations/cancel/:id', reservationController.cancelUserReservation);
 module.exports = router;

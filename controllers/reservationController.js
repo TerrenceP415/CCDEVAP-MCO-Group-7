@@ -291,3 +291,55 @@ exports.getUserReservations = async (req, res) => {
         res.status(500).send('Server Error loading data');
     }
 };
+
+exports.cancelUserReservation = async (req, res) => {
+
+    try {
+        // TODO(auth): once login/session is implemented, check that the user is the owner of the reservation
+        // so a passenger can only cancel their own reservation.  for
+        // now since auth isn't implemented yet; this cancels by reservation id ,
+        // same as the admin path does, just as a status change instead of a delete.
+        const { id } = req.params;
+        if (!id.match(/^[0-9a-fA-F]{24}$/)) {
+            return res.status(400).json({ success: false, message: 'Invalid reservation id' });
+        }
+        const reservation = await Reservation.findById(id).populate('flight');
+
+        if (!reservation) {
+            return res.status(404).json({ success: false, message: 'Reservation not found' });
+        }
+
+        if (reservation.status === 'Cancelled') {
+
+            return res.status(400).json({ success: false, message: 'This reservation is already cancelled' });
+
+        }
+
+        reservation.status = 'Cancelled';
+        await reservation.save();
+
+
+        const seatDisplay = reservation.passengers && reservation.passengers.length > 0
+            ? reservation.passengers.map(p => p.seatNumber).join(', ')
+            : 'N/A';
+
+        res.status(200).json({
+            success: true,
+            message: 'Reservation cancelled successfully',
+            reservation: {
+                ...reservation.toObject(),
+                seatDisplay,
+                isConfirmed: false,
+                isCancelled: true,
+                isPending: false
+            }
+        });
+    } catch (err) {
+
+        console.error(err);
+
+        res.status(500).json({ success: false, message: 'Error cancelling reservation' });
+
+    }
+
+};
