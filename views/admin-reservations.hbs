@@ -31,13 +31,26 @@
                             <td>{{this.reservationNumber}}</td>
                             <td>{{this.flight.origin}}</td>
                             <td>{{this.flight.destination}}</td>
-                            <td>{{this.flight.departureDateTime}}</td>
-                            <td>{{this.flight.arrivalDateTime}}</td>
+                            <td>{{formatDate this.flight.departureDateTime}}</td>
+                            <td>{{formatDate this.flight.arrivalDateTime}}</td>
                             <td>{{this.seatDisplay}}</td>
                             <td>${{this.totalPrice}}</td>
                             <td><span class="admin-status badge badge-{{#if this.isConfirmed}}success{{else if this.isCancelled}}danger{{else}}warning{{/if}}">{{this.status}}</span></td>
                             <td>
-                            <button id="editReservation" type="button" class="btn btn-primary action-btn-admin" data-toggle="modal" data-target="#editReservationModal">Edit</button>
+                            <button id="editReservation" type="button" class="btn btn-primary action-btn-admin btn-edit-reservation" data-toggle="modal" data-target="#editReservationModal"
+                                data-id="{{this._id}}"
+                                data-reservation-number="{{this.reservationNumber}}"
+                                data-origin="{{this.flight.origin}}"
+                                data-destination="{{this.flight.destination}}"
+                                data-departure-time="{{this.flight.departureDateTime}}"
+                                data-arrival-time="{{this.flight.arrivalDateTime}}"
+                                data-seat-number="{{this.seatDisplay}}"
+                                data-total-price="{{this.totalPrice}}"
+                                data-status="{{this.status}}"
+                                data-meal-package="{{this.mealPackage}}"
+                                data-extra-services="{{this.extraServices}}"
+                                data-passenger-count="{{this.passengers.length}}"
+                                data-passenger-names="{{#each this.passengers}}{{this.fullName}}{{#unless @last}}&#10;{{/unless}}{{/each}}">Edit</button>
                             <button id="deleteReservation" type="button" class="btn btn-primary action-btn-admin btn-delete-reservation" data-toggle="modal" data-target="#deleteConfirmationModal" data-id="{{this._id}}" data-reservation-number="{{this.reservationNumber}}">Delete</button>
                             </td>
                             
@@ -210,7 +223,7 @@
                     </button>
                 </div>
 
-            <form action="/admin/reservations/update" method="POST">
+            <form action="/admin/reservations/update" method="POST" id="editReservationForm">
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-6">
@@ -255,7 +268,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="editPassengerCount">Passenger Count</label>
-                                <input name="passengerCount" type="text" class="form-control" id="editPassengerCount" placeholder="e.g., 3 Adults, 0 Children" required>
+                                <input name="passengerCount" type="text" class="form-control" id="editPassengerCount" placeholder="e.g., 3 Passengers" required>
                             </div>
                         </div>
                     </div>
@@ -285,8 +298,8 @@
                 </div>
             
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Discard</button>
-                    <button type="submit" class="btn btn-success btnSave">Save Changes</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-success btnSave" >Save Changes</button>
                 </div>
             </form>
             </div>
@@ -323,81 +336,257 @@
         </div>
 
         <script>
-        (function () {
-            //get elements
-            var deleteModal = document.getElementById('deleteConfirmationModal');
-            var reservationNumberLabel = document.getElementById('deleteReservationNumber');
-            var confirmDeleteBtn = deleteModal.querySelector('.btnDelete');
-            var pendingDeleteId = null;
+            (function () {
+                // Get elements
+                var deleteModal = document.getElementById('deleteConfirmationModal');
+                var reservationNumberLabel = document.getElementById('deleteReservationNumber');
+                var confirmDeleteBtn = deleteModal.querySelector('.btnDelete');
+                var pendingDeleteId = null;
 
-            // Capture which reservation was targeted when a Delete button opens the modal
-            document.querySelectorAll('.btn-delete-reservation').forEach(function (btn) {
-                btn.addEventListener('click', function () {
+                var editModal = document.getElementById('editReservationModal');
+                var editForm = document.getElementById('editReservationForm');
+                var pendingEditId = null;
+
+                // Converts a date into "YYYY-MM-DDTHH:mm" format for datetime-local input fields
+                function toDatetimeLocalValue(dateInput) {
+                    if (!dateInput) return '';
+                    var d = new Date(dateInput);
+                    if (isNaN(d.getTime())) return '';
+                    var pad = function (n) { return String(n).padStart(2, '0'); };
+                    return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()) +
+                        'T' + pad(d.getHours()) + ':' + pad(d.getMinutes());
+                }
+
+                function escapeHtml(str) {
+                    var div = document.createElement('div');
+                    div.textContent = str == null ? '' : String(str);
+                    return div.innerHTML;
+                }
+
+                // Mirrors your backend system/timezone formatting helper
+                function formatDateDisplay(dateInput) {
+                    if (!dateInput) return '';
+                    var d = new Date(dateInput);
+                    if (isNaN(d.getTime())) return '';
+                    
+                    // Formats date to: "MMM D, YYYY h:mm A" with the user's localized time zone output
+                    var dateString = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+                    var timeString = d.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', timeZoneName: 'short' });
+                    return dateString + ' ' + timeString;
+                }
+
+                // DELEGATED EVENT LISTENER: This ensures dynamically updated rows can still be edited!
+                document.addEventListener('click', function (e) {
+                    var btn = e.target.closest('.btn-edit-reservation');
+                    if (!btn) return;
+
+                    pendingEditId = btn.getAttribute('data-id');
+
+                    document.getElementById('editReservationNumber').value = btn.getAttribute('data-reservation-number') || '';
+                    document.getElementById('editOrigin').value = btn.getAttribute('data-origin') || '';
+                    document.getElementById('editDestination').value = btn.getAttribute('data-destination') || '';
+                    document.getElementById('editDepartureTime').value = toDatetimeLocalValue(btn.getAttribute('data-departure-time'));
+                    document.getElementById('editArrivalTime').value = toDatetimeLocalValue(btn.getAttribute('data-arrival-time'));
+                    document.getElementById('editSeatNumber').value = btn.getAttribute('data-seat-number') || '';
+                    document.getElementById('editTotalPrice').value = btn.getAttribute('data-total-price') || '';
+                    document.getElementById('editReservationStatus').value = btn.getAttribute('data-status') || 'Pending';
+                    document.getElementById('editPassengerCount').value = (btn.getAttribute('data-passenger-count') || '0') + ' Passenger(s)';
+                    document.getElementById('editPassengerNames').value = btn.getAttribute('data-passenger-names') || '';
+                    document.getElementById('editMealPackage').value = btn.getAttribute('data-meal-package') || '';
+                    document.getElementById('editExtraServices').value = btn.getAttribute('data-extra-services') || '';
+                });
+
+                // Build the collapsible details panel for reservation
+                function buildDetailsHTML(reservation) {
+                    var passengersHtml = '<p class="mb-1 text-muted text-italic">No passengers listed</p>';
+                    if (reservation.passengers && reservation.passengers.length > 0) {
+                        passengersHtml = reservation.passengers.map(function (p) {
+                            return '<p class="mb-1 text-muted">' + escapeHtml(p.fullName) +
+                                ' <small class="text-secondary">(' + escapeHtml(p.seatNumber) + ')</small></p>';
+                        }).join('');
+                    }
+
+                    var passengerCountText = (reservation.passengers && reservation.passengers.length > 0)
+                        ? reservation.passengers.length + ' Passenger(s)'
+                        : '0 Passengers';
+
+                    var mealText = reservation.mealPackage ? escapeHtml(reservation.mealPackage) : 'None Selected';
+                    var extrasText = reservation.extraServices ? escapeHtml(reservation.extraServices) : 'No Add-ons Selected';
+
+                    return '<div class="p-3 bg-light border-bottom"><div class="row">' +
+                        '<div class="col-md-3"><strong>Passenger Names:</strong>' + passengersHtml + '</div>' +
+                        '<div class="col-md-2"><strong>Passenger Count:</strong><p class="mb-2 text-muted">' + passengerCountText + '</p></div>' +
+                        '<div class="col-md-3"><strong>Meal Package:</strong><p class="mb-2 text-muted">' + mealText + '</p></div>' +
+                        '<div class="col-md-4"><strong>Extra Services:</strong><p class="mb-2 text-muted">' + extrasText + '</p></div>' +
+                        '</div></div>';
+                }
+
+                // Patches summary row and datasets dynamically
+                function updateReservationRowDOM(reservation) {
+                    var row = document.getElementById('reservationRow-' + reservation._id);
+                    if (!row) return;
+
+                    var statusClass = reservation.isConfirmed ? 'success' : (reservation.isCancelled ? 'danger' : 'warning');
+                    var cells = row.querySelectorAll('td');
+
+                    cells[1].textContent = reservation.reservationNumber;
+                    cells[2].textContent = reservation.flight ? reservation.flight.origin : '';
+                    cells[3].textContent = reservation.flight ? reservation.flight.destination : '';
+                    cells[4].textContent = reservation.flight ? formatDateDisplay(reservation.flight.departureDateTime) : '';
+                    cells[5].textContent = reservation.flight ? formatDateDisplay(reservation.flight.arrivalDateTime) : '';
+                    cells[6].textContent = reservation.seatDisplay;
+                    cells[7].textContent = '$' + reservation.totalPrice;
+
+                    var statusBadge = row.querySelector('.admin-status');
+                    if (statusBadge) {
+                        statusBadge.textContent = reservation.status;
+                        statusBadge.className = 'admin-status badge badge-' + statusClass;
+                    }
+
+                    var passengerNames = (reservation.passengers || []).map(function (p) { return p.fullName; }).join('\n');
+
+                    var editBtn = row.querySelector('.btn-edit-reservation');
+                    if (editBtn) {
+                        editBtn.setAttribute('data-reservation-number', reservation.reservationNumber);
+                        editBtn.setAttribute('data-origin', reservation.flight ? reservation.flight.origin : '');
+                        editBtn.setAttribute('data-destination', reservation.flight ? reservation.flight.destination : '');
+                        editBtn.setAttribute('data-departure-time', reservation.flight ? reservation.flight.departureDateTime : '');
+                        editBtn.setAttribute('data-arrival-time', reservation.flight ? reservation.flight.arrivalDateTime : '');
+                        editBtn.setAttribute('data-seat-number', reservation.seatDisplay);
+                        editBtn.setAttribute('data-total-price', reservation.totalPrice);
+                        editBtn.setAttribute('data-status', reservation.status);
+                        editBtn.setAttribute('data-meal-package', reservation.mealPackage || '');
+                        editBtn.setAttribute('data-extra-services', reservation.extraServices || '');
+                        editBtn.setAttribute('data-passenger-count', (reservation.passengers || []).length);
+                        editBtn.setAttribute('data-passenger-names', passengerNames);
+                    }
+
+                    var deleteBtn = row.querySelector('.btn-delete-reservation');
+                    if (deleteBtn) {
+                        deleteBtn.setAttribute('data-reservation-number', reservation.reservationNumber);
+                    }
+
+                    var detailsDiv = document.getElementById('details-' + reservation._id);
+                    if (detailsDiv) {
+                        detailsDiv.innerHTML = buildDetailsHTML(reservation);
+                    }
+                }
+
+                // AJAX submit handler
+                editForm.addEventListener('submit', function (e) {
+                    e.preventDefault();
+                    if (!pendingEditId) return;
+
+                    var formData = new FormData(editForm);
+                    var payload = {};
+                    formData.forEach(function (value, key) { payload[key] = value; });
+
+                    fetch('/admin/reservations/update/' + pendingEditId, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    })
+                        .then(function (response) {
+                            return response.json().then(function (data) {
+                                return { ok: response.ok, data: data };
+                            });
+                        })
+                        .then(function (result) {
+                            if (!result.ok || !result.data.success) {
+                                throw new Error(result.data.message || 'Failed to update reservation');
+                            }
+
+                            updateReservationRowDOM(result.data.reservation);
+                            showToast('Reservation updated successfully', 'success');
+
+                            // Perform proper cleanup and hide modal
+                            if (window.jQuery && jQuery.fn.modal) {
+                                jQuery('#editReservationModal').modal('hide');
+                            } else {
+                                editModal.classList.remove('show');
+                                editModal.style.display = 'none';
+                                document.body.classList.remove('modal-open');
+                                var backdrop = document.querySelector('.modal-backdrop');
+                                if (backdrop) backdrop.remove();
+                            }
+                        })
+                        .catch(function (err) {
+                            console.error(err);
+                            showToast('Error updating reservation', 'danger');
+                        })
+                        .finally(function () {
+                            pendingEditId = null;
+                        });
+                });
+
+                // Capture delete targets
+                document.addEventListener('click', function (e) {
+                    var btn = e.target.closest('.btn-delete-reservation');
+                    if (!btn) return;
                     pendingDeleteId = btn.getAttribute('data-id');
                     reservationNumberLabel.textContent = btn.getAttribute('data-reservation-number') || '';
                 });
-            });
-            // AJAX for no-refresh deletion of reservation
-            confirmDeleteBtn.addEventListener('click', function () {
-                if (!pendingDeleteId) return;
-                var idToDelete = pendingDeleteId;
 
-                fetch('/admin/reservations/delete/' + idToDelete, {
-                    method: 'DELETE',
-                    headers: { 'Content-Type': 'application/json' }
-                })
-                    .then(function (response) {
-                        return response.json().then(function (data) {
-                            return { ok: response.ok, data: data };
+                // Handle Deletion
+                confirmDeleteBtn.addEventListener('click', function () {
+                    if (!pendingDeleteId) return;
+                    var idToDelete = pendingDeleteId;
+
+                    fetch('/admin/reservations/delete/' + idToDelete, {
+                        method: 'DELETE',
+                        headers: { 'Content-Type': 'application/json' }
+                    })
+                        .then(function (response) {
+                            return response.json().then(function (data) {
+                                return { ok: response.ok, data: data };
+                            });
+                        })
+                        .then(function (result) {
+                            if (!result.ok || !result.data.success) {
+                                throw new Error(result.data.message || 'Failed to delete reservation');
+                            }
+
+                            var row = document.getElementById('reservationRow-' + idToDelete);
+                            var detailsRow = document.getElementById('details-' + idToDelete);
+                            if (row) {
+                                var detailsWrapperRow = detailsRow ? detailsRow.closest('tr') : null;
+                                row.remove();
+                                if (detailsWrapperRow) detailsWrapperRow.remove();
+                            }
+
+                            showToast('Reservation deleted successfully', 'success');
+                        })
+                        .catch(function (err) {
+                            console.error(err);
+                            showToast('Error deleting reservation', 'danger');
+                        })
+                        .finally(function () {
+                            pendingDeleteId = null;
                         });
-                    })
-                    .then(function (result) {
-                        if (!result.ok || !result.data.success) {
-                            throw new Error(result.data.message || 'Failed to delete reservation');
-                        }
+                });
 
-                        // Remove both the summary row and its details row without a page refresh
-                        var row = document.getElementById('reservationRow-' + idToDelete);
-                        var detailsRow = document.getElementById('details-' + idToDelete);
-                        if (row) {
-                            var detailsWrapperRow = detailsRow ? detailsRow.closest('tr') : null;
-                            row.remove();
-                            if (detailsWrapperRow) detailsWrapperRow.remove();
-                        }
+                function showToast(message, variant) {
+                    var container = document.getElementById('toastContainer');
+                    if (!container) return;
 
-                        showToast('Reservation deleted successfully', 'success');
-                    })
-                    .catch(function (err) {
-                        console.error(err);
-                        showToast('Error deleting reservation', 'danger');
-                    })
-                    .finally(function () {
-                        pendingDeleteId = null;
-                    });
-            });
+                    var toast = document.createElement('div');
+                    toast.className = 'toast align-items-center text-white bg-' + variant + ' border-0';
+                    toast.setAttribute('role', 'alert');
+                    toast.innerHTML =
+                        '<div class="d-flex">' +
+                        '<div class="toast-body">' + message + '</div>' +
+                        '<button type="button" class="close mr-2 m-auto text-white" data-dismiss="toast">&times;</button>' +
+                        '</div>';
 
-            function showToast(message, variant) {
-                var container = document.getElementById('toastContainer');
-                if (!container) return;
+                    container.appendChild(toast);
 
-                var toast = document.createElement('div');
-                toast.className = 'toast align-items-center text-white bg-' + variant + ' border-0';
-                toast.setAttribute('role', 'alert');
-                toast.innerHTML =
-                    '<div class="d-flex">' +
-                    '<div class="toast-body">' + message + '</div>' +
-                    '<button type="button" class="close mr-2 m-auto text-white" data-dismiss="toast">&times;</button>' +
-                    '</div>';
-
-                container.appendChild(toast);
-
-                if (window.jQuery && jQuery.fn.toast) {
-                    jQuery(toast).toast({ delay: 3000 }).toast('show');
-                    jQuery(toast).on('hidden.bs.toast', function () { toast.remove(); });
-                } else {
-                    toast.style.display = 'block';
-                    setTimeout(function () { toast.remove(); }, 3000);
+                    if (window.jQuery && jQuery.fn.toast) {
+                        jQuery(toast).toast({ delay: 3000 }).toast('show');
+                        jQuery(toast).on('hidden.bs.toast', function () { toast.remove(); });
+                    } else {
+                        toast.style.display = 'block';
+                        setTimeout(function () { toast.remove(); }, 3000);
+                    }
                 }
-            }
-        })();
+            })();
         </script>

@@ -103,12 +103,87 @@ exports.createAdminReservations = async (req, res) => {
     }
 };
 
+
+exports.updateAdminReservations = async (req, res) => {
+    try {
+        const { id } = req.params;
+        //clean and validate ID
+        if (!id.match(/^[0-9a-fA-F]{24}$/)) {
+            return res.status(400).json({ success: false, message: 'Invalid reservation id' });
+        }
+        // prepare data for update
+        const {
+            reservationNumber, origin, destination, departureTime,
+            arrivalTime, seatNumber, totalPrice, status, passengerNames,
+            mealPackage, extraServices
+        } = req.body;
+        //get the reservation by ID 
+        const reservation = await Reservation.findById(id).populate('flight');
+        if (!reservation) {
+            return res.status(404).json({ success: false, message: 'Reservation not found' });
+        }
+        // Update flight details if the flight reference exists
+        if (reservation.flight) {
+            reservation.flight.origin = origin;
+            reservation.flight.destination = destination;
+            reservation.flight.departureDateTime = new Date(departureTime);
+            reservation.flight.arrivalDateTime = new Date(arrivalTime);
+            await reservation.flight.save();
+        }
+        //clean and apply passenger and seat data
+        const namesArray = passengerNames.split('\n').map(n => n.trim()).filter(n => n.length > 0);
+        const seatsArray = seatNumber.split(',').map(s => s.trim());
+        const existingPassengers = reservation.passengers || [];
+ 
+        const passengers = namesArray.map((name, index) => {
+            const existing = existingPassengers[index];
+            return {
+                fullName: name,
+                email: existing ? existing.email : `${name.toLowerCase().replace(/\s+/g, '')}@skyease.com`,
+                passportNumber: existing ? existing.passportNumber : 'P' + Math.floor(10000000 + Math.random() * 90000000),
+                seatNumber: seatsArray[index] || seatsArray[0] || 'A1'
+            };
+        });
+ 
+        const cleanPrice = parseFloat(String(totalPrice).replace(/[^0-9.]/g, '')) || 0;
+        // reassign updated values to the reservation object
+        reservation.reservationNumber = reservationNumber;
+        reservation.passengers = passengers;
+        reservation.mealPackage = mealPackage;
+        reservation.extraServices = extraServices;
+        reservation.totalPrice = cleanPrice;
+        reservation.status = status;
+        // save the updated reservation
+        await reservation.save();
+
+        const updated = await Reservation.findById(id).populate('flight').lean();
+        const seatDisplay = updated.passengers && updated.passengers.length > 0
+            ? updated.passengers.map(p => p.seatNumber).join(', ')
+            : 'N/A';
+ 
+        res.status(200).json({
+            success: true,
+            message: 'Reservation updated successfully',
+            reservation: {
+                ...updated,
+                seatDisplay,
+                isConfirmed: updated.status === 'Confirmed',
+                isCancelled: updated.status === 'Cancelled',
+                isPending: updated.status === 'Pending'
+            }
+        });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ success: false, message: 'Error updating reservation' });
+    }
+};
+
 exports.deleteAdminReservations = async (req, res) => {
     try {
 
         const { id } = req.params;
 
-        // Clean ID validation to ensure it's a valid MongoDB ObjectId
+        // Clean ID and validate it is a valid entry
 
         if (!id.match(/^[0-9a-fA-F]{24}$/)) {
             return res.status(400).json({ success: false, message: 'Invalid reservation id' });
