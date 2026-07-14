@@ -4184,13 +4184,13 @@ body.admin-page {
 /* ─── Missing MCO1 Styles ──────────────────────────── */
 
 .seat-premium {
-  background: var(--color-sky-50);
-  border-color: #f59e0b;
-  color: #d97706;
+  background: var(--color-blue-100);
+  border-color: var(--color-blue-600);
+  color: var(--color-blue-600);
 }
 .seat-premium:hover {
-  background: #fef3c7;
-  border-color: #f59e0b;
+  background: var(--color-blue-50);
+  border-color: var(--color-blue-600);
   transform: scale(1.08);
 }
 

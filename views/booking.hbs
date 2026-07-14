@@ -134,7 +134,7 @@
                 </details>
 
                 <!-- Step 2: Seat Selection -->
-                <details class="booking-section">
+                <details class="booking-section" open>
                     <summary><span><i class="bi bi-grid-3x3"></i> Seat Selection</span></summary>
                     <div class="booking-section-body">
                         <p class="booking-copy" style="margin-bottom: var(--space-3);">
@@ -172,7 +172,7 @@
                 </details>
 
                 <!-- Step 3: Meal & Extra Services -->
-                <details class="booking-section">
+                <details class="booking-section" open>
                     <summary><span><i class="bi bi-bag-check"></i> Meal &amp; Extra Services</span></summary>
                     <div class="booking-section-body">
 
@@ -246,12 +246,13 @@
                             </div>
                         </div>
 
-                        <!-- Hidden fields for meal/extras so they POST to server -->
-                        <input type="hidden" name="mealPackage" id="mealPackageInput" value="Standard Meal">
-                        <input type="hidden" name="extraServices" id="extraServicesInput" value="">
-                        <input type="hidden" name="totalPrice" id="totalPriceInput" value="{{ flight.ticketPrice }}">
                     </div>
                 </details>
+
+                <!-- Hidden fields for meal/extras/total (outside <details> for reliable POST) -->
+                <input type="hidden" name="mealPackage" id="mealPackageInput" value="Standard Meal">
+                <input type="hidden" name="extraServices" id="extraServicesInput" value="">
+                <input type="hidden" name="totalPrice" id="totalPriceInput" value="{{ flight.ticketPrice }}">
 
                 <!-- Submit Button -->
                 <button type="submit" class="booking-submit">
@@ -352,7 +353,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="modalSelectSeatBtn">Select This Seat</button>
+                <button type="button" class="btn btn-primary" id="modalSelectSeatBtn" data-dismiss="modal">Select This Seat</button>
             </div>
         </div>
     </div>

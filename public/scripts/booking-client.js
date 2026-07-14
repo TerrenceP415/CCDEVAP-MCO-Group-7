@@ -294,7 +294,11 @@ document.addEventListener('DOMContentLoaded', function () {
       updateSummary();
 
       // Close modal
-      if (typeof $ !== 'undefined' && typeof $.fn.modal !== 'undefined') {
+      if (typeof bootstrap !== 'undefined' && bootstrap.Modal) {
+        var modalEl = document.getElementById('seatDetailModal');
+        var modalInstance = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl);
+        modalInstance.hide();
+      } else if (typeof $ !== 'undefined' && typeof $.fn.modal !== 'undefined') {
         $('#seatDetailModal').modal('hide');
       }
     });
@@ -428,16 +432,9 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  // Block opening Step 3 until a seat is selected
+  // Refresh stepper on toggle
   sections.forEach(function (section, idx) {
     section.addEventListener('toggle', function () {
-      if (idx === 2 && section.open && !state.seat) {
-        section.open = false;
-        seatError.style.display = 'block';
-        sections[1].open = true;
-        seatError.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        return;
-      }
       refreshStepper();
     });
   });
