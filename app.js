@@ -94,7 +94,7 @@ app.use('/', reservationRoutes);
 
 // ─── Legacy Static HTML Routes (from MCO1) ────────────
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'views', 'index.html'));
+  res.render('index', { title: 'Home', layout: 'main' });
 });
 
 app.get('/admin', (req, res) => {
@@ -118,11 +118,7 @@ app.get('/admin/reservations', (req, res) => {
   res.render('admin-reservations', { title: 'Admin Reservations', layout: 'admin' });
 });
 
-// Legacy /booking route removed — now handled by bookingRoutes.js
-// Redirect old /booking URL to search page
-app.get('/booking', (req, res) => {
-  res.redirect('/search');
-});
+
 
 app.get('/login', (req, res) => {
   res.render('login', { title: 'Login', layout: 'main' });
@@ -133,7 +129,7 @@ app.get('/register', (req, res) => {
 });
 
 app.get('/settings', (req, res) => {
-  res.render('settings.html');
+  res.render('settings', { title: 'Settings', layout: 'main' });
 });
 
 
