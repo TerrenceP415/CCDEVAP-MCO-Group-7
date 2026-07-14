@@ -110,10 +110,6 @@ app.get('/admin/flights', (req, res) => {
 });
 
 
-app.get('/my-reservations', (req, res) => {
-  res.render('reservations', { title: 'My Reservations', layout: 'main' });
-});
-
 app.get('/admin/reservations', (req, res) => {
   res.render('admin-reservations', { title: 'Admin Reservations', layout: 'admin' });
 });
