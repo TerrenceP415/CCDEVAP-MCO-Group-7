@@ -46,6 +46,26 @@ const flightSchema = new mongoose.Schema(
       required: true,
       min: 0,
     },
+    duration: {
+      type: String,
+      trim: true,
+      default: '',
+    },
+    layovers: {
+      type: Number,
+      default: 0,
+      min: 0,
+    },
+    cabinClass: {
+      type: String,
+      trim: true,
+      default: 'Economy',
+    },
+    airlineLogo: {
+      type: String,
+      trim: true,
+      default: '',
+    },
   },
   {
     timestamps: true,

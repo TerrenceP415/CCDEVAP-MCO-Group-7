@@ -102,7 +102,11 @@ exports.processBooking = async (req, res) => {
       return res.redirect('/search');
     }
 
-    const { fullName, email, passportNumber, seatNumber } = req.body;
+    const {
+      fullName, email, contactNumber, passportNumber,
+      nationality, dateOfBirth, gender, emergencyContact,
+      seatNumber, mealPackage, extraServices, totalPrice
+    } = req.body;
 
     // ── Server-side validation ───────────────────────
     const errors = [];
@@ -111,16 +115,27 @@ exports.processBooking = async (req, res) => {
     if (!email || !email.trim()) {
       errors.push('Email address is required.');
     } else {
-      // Basic email format check
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(email.trim())) {
         errors.push('Please enter a valid email address.');
       }
     }
+    if (!contactNumber || !contactNumber.trim() || !/^[0-9+()\-\s]{7,}$/.test(contactNumber.trim())) {
+      errors.push('Enter a valid contact number (min. 7 digits).');
+    }
     if (!passportNumber || !passportNumber.trim()) {
       errors.push('Passport number is required.');
     } else if (passportNumber.trim().length < 6) {
       errors.push('Passport number must be at least 6 characters.');
+    }
+    if (!dateOfBirth || !dateOfBirth.trim()) {
+      errors.push('Date of birth is required.');
+    }
+    if (!gender || !gender.trim()) {
+      errors.push('Please select a gender.');
+    }
+    if (!emergencyContact || !emergencyContact.trim() || !/^[0-9+()\-\s]{7,}$/.test(emergencyContact.trim())) {
+      errors.push('Enter a valid emergency contact number (min. 7 digits).');
     }
     if (!seatNumber || !seatNumber.trim()) errors.push('Please select a seat.');
 
@@ -156,6 +171,9 @@ exports.processBooking = async (req, res) => {
     const reservationNumber = 'SKY-' + Date.now().toString(36).toUpperCase() +
       '-' + Math.random().toString(36).substring(2, 6).toUpperCase();
 
+    // ── Calculate final total price ──────────────────
+    const finalTotal = totalPrice ? parseFloat(totalPrice) : flight.ticketPrice;
+
     // ── Create reservation ───────────────────────────
     const reservation = new Reservation({
       reservationNumber,
@@ -167,9 +185,16 @@ exports.processBooking = async (req, res) => {
           email: email.trim(),
           passportNumber: passportNumber.trim(),
           seatNumber: seatNumber.trim(),
+          contactNumber: (contactNumber || '').trim(),
+          nationality: (nationality || '').trim(),
+          dateOfBirth: (dateOfBirth || '').trim(),
+          gender: (gender || '').trim(),
+          emergencyContact: (emergencyContact || '').trim(),
         },
       ],
-      totalPrice: flight.ticketPrice,
+      mealPackage: (mealPackage || 'Standard Meal').trim(),
+      extraServices: (extraServices || '').trim(),
+      totalPrice: finalTotal,
       status: 'Confirmed',
     });
 

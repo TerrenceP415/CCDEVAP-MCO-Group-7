@@ -24,6 +24,11 @@ const reservationSchema = new mongoose.Schema(
         email: { type: String, required: true, trim: true },
         passportNumber: { type: String, required: true, trim: true },
         seatNumber: { type: String, required: true, trim: true },
+        contactNumber: { type: String, trim: true, default: '' },
+        nationality: { type: String, trim: true, default: '' },
+        dateOfBirth: { type: String, trim: true, default: '' },
+        gender: { type: String, trim: true, default: '' },
+        emergencyContact: { type: String, trim: true, default: '' },
       },
     ],
     mealPackage: {
