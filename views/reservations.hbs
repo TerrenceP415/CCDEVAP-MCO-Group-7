@@ -139,3 +139,108 @@
 
     <!-- Toast Notification Container -->
     <div class="toast-container" id="toastContainer"></div>
+
+    <script>document.addEventListener('DOMContentLoaded', () => {
+    const cancelModal = document.getElementById('cancelModal');
+    const confirmCancelBtn = cancelModal ? cancelModal.querySelector('.btnDelete') : null;
+ 
+    if (!cancelModal || !confirmCancelBtn) return;
+ 
+    // 1. Capture which reservation's "Cancel Booking" button opened the modal.
+    //    Event delegation so this works for every card, including ones added later.
+    document.addEventListener('click', (event) => {
+        const trigger = event.target.closest('.btn-action-cancel');
+        if (!trigger) return;
+ 
+        const reservationId = trigger.dataset.reservationId;
+        cancelModal.dataset.reservationId = reservationId;
+    });
+ 
+    // 2. Fire the cancellation when "Confirm Cancellation" is clicked.
+    confirmCancelBtn.addEventListener('click', async () => {
+        const reservationId = cancelModal.dataset.reservationId;
+        if (!reservationId) return;
+ 
+        try {
+            const response = await fetch(`/reservations/cancel/${reservationId}`, {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' }
+            });
+ 
+            const data = await response.json();
+ 
+            if (!response.ok || !data.success) {
+                showToast(data.message || 'Could not cancel this reservation.', 'error');
+                return;
+            }
+ 
+            applyCancelledStateToCard(reservationId);
+            showToast('Reservation cancelled successfully.', 'success');
+ 
+        } catch (err) {
+            console.error(err);
+            showToast('Something went wrong. Please try again.', 'error');
+        } finally {
+            delete cancelModal.dataset.reservationId;
+        }
+    });
+});
+ 
+// Updates the card's badge/actions in place to reflect the cancelled status,
+// without needing to reload or re-render the whole reservations list.
+function applyCancelledStateToCard(reservationId) {
+    const card = document.querySelector(`.reservation-card[data-reservation-id="${reservationId}"]`);
+    if (!card) return;
+ 
+    card.dataset.status = 'Cancelled';
+ 
+    const badge = card.querySelector('.status-badge-pill');
+    if (badge) {
+        badge.classList.remove('badge-confirmed', 'badge-pending');
+        badge.classList.add('badge-cancelled');
+        badge.textContent = 'Cancelled';
+    }
+ 
+    const actionsRow = card.querySelector('.btn-action-cancel')?.closest('.text-right');
+    if (actionsRow) {
+        const notice = document.createElement('div');
+        notice.className = 'alert cancelled-status-box mt-4 mb-0 d-flex align-items-center py-3 px-4';
+        notice.setAttribute('role', 'alert');
+        notice.innerHTML = `
+            <i class="bi bi-info-circle-fill mr-2 text-secondary" style="font-size: 1.1rem;"></i>
+            This booking has been cancelled and cannot be modified.
+        `;
+        actionsRow.replaceWith(notice);
+ 
+        const divider = card.querySelector('.card-inner-divider');
+        if (divider) divider.remove();
+    }
+}
+ 
+// Minimal Bootstrap-style toast, appended to the #toastContainer already in reservations.hbs
+function showToast(message, type = 'success') {
+    const container = document.getElementById('toastContainer');
+    if (!container) return;
+ 
+    const toast = document.createElement('div');
+    toast.className = `toast align-items-center text-white ${type === 'error' ? 'bg-danger' : 'bg-success'} border-0 show`;
+    toast.setAttribute('role', 'alert');
+    toast.setAttribute('aria-live', 'assertive');
+    toast.setAttribute('aria-atomic', 'true');
+    toast.innerHTML = `
+        <div class="d-flex">
+            <div class="toast-body">${message}</div>
+            <button type="button" class="close mr-2 m-auto text-white" data-dismiss="toast" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    `;
+ 
+    container.appendChild(toast);
+ 
+    const closeBtn = toast.querySelector('[data-dismiss="toast"]');
+    closeBtn.addEventListener('click', () => toast.remove());
+ 
+    setTimeout(() => toast.remove(), 4000);
+}
+</script>
