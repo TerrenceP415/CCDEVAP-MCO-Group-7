@@ -20,118 +20,67 @@
 </div>
         <!-- Reservations Accordion -->
         <div class="accordion" id="reservationsAccordion">
-            
-            <!-- Reservation 1: MNL → LAX (Confirmed) -->
-            <div class="card reservation-card">
-                <div class="p-0" id="headingOne">
-                    <div class="d-flex justify-content-between align-items-center pr-4">
-                        <button class="accordion-trigger-btn" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                            <i class="bi bi-chevron-down chevron-icon-anim"></i> MNL &rarr; LAX
-                        </button>
-                        <span class="badge status-badge-pill badge-confirmed">Confirmed</span>
-                    </div>
-                </div>
-                <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#reservationsAccordion">
-                    <div class="card-body pt-0 px-5 pb-4">
-                        <div class="row">
-                            <div class="col-md-4 mb-3 mb-md-0">
-                                <h6 class="info-row-heading">Passenger</h6>
-                                <p class="info-row-data">Juan Dela Cruz</p>
-                            </div>
-                            <div class="col-md-4 mb-3 mb-md-0">
-                                <h6 class="info-row-heading">Seat Selection</h6>
-                                <p class="info-row-data">14B</p>
-                            </div>
-                            <div class="col-md-4 text-md-right">
-                                <h6 class="info-row-heading">Total Price</h6>
-                                <p class="info-row-data price-display-tag">$855.00</p>
-                            </div>
-                        </div>
-                        <hr class="card-inner-divider">
-                        <div class="text-right">
-                            <button class="btn btn-action-outline btn-action-modify mr-2" data-toggle="modal" data-target="#modifyModal">
-                                <i class="bi bi-pencil-square mr-1"></i> Modify Booking
-                            </button>
-                            <button class="btn btn-action-outline btn-action-cancel" data-toggle="modal" data-target="#cancelModal">
-                                <i class="bi bi-x-circle mr-1"></i> Cancel Booking
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
-            <!-- Reservation 2: MNL → SIN (Pending) -->
-            <div class="card reservation-card">
-                <div class="p-0" id="headingTwo">
-                    <div class="d-flex justify-content-between align-items-center pr-4">
-                        <button class="accordion-trigger-btn collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                            <i class="bi bi-chevron-down chevron-icon-anim"></i> MNL &rarr; SIN
-                        </button>
-                        <span class="badge status-badge-pill badge-pending">Pending</span>
-                    </div>
-                </div>
-                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#reservationsAccordion">
-                    <div class="card-body pt-0 px-5 pb-4">
-                        <div class="row">
-                            <div class="col-md-4 mb-3 mb-md-0">
-                                <h6 class="info-row-heading">Passenger</h6>
-                                <p class="info-row-data">Maria Santos</p>
-                            </div>
-                            <div class="col-md-4 mb-3 mb-md-0">
-                                <h6 class="info-row-heading">Seat Selection</h6>
-                                <p class="info-row-data">03A</p>
-                            </div>
-                            <div class="col-md-4 text-md-right">
-                                <h6 class="info-row-heading">Total Price</h6>
-                                <p class="info-row-data price-display-tag">$635.00</p>
+            {{#if reservations.length}}
+                {{#each reservations}}
+                    <div class="card reservation-card"
+                         data-reservation-id="{{this._id}}"
+                         data-status="{{this.status}}"
+                         data-route="{{this.flight.origin}} {{this.flight.destination}}">
+                        <div class="p-0" id="heading-{{this._id}}">
+                            <div class="d-flex justify-content-between align-items-center pr-4">
+                                <button class="accordion-trigger-btn{{#unless @first}} collapsed{{/unless}}" type="button" data-toggle="collapse" data-target="#collapse-{{this._id}}" aria-expanded="{{#if @first}}true{{else}}false{{/if}}" aria-controls="collapse-{{this._id}}">
+                                    <i class="bi bi-chevron-down chevron-icon-anim"></i> {{this.flight.origin}} &rarr; {{this.flight.destination}}
+                                </button>
+                                <span class="badge status-badge-pill {{#if this.isConfirmed}}badge-confirmed{{/if}}{{#if this.isPending}}badge-pending{{/if}}{{#if this.isCancelled}}badge-cancelled{{/if}}">{{this.status}}</span>
                             </div>
                         </div>
-                        <hr class="card-inner-divider">
-                        <div class="text-right">
-                            <button class="btn btn-action-outline btn-action-modify mr-2" data-toggle="modal" data-target="#modifyModal">
-                                <i class="bi bi-pencil-square mr-1"></i> Modify Booking
-                            </button>
-                            <button class="btn btn-action-outline btn-action-cancel" data-toggle="modal" data-target="#cancelModal">
-                                <i class="bi bi-x-circle mr-1"></i> Cancel Booking
-                            </button>
+                        <div id="collapse-{{this._id}}" class="collapse{{#if @first}} show{{/if}}" aria-labelledby="heading-{{this._id}}" data-parent="#reservationsAccordion">
+                            <div class="card-body pt-0 px-5 pb-4">
+                                <div class="row">
+                                    <div class="col-md-3 mb-3 mb-md-0">
+                                        <h6 class="info-row-heading">Reservation #</h6>
+                                        <p class="info-row-data">{{this.reservationNumber}}</p>
+                                    </div>
+                                    <div class="col-md-3 mb-3 mb-md-0">
+                                        <h6 class="info-row-heading">Passenger</h6>
+                                        <p class="info-row-data">{{#each this.passengers}}{{this.fullName}}{{#unless @last}}, {{/unless}}{{/each}}</p>
+                                    </div>
+                                    <div class="col-md-3 mb-3 mb-md-0">
+                                        <h6 class="info-row-heading">Seat Selection</h6>
+                                        <p class="info-row-data">{{this.seatDisplay}}</p>
+                                    </div>
+                                    <div class="col-md-3 text-md-right">
+                                        <h6 class="info-row-heading">Total Price</h6>
+                                        <p class="info-row-data price-display-tag">${{this.totalPrice}}</p>
+                                    </div>
+                                </div>
+                                {{#if this.isCancelled}}
+                                    <div class="alert cancelled-status-box mt-4 mb-0 d-flex align-items-center py-3 px-4" role="alert">
+                                        <i class="bi bi-info-circle-fill mr-2 text-secondary" style="font-size: 1.1rem;"></i>
+                                        This booking has been cancelled and cannot be modified.
+                                    </div>
+                                {{else}}
+                                    <hr class="card-inner-divider">
+                                    <div class="text-right">
+                                        <button class="btn btn-action-outline btn-action-modify mr-2" data-toggle="modal" data-target="#modifyModal" data-reservation-id="{{this._id}}">
+                                            <i class="bi bi-pencil-square mr-1"></i> Modify Booking
+                                        </button>
+                                        <button class="btn btn-action-outline btn-action-cancel" data-toggle="modal" data-target="#cancelModal" data-reservation-id="{{this._id}}">
+                                            <i class="bi bi-x-circle mr-1"></i> Cancel Booking
+                                        </button>
+                                    </div>
+                                {{/if}}
+                            </div>
                         </div>
                     </div>
+                {{/each}}
+            {{else}}
+                <div class="text-center text-muted py-5">
+                    <i class="bi bi-journal-x" style="font-size: 2rem;"></i>
+                    <p class="mt-2 mb-0">You don't have any reservations yet.</p>
                 </div>
-            </div>
-
-            <!-- Reservation 3: MNL → HKG (Cancelled) -->
-            <div class="card reservation-card">
-                <div class="p-0" id="headingThree">
-                    <div class="d-flex justify-content-between align-items-center pr-4">
-                        <button class="accordion-trigger-btn collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                            <i class="bi bi-chevron-down chevron-icon-anim"></i> MNL &rarr; HKG
-                        </button>
-                        <span class="badge status-badge-pill badge-cancelled">Cancelled</span>
-                    </div>
-                </div>
-                <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#reservationsAccordion">
-                    <div class="card-body pt-0 px-5 pb-4">
-                        <div class="row">
-                            <div class="col-md-4 mb-3 mb-md-0">
-                                <h6 class="info-row-heading">Passenger</h6>
-                                <p class="info-row-data">Juan Dela Cruz</p>
-                            </div>
-                            <div class="col-md-4 mb-3 mb-md-0">
-                                <h6 class="info-row-heading">Seat Selection</h6>
-                                <p class="info-row-data">22E</p>
-                            </div>
-                            <div class="col-md-4 text-md-right">
-                                <h6 class="info-row-heading">Total Price</h6>
-                                <p class="info-row-data price-display-tag">$110.00</p>
-                            </div>
-                        </div>
-                        <div class="alert cancelled-status-box mt-4 mb-0 d-flex align-items-center py-3 px-4" role="alert">
-                            <i class="bi bi-info-circle-fill mr-2 text-secondary" style="font-size: 1.1rem;"></i> 
-                            This booking has been cancelled and cannot be modified.
-                        </div>
-                    </div>
-                </div>
-            </div>
+            {{/if}}
 
         </div>
     </div>

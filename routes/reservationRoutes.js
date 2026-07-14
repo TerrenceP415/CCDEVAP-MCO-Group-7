@@ -8,5 +8,6 @@ router.post('/admin/reservations/create', reservationController.createAdminReser
 router.put('/admin/reservations/update/:id', reservationController.updateAdminReservations);
 router.delete('/admin/reservations/delete/:id', reservationController.deleteAdminReservations);
 router.get('/admin/dashboard', reservationController.getAdminDashboard);
+router.get('/my-reservations', reservationController.getUserReservations);
 
 module.exports = router;
