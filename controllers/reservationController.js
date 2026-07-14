@@ -201,3 +201,57 @@ exports.deleteAdminReservations = async (req, res) => {
         res.status(500).json({ success: false, message: 'Error deleting reservation' });
     }
 }
+
+exports.getAdminDashboard = async (req, res) => {
+    try {
+        // Total bookings = every reservation on record, regardless of status
+        const totalBookings = await Reservation.countDocuments();
+ 
+        // Revenue and destination popularity should exclude cancelled reservations
+        const revenueResult = await Reservation.aggregate([
+            { $match: { status: { $ne: 'Cancelled' } } },
+            { $group: { _id: null, total: { $sum: '$totalPrice' } } }
+        ]);
+        const totalRevenue = revenueResult.length > 0 ? revenueResult[0].total : 0;
+ 
+        const popularDestinations = await Reservation.aggregate([
+            { $match: { status: { $ne: 'Cancelled' } } },
+            {
+                $lookup: {
+                    from: 'flights',
+                    localField: 'flight',
+                    foreignField: '_id',
+                    as: 'flightInfo'
+                }
+            },
+            { $unwind: '$flightInfo' },
+            {
+                $group: {
+                    _id: '$flightInfo.destination',
+                    bookings: { $sum: 1 }
+                }
+            },
+            { $sort: { bookings: -1 } },
+            { $limit: 10 },
+            {
+                $project: {
+                    _id: 0,
+                    destination: '$_id',
+                    bookings: 1
+                }
+            }
+        ]);
+ 
+        res.render('admin-dashboard', {
+            layout: 'admin',
+            totalBookings,
+            totalRevenue: totalRevenue.toFixed(2),
+            popularDestinations
+        });
+ 
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Server Error loading dashboard data');
+    }
+};
+ 

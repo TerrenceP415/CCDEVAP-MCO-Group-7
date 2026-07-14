@@ -9,6 +9,7 @@
         <div class="analytics-card">
             <h4>TOTAL BOOKINGS</h4>
             <p class="stat-number">{{totalBookings}}</p>
+            <p style="color: lightgray;">Only counts confirmed and pending bookings</p>
         </div>
         <div class="analytics-card">
             <h4>TOTAL REVENUE</h4>
@@ -27,23 +28,18 @@
                 </tr>
             </thead>
             <tbody>
-                <!-- Sample Data; Loop through destinations -->
-                <tr>
-                    <td>New York City (JFK)</td>
-                    <td>300</td>
-                </tr>
-                <tr>
-                    <td>Los Angeles (LAX)</td>
-                    <td>250</td>
-                </tr>
-                <tr>
-                    <td>San Francisco (SFO)</td>
-                    <td>200</td>
-                </tr>
-                <tr>
-                    <td>Tokyo (HND)</td>
-                    <td>180</td>
-                </tr>
+                {{#if popularDestinations.length}}
+                    {{#each popularDestinations}}
+                        <tr>
+                            <td>{{this.destination}}</td>
+                            <td>{{this.bookings}}</td>
+                        </tr>
+                    {{/each}}
+                {{else}}
+                    <tr>
+                        <td colspan="2">No booking data yet</td>
+                    </tr>
+                {{/if}}
             </tbody>
         </table>
     </div>
