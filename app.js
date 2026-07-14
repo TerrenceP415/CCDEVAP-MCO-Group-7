@@ -92,6 +92,13 @@ app.use('/', bookingRoutes);
 const reservationRoutes = require('./routes/reservationRoutes');
 app.use('/', reservationRoutes);
 
+//For admin-user
+const userRoutes = require('./routes/userRoutes');
+app.use('/admin', (req, res, next) => {
+  res.locals.layout = 'admin';
+  next();
+}, userRoutes);
+
 // ─── Legacy Static HTML Routes (from MCO1) ────────────
 app.get('/', (req, res) => {
   res.render('index', { title: 'Home', layout: 'main' });
@@ -107,6 +114,10 @@ app.get('/admin/dashboard', (req, res) => {
 
 app.get('/admin/flights', (req, res) => {
   res.render('admin-flights', { title: 'Admin Flights', layout: 'admin' });
+});
+
+app.get('/admin/users', (req, res) => {
+  res.render('admin-users', { title: 'Admin Users', layout: 'admin' });
 });
 
 
