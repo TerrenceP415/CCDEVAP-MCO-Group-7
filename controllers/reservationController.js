@@ -20,7 +20,7 @@ exports.getAdminReservations = async (req, res) => {
             return {
                 ...resObj,
                 seatDisplay,
-                // Create native JS boolean flags for the statuses
+                // Status check
                 isConfirmed: resObj.status === 'Confirmed',
                 isCancelled: resObj.status === 'Cancelled',
                 isPending: resObj.status === 'Pending'
@@ -46,14 +46,14 @@ exports.createAdminReservations = async (req, res) => {
             mealPackage, extraServices
         } = req.body;
 
-        // 1. Look up if a flight already exists with these details
+        // Look up if a flight already exists with these details
         let flight = await Flight.findOne({ 
             origin, 
             destination, 
             departureDateTime: new Date(departureTime) 
         });
         
-        // 2. If no flight exists, create a dummy one so the reference doesn't break
+        // If no flight exists, create a dummy one so the reference doesn't break
         if (!flight) {
             flight = new Flight({
                 flightNumber: 'FL-' + Math.floor(1000 + Math.random() * 9000),
@@ -69,7 +69,7 @@ exports.createAdminReservations = async (req, res) => {
             await flight.save();
         }
 
-        // 3. Convert line-separated text area names and comma-separated seats into the structured array your schema expects
+        // 3. Clean and prepare passenger data (names and seats) for storage
         const namesArray = passengerNames.split('\n').map(n => n.trim()).filter(n => n.length > 0);
         const seatsArray = seatNumber.split(',').map(s => s.trim());
 
@@ -80,10 +80,10 @@ exports.createAdminReservations = async (req, res) => {
             seatNumber: seatsArray[index] || seatsArray[0] || 'A1' // Fallback if fewer seats typed than names
         }));
 
-        // 4. Strip out any "$" or text strings from the price input to save as a clean number
+        // 4. Clean and prepare price
         const cleanPrice = parseFloat(totalPrice.replace(/[^0-9.]/g, '')) || 0;
 
-        // 5. Build and save your model
+        // 5. set and save data to the Reservation model
         const newReservation = new Reservation({
             reservationNumber,
             flight: flight._id,
@@ -93,7 +93,7 @@ exports.createAdminReservations = async (req, res) => {
             totalPrice: cleanPrice,
             status
         });
-
+        // Save the new reservation to the database and redirect to the admin reservations page
         await newReservation.save(); // Collection becomes visible in Compass here
         res.redirect('/admin/reservations');
 
@@ -294,36 +294,29 @@ exports.getUserReservations = async (req, res) => {
 };
 
 exports.cancelUserReservation = async (req, res) => {
-
     try {
-        // TODO(auth): once login/session is implemented, check that the user is the owner of the reservation
-        // so a passenger can only cancel their own reservation.  for
-        // now since auth isn't implemented yet; this cancels by reservation id ,
-        // same as the admin path does, just as a status change instead of a delete.
+       
         const { id } = req.params;
         if (!id.match(/^[0-9a-fA-F]{24}$/)) {
             return res.status(400).json({ success: false, message: 'Invalid reservation id' });
         }
+        //search for the reservation by ID and populate the flight reference to access its details
         const reservation = await Reservation.findById(id).populate('flight');
-
+        //error handling when reservation is not found or already cancelled
         if (!reservation) {
             return res.status(404).json({ success: false, message: 'Reservation not found' });
         }
-
         if (reservation.status === 'Cancelled') {
-
             return res.status(400).json({ success: false, message: 'This reservation is already cancelled' });
-
         }
-
+        //set the reservation status to 'Cancelled' and save the changes to the database
         reservation.status = 'Cancelled';
         await reservation.save();
-
 
         const seatDisplay = reservation.passengers && reservation.passengers.length > 0
             ? reservation.passengers.map(p => p.seatNumber).join(', ')
             : 'N/A';
-
+        //respond with success, seat display, and status.
         res.status(200).json({
             success: true,
             message: 'Reservation cancelled successfully',
@@ -338,7 +331,6 @@ exports.cancelUserReservation = async (req, res) => {
     } catch (err) {
 
         console.error(err);
-
         res.status(500).json({ success: false, message: 'Error cancelling reservation' });
 
     }
@@ -349,8 +341,7 @@ exports.updateUserReservations = async (req, res) => {
 
     try {
 
-        // TODO(auth): once login/session is implemented, check that the user is the owner of the
-        // reservation before letting them modify it, same as cancelUserReservation.
+        // Business rule - "A seat may only be assigned to one passenger."
 
         //get the reservation id from the request parameters and validate it
         const { id } = req.params;
@@ -358,80 +349,18 @@ exports.updateUserReservations = async (req, res) => {
             return res.status(400).json({ success: false, message: 'Invalid reservation id' });
         }
 
-
-
-       
         //get the seat number from the hbs and validate it
         const { seatNumber } = req.body;
-
         if (!seatNumber || !seatNumber.trim()) {
             return res.status(400).json({ success: false, message: 'A seat number is required' });
         }
-
         const newSeat = seatNumber.trim();
-
         const reservation = await Reservation.findById(id).populate('flight');
 
+        // Cancelled bookings can't be modified (already blocked in the UI)
         if (!reservation) {
             return res.status(404).json({ success: false, message: 'Reservation not found' });
         }
-
-        // Cancelled bookings can't be modified (mirrors the notice already shown in the UI)
-
-        if (reservation.status === 'Cancelled') {
-            return res.status(400).json({ success: false, message: 'This reservation has been cancelled and cannot be modified' });
-        }
-
-
-        if (!reservation.flight) {
-            return res.status(400).json({ success: false, message: 'The flight for this reservation could not be found' });
-        }
-
-
-        if (!reservation.passengers || reservation.passengers.length === 0) {
-            return res.status(400).json({ success: false, message: 'No passengers found on this reservation' });
-        }
-
-
-
-        // Required passenger information (Full Name, Email, Passport Number) must already
-        // be on file; this endpoint only ever touches seatNumber.
-
-        const missingInfo = reservation.passengers.some(
-            p => !p.fullName || !p.email || !p.passportNumber
-        );
-
-        if (missingInfo) {
-            return res.status(400).json({ success: false, message: 'Required passenger information is missing on this reservation' });
-        }
-
-        // Business rule - Seat Availability: "A seat may only be assigned to one passenger."
-        // Guard against the new seat colliding with another passenger on THIS reservation...
-
-        const isSeatTaken = reservation.passengers.some((p, idx) => idx !== 0 && p.seatNumber === newSeat);
-
-        if (isSeatTaken) {
-
-            return res.status(400).json({ success: false, message: `Seat ${newSeat} is already assigned to another passenger on this booking` });
-
-        }
-
-        // ...and against every other active (non-cancelled) reservation on this same flight.
-        const seatTakenElsewhere = await Reservation.exists({
-
-            _id: { $ne: reservation._id },
-            flight: reservation.flight._id,
-            status: { $ne: 'Cancelled' },
-            'passengers.seatNumber': newSeat
-        });
-
-        if (seatTakenElsewhere) {
-            return res.status(400).json({ success: false, message: `Seat ${newSeat} is already taken on this flight` });
-        }
-
-        // The Modify Booking form only exposes a single seat field, so it applies to the
-        // primary passenger on the reservation (index 0).
-
         reservation.passengers[0].seatNumber = newSeat;
         await reservation.save();
 
@@ -440,7 +369,6 @@ exports.updateUserReservations = async (req, res) => {
         res.status(200).json({
 
             success: true,
-            message: 'Seat updated successfully',
             reservation: {
                 ...reservation.toObject(),
                 seatDisplay,

@@ -157,6 +157,7 @@
 <!-- Toast Notification Container -->
 <div class="toast-container" id="toastContainer"></div>
 
+
 <script>
 document.addEventListener('DOMContentLoaded', () => {
     const cancelModal = document.getElementById('cancelModal');
@@ -170,7 +171,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const saveSeatBtn = modifyModal ? modifyModal.querySelector('.btnSave') : null;
 
     if (modifyModal && saveSeatBtn) {
-        // Capture modal activation, download current flight data, and render seat matrix map
+        // Capture modal activation, get current flight data, and render seat matrix map
         document.addEventListener('click', async (event) => {
             const trigger = event.target.closest('.btn-action-modify');
             if (!trigger) return;
@@ -186,7 +187,7 @@ document.addEventListener('DOMContentLoaded', () => {
             modalSeatMap.innerHTML = '<p class="text-muted"><i class="bi bi-arrow-repeat spin"></i> Loading seat configurations...</p>';
 
             try {
-                // Query API endpoint for booked configurations
+                // Fetch the taken seats for the flight to render the seat map
                 const response = await fetch(`/api/flights/${flightId}/seats`);
                 const data = await response.json();
 
@@ -210,7 +211,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const mapTable = document.createElement('div');
             mapTable.className = 'd-inline-block text-center mt-2';
-
+            // Loop through rows and seats to create buttons for each seat
             for (let r = 1; r <= rows; r++) {
                 const rowDiv = document.createElement('div');
                 rowDiv.className = 'd-flex align-items-center mb-2 justify-content-center';
@@ -256,7 +257,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             modalSeatMap.appendChild(mapTable);
         }
-
+        // Handle seat selection and update the modal state
         function selectModalSeat(btn, seatId) {
             // Remove selection properties from alternative map nodes
             modalSeatMap.querySelectorAll('.seat-unit').forEach(b => {
@@ -274,7 +275,7 @@ document.addEventListener('DOMContentLoaded', () => {
             modalSelectedSeatLabel.textContent = seatId;
             modalSeatError.textContent = '';
         }
-
+        // Handle saving the selected seat and updating the reservation
         saveSeatBtn.addEventListener('click', async () => {
             const reservationId = modifyModal.dataset.reservationId;
             const seatNumber = modalSeatInput.value.trim();
@@ -286,6 +287,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             saveSeatBtn.disabled = true;
             try {
+                // Send the updated seat number to the route for processing
                 const response = await fetch(`/reservations/update/${reservationId}`, {
                     method: 'PUT',
                     headers: { 'Content-Type': 'application/json' },
@@ -313,7 +315,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (!cancelModal || !confirmCancelBtn) return;
- 
+    // get reservation ID from the button 
     document.addEventListener('click', (event) => {
         const trigger = event.target.closest('.btn-action-cancel');
         if (!trigger) return;
@@ -321,7 +323,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const reservationId = trigger.dataset.reservationId;
         cancelModal.dataset.reservationId = reservationId;
     });
- 
+    //send a Patch request to the server to cancel the reservation using the reservation ID earlier.
     confirmCancelBtn.addEventListener('click', async () => {
         const reservationId = cancelModal.dataset.reservationId;
         if (!reservationId) return;
@@ -350,7 +352,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
- 
+ //delete/cancel the reservation and update the UI to reflect the cancelled state
 function applyCancelledStateToCard(reservationId) {
     const card = document.querySelector(`.reservation-card[data-reservation-id="${reservationId}"]`);
     if (!card) return;
