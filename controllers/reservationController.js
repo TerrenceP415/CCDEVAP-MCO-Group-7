@@ -44,6 +44,7 @@ exports.createAdminReservations = async (req, res) => {
         const {
             reservationNumber, origin, destination, departureTime,
             arrivalTime, seatNumber, totalPrice, status, passengerNames,
+            passengerEmails, passengerPassports,
             mealPackage, extraServices
         } = req.body;
 
@@ -70,16 +71,11 @@ exports.createAdminReservations = async (req, res) => {
             await flight.save();
         }
 
-        // 3. Clean and prepare passenger data (names and seats) for storage
+        // 3. Clean and prepare passenger data (names, seats, emails, passports) for storage
         const namesArray = passengerNames.split('\n').map(n => n.trim()).filter(n => n.length > 0);
         const seatsArray = seatNumber.split(',').map(s => s.trim());
-
-        const passengers = namesArray.map((name, index) => ({
-            fullName: name,
-            email: `${name.toLowerCase().replace(/\s+/g, '')}@skyease.com`,
-            passportNumber: 'P' + Math.floor(10000000 + Math.random() * 90000000),
-            seatNumber: seatsArray[index] || seatsArray[0] || 'A1' // Fallback if fewer seats typed than names
-        }));
+        const emailsArray = (passengerEmails || '').split('\n').map(e => e.trim()).filter(e => e.length > 0);
+        const passportsArray = (passengerPassports || '').split('\n').map(p => p.trim()).filter(p => p.length > 0);
 
         // 4. Clean and prepare price
         const cleanPrice = parseFloat(totalPrice.replace(/[^0-9.]/g, '')) || 0;
@@ -116,6 +112,7 @@ exports.updateAdminReservations = async (req, res) => {
         const {
             reservationNumber, origin, destination, departureTime,
             arrivalTime, seatNumber, totalPrice, status, passengerNames,
+            passengerEmails, passengerPassports,
             mealPackage, extraServices
         } = req.body;
         //get the reservation by ID 
@@ -131,20 +128,13 @@ exports.updateAdminReservations = async (req, res) => {
             reservation.flight.arrivalDateTime = new Date(arrivalTime);
             await reservation.flight.save();
         }
-        //clean and apply passenger and seat data
+        //clean and apply passenger, seat, email, and passport data
         const namesArray = passengerNames.split('\n').map(n => n.trim()).filter(n => n.length > 0);
         const seatsArray = seatNumber.split(',').map(s => s.trim());
+        const emailsArray = (passengerEmails || '').split('\n').map(e => e.trim()).filter(e => e.length > 0);
+        const passportsArray = (passengerPassports || '').split('\n').map(p => p.trim()).filter(p => p.length > 0);
         const existingPassengers = reservation.passengers || [];
  
-        const passengers = namesArray.map((name, index) => {
-            const existing = existingPassengers[index];
-            return {
-                fullName: name,
-                email: existing ? existing.email : `${name.toLowerCase().replace(/\s+/g, '')}@skyease.com`,
-                passportNumber: existing ? existing.passportNumber : 'P' + Math.floor(10000000 + Math.random() * 90000000),
-                seatNumber: seatsArray[index] || seatsArray[0] || 'A1'
-            };
-        });
  
         const cleanPrice = parseFloat(String(totalPrice).replace(/[^0-9.]/g, '')) || 0;
         // reassign updated values to the reservation object

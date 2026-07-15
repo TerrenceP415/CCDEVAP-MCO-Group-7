@@ -50,7 +50,9 @@
                                 data-meal-package="{{this.mealPackage}}"
                                 data-extra-services="{{this.extraServices}}"
                                 data-passenger-count="{{this.passengers.length}}"
-                                data-passenger-names="{{#each this.passengers}}{{this.fullName}}{{#unless @last}}&#10;{{/unless}}{{/each}}">Edit</button>
+                                data-passenger-names="{{#each this.passengers}}{{this.fullName}}{{#unless @last}}&#10;{{/unless}}{{/each}}"
+                                data-passenger-emails="{{#each this.passengers}}{{this.email}}{{#unless @last}}&#10;{{/unless}}{{/each}}"
+                                data-passenger-passports="{{#each this.passengers}}{{this.passportNumber}}{{#unless @last}}&#10;{{/unless}}{{/each}}">Edit</button>
                             <button id="deleteReservation" type="button" class="btn btn-primary action-btn-admin btn-delete-reservation" data-toggle="modal" data-target="#deleteConfirmationModal" data-id="{{this._id}}" data-reservation-number="{{this.reservationNumber}}">Delete</button>
                             </td>
                             
@@ -190,6 +192,18 @@
                     </div>
                     <div class="col-md-6">
                     <div class="form-group">
+                        <label for="addPassengerEmails">Passenger Emails (One per line, matching name order)</label>
+                        <textarea name="passengerEmails" class="form-control" id="addPassengerEmails" rows="3" placeholder="Enter passenger emails" required></textarea>
+                    </div>
+                    </div>
+                    <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="addPassengerPassports">Passport Numbers (One per line, matching name order)</label>
+                        <textarea name="passengerPassports" class="form-control" id="addPassengerPassports" rows="3" placeholder="Enter passport numbers" required></textarea>
+                    </div>
+                    </div>
+                    <div class="col-md-6">
+                    <div class="form-group">
                         <label for="addMealPackage">Meal Package</label>
                         <input name="mealPackage" type="text" class="form-control" id="addMealPackage" placeholder="e.g., 2x Standard, 1x Vegetarian">
                     </div>
@@ -280,6 +294,18 @@
                             <div class="form-group">
                                 <label for="editPassengerNames">Passenger Names (One per line)</label>
                                 <textarea name="passengerNames" class="form-control" id="editPassengerNames" rows="3" placeholder="Enter passenger names" required></textarea>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="editPassengerEmails">Passenger Emails (One per line, matching name order)</label>
+                                <textarea name="passengerEmails" class="form-control" id="editPassengerEmails" rows="3" placeholder="Enter passenger emails" required></textarea>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="editPassengerPassports">Passport Numbers (One per line, matching name order)</label>
+                                <textarea name="passengerPassports" class="form-control" id="editPassengerPassports" rows="3" placeholder="Enter passport numbers" required></textarea>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -392,6 +418,8 @@
                     document.getElementById('editReservationStatus').value = btn.getAttribute('data-status') || 'Pending';
                     document.getElementById('editPassengerCount').value = (btn.getAttribute('data-passenger-count') || '0') + ' Passenger(s)';
                     document.getElementById('editPassengerNames').value = btn.getAttribute('data-passenger-names') || '';
+                    document.getElementById('editPassengerEmails').value = btn.getAttribute('data-passenger-emails') || '';
+                    document.getElementById('editPassengerPassports').value = btn.getAttribute('data-passenger-passports') || '';
                     document.getElementById('editMealPackage').value = btn.getAttribute('data-meal-package') || '';
                     document.getElementById('editExtraServices').value = btn.getAttribute('data-extra-services') || '';
                 });
@@ -444,6 +472,8 @@
                     }
 
                     var passengerNames = (reservation.passengers || []).map(function (p) { return p.fullName; }).join('\n');
+                    var passengerEmails = (reservation.passengers || []).map(function (p) { return p.email; }).join('\n');
+                    var passengerPassports = (reservation.passengers || []).map(function (p) { return p.passportNumber; }).join('\n');
 
                     var editBtn = row.querySelector('.btn-edit-reservation');
                     if (editBtn) {
@@ -459,6 +489,8 @@
                         editBtn.setAttribute('data-extra-services', reservation.extraServices || '');
                         editBtn.setAttribute('data-passenger-count', (reservation.passengers || []).length);
                         editBtn.setAttribute('data-passenger-names', passengerNames);
+                        editBtn.setAttribute('data-passenger-emails', passengerEmails);
+                        editBtn.setAttribute('data-passenger-passports', passengerPassports);
                     }
 
                     var deleteBtn = row.querySelector('.btn-delete-reservation');
