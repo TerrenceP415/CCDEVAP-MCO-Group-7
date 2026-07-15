@@ -336,48 +336,68 @@ exports.cancelUserReservation = async (req, res) => {
 };
 
 exports.updateUserReservations = async (req, res) => {
+    // Business rule - "A seat may only be assigned to one passenger."
 
+    //get the reservation id from the request parameters and validate it
     try {
-
-        // Business rule - "A seat may only be assigned to one passenger."
-
-        //get the reservation id from the request parameters and validate it
         const { id } = req.params;
         if (!id.match(/^[0-9a-fA-F]{24}$/)) {
             return res.status(400).json({ success: false, message: 'Invalid reservation id' });
         }
 
-        //get the seat number from the hbs and validate it
-        const { seatNumber } = req.body;
+        const { seatNumber } = req.body; // Can be a string list like "1A, 2B" or an array
         if (!seatNumber || !seatNumber.trim()) {
-            return res.status(400).json({ success: false, message: 'A seat number is required' });
+            return res.status(400).json({ success: false, message: 'A seat selection is required' });
         }
-        const newSeat = seatNumber.trim();
+
+        
+        const newSeatsArray = seatNumber.split(',').map(s => s.trim()).filter(Boolean);
         const reservation = await Reservation.findById(id).populate('flight');
 
-        // Cancelled bookings can't be modified (already blocked in the UI)
         if (!reservation) {
             return res.status(404).json({ success: false, message: 'Reservation not found' });
         }
 
-        const seatTaken = await Reservation.findOne({
-            flight: reservation.flight._id,
-            status: { $ne: 'Cancelled' },
-            _id: { $ne: reservation._id },
-            'passengers.seatNumber': newSeat
-        });
-
-        if (seatTaken) {
-            return res.status(200).json({ success: false, message: `This seat is already taken. Please select another seat.` });
+        const passengerCount = reservation.passengers.length;
+        if (newSeatsArray.length !== passengerCount) {
+            return res.status(400).json({ 
+                success: false, 
+                message: `Please select exactly ${passengerCount} seats for ${passengerCount} passenger(s).` 
+            });
         }
 
-        reservation.passengers[0].seatNumber = newSeat;
+        // Check availability for all selected seats (excluding seats current reservation already holds)
+        const currentHeldSeats = reservation.passengers.map(p => p.seatNumber);
+        
+        for (const seat of newSeatsArray) {
+            // Skip checking if passenger is keeping their current seat
+            if (currentHeldSeats.includes(seat)) continue;
+
+            const seatTaken = await Reservation.findOne({
+                flight: reservation.flight._id,
+                status: { $ne: 'Cancelled' },
+                _id: { $ne: reservation._id },
+                'passengers.seatNumber': seat
+            });
+
+            if (seatTaken) {
+                return res.status(200).json({ 
+                    success: false, 
+                    message: `Seat ${seat} is already taken. Please select other seats.` 
+                });
+            }
+        }
+
+        // Map each seat sequentially to your passengers array
+        newSeatsArray.forEach((seat, index) => {
+            reservation.passengers[index].seatNumber = seat;
+        });
+
         await reservation.save();
 
         const seatDisplay = reservation.passengers.map(p => p.seatNumber).join(', ');
 
         res.status(200).json({
-
             success: true,
             reservation: {
                 ...reservation.toObject(),
@@ -392,6 +412,4 @@ exports.updateUserReservations = async (req, res) => {
         console.error(err);
         res.status(500).json({ success: false, message: 'Error updating reservation' });
     }
-
 };
-

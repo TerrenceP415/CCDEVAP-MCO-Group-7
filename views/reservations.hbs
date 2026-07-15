@@ -181,6 +181,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const modalSeatError = document.getElementById('modalSeatError');
     const saveSeatBtn = modifyModal ? modifyModal.querySelector('.btnSave') : null;
 
+    // Tracks possible multiple seats for seat map modal
+    let maxSeatsToSelect = 1;
+    let selectedSeatsList = [];
+
     if (modifyModal && saveSeatBtn) {
         // Capture modal activation, get current flight data, and render seat matrix map
         document.addEventListener('click', async (event) => {
@@ -190,16 +194,19 @@ document.addEventListener('DOMContentLoaded', () => {
             const reservationId = trigger.dataset.reservationId;
             const flightId = trigger.dataset.flightId;
             const totalSeats = parseInt(trigger.dataset.totalSeats, 10) || 60;
-            const currentSeat = trigger.dataset.currentSeat;
+            const currentSeat = trigger.dataset.currentSeat; // E.g. "1A, 2B"
+
+            // get individual current seats
+            selectedSeatsList = currentSeat ? currentSeat.split(',').map(s => s.trim()) : [];
+            maxSeatsToSelect = selectedSeatsList.length; // Max passengers in this booking
 
             modifyModal.dataset.reservationId = reservationId;
-            modalSeatInput.value = '';
-            modalSelectedSeatLabel.textContent = 'None selected';
+            modalSeatInput.value = selectedSeatsList.join(', ');
+            modalSelectedSeatLabel.textContent = modalSeatInput.value;
             modalSeatError.textContent = '';
             modalSeatMap.innerHTML = '<p class="text-muted"><i class="bi bi-arrow-repeat spin"></i> Loading seat configurations...</p>';
 
             try {
-                // Fetch the taken seats for the flight to render the seat map
                 const response = await fetch(`/api/flights/${flightId}/seats`);
                 const data = await response.json();
 
@@ -208,7 +215,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     return;
                 }
 
-                renderModalSeatMap(totalSeats, data.takenSeats, currentSeat);
+                renderModalSeatMap(totalSeats, data.takenSeats, selectedSeatsList);
             } catch (err) {
                 console.error(err);
                 modalSeatMap.innerHTML = '<p class="text-danger">Error rendering dynamic layouts.</p>';
@@ -216,19 +223,18 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         // Loop execution configurations building rows and letters
-        function renderModalSeatMap(totalSeats, takenSeats, currentSeat) {
+        function renderModalSeatMap(totalSeats, takenSeats, initialSelectedSeats) {
             modalSeatMap.innerHTML = '';
             const rows = Math.ceil(totalSeats / 6);
             const seatLetters = ['A', 'B', 'C', 'D', 'E', 'F'];
 
             const mapTable = document.createElement('div');
             mapTable.className = 'd-inline-block text-center mt-2';
-            // Loop through rows and seats to create buttons for each seat
+            
             for (let r = 1; r <= rows; r++) {
                 const rowDiv = document.createElement('div');
                 rowDiv.className = 'd-flex align-items-center mb-2 justify-content-center';
 
-                // Display row identification numbers
                 const label = document.createElement('span');
                 label.className = 'text-muted small font-weight-bold mr-3';
                 label.style.width = '25px';
@@ -238,7 +244,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 for (let s = 0; s < 6; s++) {
                     const seatId = `${r}${seatLetters[s]}`;
                     
-                    // Create basic gap for aisle handling between column paths C & D
                     if (s === 3) {
                         const aisle = document.createElement('div');
                         aisle.style.width = '24px';
@@ -254,17 +259,19 @@ document.addEventListener('DOMContentLoaded', () => {
                     seatBtn.textContent = seatId;
                     seatBtn.dataset.seat = seatId;
 
-                    if (takenSeats.includes(seatId) && seatId !== currentSeat) {
+                    // Mark seat as taken unless it belongs to the active booking
+                    if (takenSeats.includes(seatId) && !initialSelectedSeats.includes(seatId)) {
                         seatBtn.className += ' bg-light text-muted border-light disabled';
                         seatBtn.style.cursor = 'not-allowed';
                         seatBtn.disabled = true;
                     } else {
                         seatBtn.className += ' btn-outline-secondary';
-                        seatBtn.addEventListener('click', () => selectModalSeat(seatBtn, seatId));
+                        seatBtn.addEventListener('click', () => toggleModalSeat(seatBtn, seatId));
                         
-                        // Pre-select the current seat if it matches
-                        if (seatId === currentSeat) {
-                            selectModalSeat(seatBtn, seatId);
+                        // Highlight initially held seats
+                        if (initialSelectedSeats.includes(seatId)) {
+                            seatBtn.classList.remove('btn-outline-secondary');
+                            seatBtn.classList.add('btn-primary', 'text-white');
                         }
                     }
 
@@ -274,41 +281,54 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             modalSeatMap.appendChild(mapTable);
         }
-        // Handle seat selection and update the modal state
-        function selectModalSeat(btn, seatId) {
-            // Remove selection properties from alternative map nodes
-            modalSeatMap.querySelectorAll('.seat-unit').forEach(b => {
-                if (!b.disabled) {
-                    b.classList.remove('btn-primary', 'text-white');
-                    b.classList.add('btn-outline-secondary');
+
+        // Select seats until maxSeatsToSelect
+        function toggleModalSeat(btn, seatId) {
+            if (selectedSeatsList.includes(seatId)) {
+                // Deselect seat
+                selectedSeatsList = selectedSeatsList.filter(id => id !== seatId);
+                btn.classList.remove('btn-primary', 'text-white');
+                btn.classList.add('btn-outline-secondary');
+            } else {
+                // Restrict selection limit
+                if (selectedSeatsList.length >= maxSeatsToSelect) {
+                    // Remove first selected seat to respect passenger allocation limits FIFO
+                    const oldestSeatId = selectedSeatsList.shift();
+                    const oldestBtn = modalSeatMap.querySelector(`.seat-unit[data-seat="${oldestSeatId}"]`);
+                    if (oldestBtn) {
+                        oldestBtn.classList.remove('btn-primary', 'text-white');
+                        oldestBtn.classList.add('btn-outline-secondary');
+                    }
                 }
-            });
+                // Add new seat
+                selectedSeatsList.push(seatId);
+                btn.classList.remove('btn-outline-secondary');
+                btn.classList.add('btn-primary', 'text-white');
+            }
 
-            // Activate select status properties inside active button target
-            btn.classList.remove('btn-outline-secondary');
-            btn.classList.add('btn-primary', 'text-white');
-
-            modalSeatInput.value = seatId;
-            modalSelectedSeatLabel.textContent = seatId;
+            // Update hidden inputs and labels
+            const outputString = selectedSeatsList.join(', ');
+            modalSeatInput.value = outputString;
+            modalSelectedSeatLabel.textContent = outputString || 'None selected';
             modalSeatError.textContent = '';
         }
-        // Handle saving the selected seat and updating the reservation
+
+        // Save changes updates
         saveSeatBtn.addEventListener('click', async () => {
             const reservationId = modifyModal.dataset.reservationId;
             const seatNumber = modalSeatInput.value.trim();
 
-            if (!seatNumber) {
-                modalSeatError.textContent = 'Please choose a dynamic configuration square layout.';
+            if (selectedSeatsList.length !== maxSeatsToSelect) {
+                modalSeatError.textContent = `Please select exactly ${maxSeatsToSelect} seats.`;
                 return;
             }
 
             saveSeatBtn.disabled = true;
             try {
-                // Send the updated seat number to the route for processing
                 const response = await fetch(`/reservations/update/${reservationId}`, {
                     method: 'PUT',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ seatNumber })
+                    body: JSON.stringify({ seatNumber }) // String serialized to backend
                 });
 
                 const data = await response.json();
@@ -320,7 +340,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
 
                 applyUpdatedSeatToCard(reservationId, data.reservation.seatDisplay);
-                showToast('Seat updated successfully.', 'success');
+                showToast('Seats updated successfully.', 'success');
                 $(modifyModal).modal('hide');
             } catch (err) {
                 console.error(err);
