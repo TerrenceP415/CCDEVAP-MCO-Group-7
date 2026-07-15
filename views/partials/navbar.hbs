@@ -2,20 +2,26 @@
     <h1 class="logo">Sky<span class="ease">Ease</span></h1>
 
     <ul class="nav-links">
-        <li><a href="/" class="current">Home</a></li>
-        <li><a href="/search">Search Flights</a></li>
+        <li><a href="/" class="{{#if (eq title 'Home')}}current{{/if}}">Home</a></li>
+        <li><a href="/search" class="{{#if (eq title 'Search Flights')}}current{{/if}}">Search Flights</a></li>
 
-        <li><a href="/my-reservations">My Reservations</a></li>
-        <li><a href="#">User Profile <i class="bi bi-chevron-down"></i></a>
+        <li><a href="/my-reservations" class="{{#if (eq title 'My Reservations')}}current{{/if}}">My Reservations</a></li>
+        <li><a href="#" class="{{#if (eq title 'Settings')}}current
+        {{else if (eq title 'Profile')}}current
+        {{/if}}">User Profile <i class="bi bi-chevron-down"></i></a>
             <div class="profile-dropdown">
                 <ul>
-                    <li><a href="/profile"><i class="bi bi-person"></i> Profile</a></li>
-                    <li><a href="/settings"><i class="bi bi-gear"></i> Settings</a></li>
-                    <li><a href="/logout"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
+                    <li><a href="/profile" ><i class="bi bi-person"></i> Profile</a></li>
+                    <li><a href="/settings" ><i class="bi bi-gear"></i> Settings</a></li>
+                    <li><a href="/logout" ><i class="bi bi-box-arrow-right"></i> Logout</a></li>
                 </ul>
             </div>
         </li>
-        <li><a href="/admin/dashboard">Admin Panel</a></li>
+        <li><a href="/admin/dashboard" class="navbar-class {{#if (eq title 'Admin Dashboard')}}current
+        {{else if (eq title 'Admin Flights')}}current
+        {{else if (eq title 'Admin Users')}}current
+        {{else if (eq title 'Admin Reservations')}}current
+        {{/if}}">Admin Panel</a></li>
         <li><a class="login" href="/login">Login</a></li>
     </ul>
 

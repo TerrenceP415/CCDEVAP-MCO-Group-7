@@ -28,6 +28,7 @@ exports.getAdminReservations = async (req, res) => {
         });
 
         res.render('admin-reservations', { 
+            title: 'Admin Reservations',
             layout: 'admin', 
             reservations: formattedReservations 
         });
@@ -243,6 +244,7 @@ exports.getAdminDashboard = async (req, res) => {
         ]);
  
         res.render('admin-dashboard', {
+            title: 'Admin Dashboard',
             layout: 'admin',
             totalBookings,
             totalRevenue: totalRevenue.toFixed(2),
@@ -283,6 +285,7 @@ exports.getUserReservations = async (req, res) => {
         });
 
         res.render('reservations', { 
+            title: 'My Reservations',
             layout: 'main', 
             reservations: formattedReservations 
         });
