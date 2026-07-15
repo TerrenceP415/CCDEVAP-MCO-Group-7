@@ -55,6 +55,16 @@
                                     <p class="info-row-data price-display-tag">${{this.totalPrice}}</p>
                                 </div>
                             </div>
+                            <div class="row mt-3">
+                                    <div class="col-md-6 mb-3 mb-md-0">
+                                        <h6 class="info-row-heading">Meal Package</h6>
+                                        <p class="info-row-data">{{#if this.mealPackage}}{{this.mealPackage}}{{else}}None{{/if}}</p>
+                                    </div>
+                                    <div class="col-md-6 mb-3 mb-md-0">
+                                        <h6 class="info-row-heading">Extra Services</h6>
+                                        <p class="info-row-data">{{#if this.extraServices}}{{this.extraServices}}{{else}}None{{/if}}</p>
+                                    </div>
+                                </div>
                             {{#if this.isCancelled}}
                                 <div class="alert cancelled-status-box mt-4 mb-0 d-flex align-items-center py-3 px-4" role="alert">
                                     <i class="bi bi-info-circle-fill mr-2 text-secondary" style="font-size: 1.1rem;"></i>
