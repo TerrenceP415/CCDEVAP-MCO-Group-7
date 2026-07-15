@@ -79,7 +79,8 @@
                                             data-target="#modifyModal" 
                                             data-reservation-id="{{this._id}}"
                                             data-flight-id="{{this.flight._id}}"
-                                            data-total-seats="{{this.flight.totalSeats}}">
+                                            data-total-seats="{{this.flight.totalSeats}}"
+                                            data-current-seat="{{this.seatDisplay}}">
                                         <i class="bi bi-pencil-square mr-1"></i> Modify Booking
                                     </button>
                                     <button class="btn btn-action-outline btn-action-cancel" data-toggle="modal" data-target="#cancelModal" data-reservation-id="{{this._id}}">
@@ -189,6 +190,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const reservationId = trigger.dataset.reservationId;
             const flightId = trigger.dataset.flightId;
             const totalSeats = parseInt(trigger.dataset.totalSeats, 10) || 60;
+            const currentSeat = trigger.dataset.currentSeat;
 
             modifyModal.dataset.reservationId = reservationId;
             modalSeatInput.value = '';
@@ -206,7 +208,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     return;
                 }
 
-                renderModalSeatMap(totalSeats, data.takenSeats);
+                renderModalSeatMap(totalSeats, data.takenSeats, currentSeat);
             } catch (err) {
                 console.error(err);
                 modalSeatMap.innerHTML = '<p class="text-danger">Error rendering dynamic layouts.</p>';
@@ -214,7 +216,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         // Loop execution configurations building rows and letters
-        function renderModalSeatMap(totalSeats, takenSeats) {
+        function renderModalSeatMap(totalSeats, takenSeats, currentSeat) {
             modalSeatMap.innerHTML = '';
             const rows = Math.ceil(totalSeats / 6);
             const seatLetters = ['A', 'B', 'C', 'D', 'E', 'F'];
@@ -252,13 +254,18 @@ document.addEventListener('DOMContentLoaded', () => {
                     seatBtn.textContent = seatId;
                     seatBtn.dataset.seat = seatId;
 
-                    if (takenSeats.includes(seatId)) {
+                    if (takenSeats.includes(seatId) && seatId !== currentSeat) {
                         seatBtn.className += ' bg-light text-muted border-light disabled';
                         seatBtn.style.cursor = 'not-allowed';
                         seatBtn.disabled = true;
                     } else {
                         seatBtn.className += ' btn-outline-secondary';
                         seatBtn.addEventListener('click', () => selectModalSeat(seatBtn, seatId));
+                        
+                        // Pre-select the current seat if it matches
+                        if (seatId === currentSeat) {
+                            selectModalSeat(seatBtn, seatId);
+                        }
                     }
 
                     rowDiv.appendChild(seatBtn);
@@ -401,6 +408,11 @@ function applyUpdatedSeatToCard(reservationId, seatDisplay) {
     const seatValue = seatHeading ? seatHeading.nextElementSibling : null;
     if (seatValue) {
         seatValue.textContent = seatDisplay;
+    }
+    
+    const modifyBtn = card.querySelector('.btn-action-modify');
+    if (modifyBtn) {
+        modifyBtn.dataset.currentSeat = seatDisplay;
     }
 }
 

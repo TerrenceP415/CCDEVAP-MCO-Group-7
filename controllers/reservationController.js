@@ -316,6 +316,11 @@ exports.cancelUserReservation = async (req, res) => {
         reservation.status = 'Cancelled';
         await reservation.save();
 
+        if (reservation.flight) {
+            reservation.flight.availableSeats += reservation.passengers.length;
+            await reservation.flight.save();
+        }
+
         const seatDisplay = reservation.passengers && reservation.passengers.length > 0
             ? reservation.passengers.map(p => p.seatNumber).join(', ')
             : 'N/A';
@@ -364,6 +369,18 @@ exports.updateUserReservations = async (req, res) => {
         if (!reservation) {
             return res.status(404).json({ success: false, message: 'Reservation not found' });
         }
+
+        const seatTaken = await Reservation.findOne({
+            flight: reservation.flight._id,
+            status: { $ne: 'Cancelled' },
+            _id: { $ne: reservation._id },
+            'passengers.seatNumber': newSeat
+        });
+
+        if (seatTaken) {
+            return res.status(200).json({ success: false, message: `This seat is already taken. Please select another seat.` });
+        }
+
         reservation.passengers[0].seatNumber = newSeat;
         await reservation.save();
 

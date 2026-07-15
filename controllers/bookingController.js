@@ -152,7 +152,7 @@ exports.processBooking = async (req, res) => {
         'passengers.seatNumber': seatNumber.trim(),
       });
       if (seatTaken) {
-        errors.push(`Seat ${seatNumber.trim()} is already taken.`);
+        errors.push(`This seat is already taken. Please select another seat.`);
       }
     }
 
