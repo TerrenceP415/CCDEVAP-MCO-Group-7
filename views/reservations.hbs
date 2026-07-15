@@ -1,153 +1,319 @@
 <div class="reservations-container">
-        <h2 class="reservations-title"><i class="bi bi-journal-bookmark-fill"></i> My Reservations</h2>
-        <div class="row mb-4 align-items-end">
-    <div class="col-md-6">
-        <label class="small font-weight-bold text-muted text-uppercase" for="searchReservations">Search Reservations</label>
-        <input type="text" class="form-control" id="searchReservations" placeholder="e.g. LAX or SIN">
+    <h2 class="reservations-title"><i class="bi bi-journal-bookmark-fill"></i> My Reservations</h2>
+    <div class="row mb-4 align-items-end">
+        <div class="col-md-6">
+            <label class="small font-weight-bold text-muted text-uppercase" for="searchReservations">Search Reservations</label>
+            <input type="text" class="form-control" id="searchReservations" placeholder="e.g. LAX or SIN">
+        </div>
+        <div class="col-md-4">
+            <label class="small font-weight-bold text-muted text-uppercase" for="statusFilter">Filter by Status</label>
+            <select class="form-control" id="statusFilter">
+                <option value="all">All Statuses</option>
+                <option value="confirmed">Confirmed</option>
+                <option value="pending">Pending</option>
+                <option value="cancelled">Cancelled</option>
+            </select>
+        </div>
+        <div class="col-md-2">
+            <button class="btn btn-primary w-100" id="applyFilters">Filter</button>
+        </div>
     </div>
-    <div class="col-md-4">
-        <label class="small font-weight-bold text-muted text-uppercase" for="statusFilter">Filter by Status</label>
-        <select class="form-control" id="statusFilter">
-            <option value="all">All Statuses</option>
-            <option value="confirmed">Confirmed</option>
-            <option value="pending">Pending</option>
-            <option value="cancelled">Cancelled</option>
-        </select>
-    </div>
-    <div class="col-md-2">
-        <button class="btn btn-primary w-100" id="applyFilters">Filter</button>
-    </div>
-</div>
-        <!-- Reservations Accordion -->
-        <div class="accordion" id="reservationsAccordion">
 
-            {{#if reservations.length}}
-                {{#each reservations}}
-                    <div class="card reservation-card"
-                         data-reservation-id="{{this._id}}"
-                         data-status="{{this.status}}"
-                         data-route="{{this.flight.origin}} {{this.flight.destination}}">
-                        <div class="p-0" id="heading-{{this._id}}">
-                            <div class="d-flex justify-content-between align-items-center pr-4">
-                                <button class="accordion-trigger-btn{{#unless @first}} collapsed{{/unless}}" type="button" data-toggle="collapse" data-target="#collapse-{{this._id}}" aria-expanded="{{#if @first}}true{{else}}false{{/if}}" aria-controls="collapse-{{this._id}}">
-                                    <i class="bi bi-chevron-down chevron-icon-anim"></i> {{this.flight.origin}} &rarr; {{this.flight.destination}}
-                                </button>
-                                <span class="badge status-badge-pill {{#if this.isConfirmed}}badge-confirmed{{/if}}{{#if this.isPending}}badge-pending{{/if}}{{#if this.isCancelled}}badge-cancelled{{/if}}">{{this.status}}</span>
-                            </div>
-                        </div>
-                        <div id="collapse-{{this._id}}" class="collapse{{#if @first}} show{{/if}}" aria-labelledby="heading-{{this._id}}" data-parent="#reservationsAccordion">
-                            <div class="card-body pt-0 px-5 pb-4">
-                                <div class="row">
-                                    <div class="col-md-3 mb-3 mb-md-0">
-                                        <h6 class="info-row-heading">Reservation #</h6>
-                                        <p class="info-row-data">{{this.reservationNumber}}</p>
-                                    </div>
-                                    <div class="col-md-3 mb-3 mb-md-0">
-                                        <h6 class="info-row-heading">Passenger</h6>
-                                        <p class="info-row-data">{{#each this.passengers}}{{this.fullName}}{{#unless @last}}, {{/unless}}{{/each}}</p>
-                                    </div>
-                                    <div class="col-md-3 mb-3 mb-md-0">
-                                        <h6 class="info-row-heading">Seat Selection</h6>
-                                        <p class="info-row-data">{{this.seatDisplay}}</p>
-                                    </div>
-                                    <div class="col-md-3 text-md-right">
-                                        <h6 class="info-row-heading">Total Price</h6>
-                                        <p class="info-row-data price-display-tag">${{this.totalPrice}}</p>
-                                    </div>
-                                </div>
-                                {{#if this.isCancelled}}
-                                    <div class="alert cancelled-status-box mt-4 mb-0 d-flex align-items-center py-3 px-4" role="alert">
-                                        <i class="bi bi-info-circle-fill mr-2 text-secondary" style="font-size: 1.1rem;"></i>
-                                        This booking has been cancelled and cannot be modified.
-                                    </div>
-                                {{else}}
-                                    <hr class="card-inner-divider">
-                                    <div class="text-right">
-                                        <button class="btn btn-action-outline btn-action-modify mr-2" data-toggle="modal" data-target="#modifyModal" data-reservation-id="{{this._id}}">
-                                            <i class="bi bi-pencil-square mr-1"></i> Modify Booking
-                                        </button>
-                                        <button class="btn btn-action-outline btn-action-cancel" data-toggle="modal" data-target="#cancelModal" data-reservation-id="{{this._id}}">
-                                            <i class="bi bi-x-circle mr-1"></i> Cancel Booking
-                                        </button>
-                                    </div>
-                                {{/if}}
-                            </div>
+    <!-- Reservations Accordion -->
+    <div class="accordion" id="reservationsAccordion">
+        {{#if reservations.length}}
+            {{#each reservations}}
+                <div class="card reservation-card"
+                     data-reservation-id="{{this._id}}"
+                     data-status="{{this.status}}"
+                     data-route="{{this.flight.origin}} {{this.flight.destination}}">
+                    <div class="p-0" id="heading-{{this._id}}">
+                        <div class="d-flex justify-content-between align-items-center pr-4">
+                            <button class="accordion-trigger-btn{{#unless @first}} collapsed{{/unless}}" type="button" data-toggle="collapse" data-target="#collapse-{{this._id}}" aria-expanded="{{#if @first}}true{{else}}false{{/if}}" aria-controls="collapse-{{this._id}}">
+                                <i class="bi bi-chevron-down chevron-icon-anim"></i> {{this.flight.origin}} &rarr; {{this.flight.destination}}
+                            </button>
+                            <span class="badge status-badge-pill {{#if this.isConfirmed}}badge-confirmed{{/if}}{{#if this.isPending}}badge-pending{{/if}}{{#if this.isCancelled}}badge-cancelled{{/if}}">{{this.status}}</span>
                         </div>
                     </div>
-                {{/each}}
-            {{else}}
-                <div class="text-center text-muted py-5">
-                    <i class="bi bi-journal-x" style="font-size: 2rem;"></i>
-                    <p class="mt-2 mb-0">You don't have any reservations yet.</p>
+                    <div id="collapse-{{this._id}}" class="collapse{{#if @first}} show{{/if}}" aria-labelledby="heading-{{this._id}}" data-parent="#reservationsAccordion">
+                        <div class="card-body pt-0 px-5 pb-4">
+                            <div class="row">
+                                <div class="col-md-3 mb-3 mb-md-0">
+                                    <h6 class="info-row-heading">Reservation #</h6>
+                                    <p class="info-row-data">{{this.reservationNumber}}</p>
+                                </div>
+                                <div class="col-md-3 mb-3 mb-md-0">
+                                    <h6 class="info-row-heading">Passenger</h6>
+                                    <p class="info-row-data">{{#each this.passengers}}{{this.fullName}}{{#unless @last}}, {{/unless}}{{/each}}</p>
+                                </div>
+                                <div class="col-md-3 mb-3 mb-md-0">
+                                    <h6 class="info-row-heading">Seat Selection</h6>
+                                    <p class="info-row-data">{{this.seatDisplay}}</p>
+                                </div>
+                                <div class="col-md-3 text-md-right">
+                                    <h6 class="info-row-heading">Total Price</h6>
+                                    <p class="info-row-data price-display-tag">${{this.totalPrice}}</p>
+                                </div>
+                            </div>
+                            {{#if this.isCancelled}}
+                                <div class="alert cancelled-status-box mt-4 mb-0 d-flex align-items-center py-3 px-4" role="alert">
+                                    <i class="bi bi-info-circle-fill mr-2 text-secondary" style="font-size: 1.1rem;"></i>
+                                    This booking has been cancelled and cannot be modified.
+                                </div>
+                            {{else}}
+                                <hr class="card-inner-divider">
+                                <div class="text-right">
+                                    <!-- Added data-flight-id and data-total-seats to button context -->
+                                    <button class="btn btn-action-outline btn-action-modify mr-2" 
+                                            data-toggle="modal" 
+                                            data-target="#modifyModal" 
+                                            data-reservation-id="{{this._id}}"
+                                            data-flight-id="{{this.flight._id}}"
+                                            data-total-seats="{{this.flight.totalSeats}}">
+                                        <i class="bi bi-pencil-square mr-1"></i> Modify Booking
+                                    </button>
+                                    <button class="btn btn-action-outline btn-action-cancel" data-toggle="modal" data-target="#cancelModal" data-reservation-id="{{this._id}}">
+                                        <i class="bi bi-x-circle mr-1"></i> Cancel Booking
+                                    </button>
+                                </div>
+                            {{/if}}
+                        </div>
+                    </div>
                 </div>
-            {{/if}}
-
-        </div>
+            {{/each}}
+        {{else}}
+            <div class="text-center text-muted py-5">
+                <i class="bi bi-journal-x" style="font-size: 2rem;"></i>
+                <p class="mt-2 mb-0">You don't have any reservations yet.</p>
+            </div>
+        {{/if}}
     </div>
+</div>
 
-    <!-- Modify Reservation Modal -->
-    <div class="modal fade" id="modifyModal" tabindex="-1" role="dialog" aria-labelledby="modifyModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content border-0" style="border-radius: var(--radius-lg); box-shadow: var(--shadow-xl);">
-                <div class="modal-header border-bottom-0 pt-4 px-4">
-                    <h5 class="modal-title font-weight-bold" id="modifyModalLabel"><i class="bi bi-pencil-square mr-2 text-primary"></i>Modify Reservation</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body px-4">
-                    <form id="modifyForm">
-                        <div class="form-group">
-                            <label class="small font-weight-bold text-muted text-uppercase" for="newDate">New Travel Date</label>
-                            <input type="date" class="form-control" id="newDate">
+<!-- Modify Reservation Modal -->
+<div class="modal fade" id="modifyModal" tabindex="-1" role="dialog" aria-labelledby="modifyModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document"> <!-- Changed to modal-lg to cleanly fit seat maps -->
+        <div class="modal-content border-0" style="border-radius: var(--radius-lg); box-shadow: var(--shadow-xl);">
+            <div class="modal-header border-bottom-0 pt-4 px-4">
+                <h5 class="modal-title font-weight-bold" id="modifyModalLabel"><i class="bi bi-pencil-square mr-2 text-primary"></i>Modify Seat Selection</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body px-4">
+                <form id="modifyForm">
+                    <div class="seat-map-wrapper">
+                        <!-- Seat Legend -->
+                        <div class="seat-legend mb-3 d-flex justify-content-start gap-3">
+                            <div class="legend-item mr-3"><span class="legend-swatch available d-inline-block border text-center" style="width:20px; height:20px; background:#fff;"></span> Available</div>
+                            <div class="legend-item mr-3"><span class="legend-swatch selected d-inline-block text-center" style="width:20px; height:20px; background:var(--primary, #007bff);"></span> Selected</div>
+                            <div class="legend-item"><span class="legend-swatch occupied d-inline-block text-center" style="width:20px; height:20px; background:#e0e0e0;"></span> Occupied</div>
                         </div>
-                        <div class="form-group">
-                            <label class="small font-weight-bold text-muted text-uppercase" for="newSeat">Update Seat Selection</label>
-                            <input type="text" class="form-control" id="newSeat" placeholder="e.g. 15A">
+
+                        <!-- Dynamic Seat Map Container -->
+                        <div id="modalSeatMap" class="p-3 border rounded text-center" style="max-height: 350px; overflow-y: auto; background: #fdfdfd;">
+                            <p class="text-muted"><i class="bi bi-arrow-repeat spin"></i> Loading map...</p>
                         </div>
-                        <p class="text-muted small mb-0">Additional charges might map based on scheduling adjustments and standard seat availability.</p>
-                    </form>
-                </div>
-                <div class="modal-footer border-top-0 pb-4 px-4">
-                    <button type="button" class="btn btn-secondary font-weight-bold btn-sm px-3" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary btnSave font-weight-bold btn-sm px-3" data-dismiss="modal">Save Changes</button>
-                </div>
+
+                        <div class="selected-seat-display mt-3 font-weight-bold text-center">
+                            Chosen Seat: <span id="modalSelectedSeatLabel" class="text-primary">None selected</span>
+                        </div>
+
+                        <!-- Hidden Field for state keeping -->
+                        <input type="hidden" id="modalSeatInput">
+                        <div class="text-danger small text-center mt-2" id="modalSeatError"></div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer border-top-0 pb-4 px-4">
+                <button type="button" class="btn btn-secondary font-weight-bold btn-sm px-3" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary btnSave font-weight-bold btn-sm px-3">Save Changes</button>
             </div>
         </div>
     </div>
+</div>
 
-    <!-- Cancel Reservation Modal -->
-    <div class="modal fade" id="cancelModal" tabindex="-1" role="dialog" aria-labelledby="cancelModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content border-0" style="border-radius: var(--radius-lg); box-shadow: var(--shadow-xl);">
-                <div class="modal-header border-bottom-0 pt-4 px-4">
-                    <h5 class="modal-title text-danger font-weight-bold" id="cancelModalLabel"><i class="bi bi-exclamation-triangle-fill mr-2"></i>Cancel Reservation</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body px-4 text-muted">
-                    Are you sure you want to cancel this booking? This processing rule is permanent and immediate adjustments may apply.
-                </div>
-                <div class="modal-footer border-top-0 pb-4 px-4">
-                    <button type="button" class="btn btn-secondary font-weight-bold btn-sm px-3" data-dismiss="modal">Keep Booking</button>
-                    <button type="button" class="btn btn-danger btnDelete font-weight-bold btn-sm px-3" data-dismiss="modal">Confirm Cancellation</button>
-                </div>
+<!-- Cancel Reservation Modal -->
+<div class="modal fade" id="cancelModal" tabindex="-1" role="dialog" aria-labelledby="cancelModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content border-0" style="border-radius: var(--radius-lg); box-shadow: var(--shadow-xl);">
+            <div class="modal-header border-bottom-0 pt-4 px-4">
+                <h5 class="modal-title text-danger font-weight-bold" id="cancelModalLabel"><i class="bi bi-exclamation-triangle-fill mr-2"></i>Cancel Reservation</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body px-4 text-muted">
+                Are you sure you want to cancel this booking? This processing rule is permanent and immediate adjustments may apply.
+            </div>
+            <div class="modal-footer border-top-0 pb-4 px-4">
+                <button type="button" class="btn btn-secondary font-weight-bold btn-sm px-3" data-dismiss="modal">Keep Booking</button>
+                <button type="button" class="btn btn-danger btnDelete font-weight-bold btn-sm px-3" data-dismiss="modal">Confirm Cancellation</button>
             </div>
         </div>
     </div>
+</div>
 
-    <!-- Toast Notification Container -->
-    <div class="toast-container" id="toastContainer"></div>
+<!-- Toast Notification Container -->
+<div class="toast-container" id="toastContainer"></div>
 
-    <script>document.addEventListener('DOMContentLoaded', () => {
+<script>
+document.addEventListener('DOMContentLoaded', () => {
     const cancelModal = document.getElementById('cancelModal');
     const confirmCancelBtn = cancelModal ? cancelModal.querySelector('.btnDelete') : null;
- 
+
+    const modifyModal = document.getElementById('modifyModal');
+    const modalSeatMap = document.getElementById('modalSeatMap');
+    const modalSeatInput = document.getElementById('modalSeatInput');
+    const modalSelectedSeatLabel = document.getElementById('modalSelectedSeatLabel');
+    const modalSeatError = document.getElementById('modalSeatError');
+    const saveSeatBtn = modifyModal ? modifyModal.querySelector('.btnSave') : null;
+
+    if (modifyModal && saveSeatBtn) {
+        // Capture modal activation, download current flight data, and render seat matrix map
+        document.addEventListener('click', async (event) => {
+            const trigger = event.target.closest('.btn-action-modify');
+            if (!trigger) return;
+
+            const reservationId = trigger.dataset.reservationId;
+            const flightId = trigger.dataset.flightId;
+            const totalSeats = parseInt(trigger.dataset.totalSeats, 10) || 60;
+
+            modifyModal.dataset.reservationId = reservationId;
+            modalSeatInput.value = '';
+            modalSelectedSeatLabel.textContent = 'None selected';
+            modalSeatError.textContent = '';
+            modalSeatMap.innerHTML = '<p class="text-muted"><i class="bi bi-arrow-repeat spin"></i> Loading seat configurations...</p>';
+
+            try {
+                // Query API endpoint for booked configurations
+                const response = await fetch(`/api/flights/${flightId}/seats`);
+                const data = await response.json();
+
+                if (!response.ok || !data.success) {
+                    modalSeatMap.innerHTML = '<p class="text-danger">Failed to download seat mapping data.</p>';
+                    return;
+                }
+
+                renderModalSeatMap(totalSeats, data.takenSeats);
+            } catch (err) {
+                console.error(err);
+                modalSeatMap.innerHTML = '<p class="text-danger">Error rendering dynamic layouts.</p>';
+            }
+        });
+
+        // Loop execution configurations building rows and letters
+        function renderModalSeatMap(totalSeats, takenSeats) {
+            modalSeatMap.innerHTML = '';
+            const rows = Math.ceil(totalSeats / 6);
+            const seatLetters = ['A', 'B', 'C', 'D', 'E', 'F'];
+
+            const mapTable = document.createElement('div');
+            mapTable.className = 'd-inline-block text-center mt-2';
+
+            for (let r = 1; r <= rows; r++) {
+                const rowDiv = document.createElement('div');
+                rowDiv.className = 'd-flex align-items-center mb-2 justify-content-center';
+
+                // Display row identification numbers
+                const label = document.createElement('span');
+                label.className = 'text-muted small font-weight-bold mr-3';
+                label.style.width = '25px';
+                label.textContent = r;
+                rowDiv.appendChild(label);
+
+                for (let s = 0; s < 6; s++) {
+                    const seatId = `${r}${seatLetters[s]}`;
+                    
+                    // Create basic gap for aisle handling between column paths C & D
+                    if (s === 3) {
+                        const aisle = document.createElement('div');
+                        aisle.style.width = '24px';
+                        rowDiv.appendChild(aisle);
+                    }
+
+                    const seatBtn = document.createElement('button');
+                    seatBtn.type = 'button';
+                    seatBtn.className = 'btn btn-sm m-1 p-0 rounded border text-center font-weight-bold seat-unit';
+                    seatBtn.style.width = '38px';
+                    seatBtn.style.height = '36px';
+                    seatBtn.style.fontSize = '11px';
+                    seatBtn.textContent = seatId;
+                    seatBtn.dataset.seat = seatId;
+
+                    if (takenSeats.includes(seatId)) {
+                        seatBtn.className += ' bg-light text-muted border-light disabled';
+                        seatBtn.style.cursor = 'not-allowed';
+                        seatBtn.disabled = true;
+                    } else {
+                        seatBtn.className += ' btn-outline-secondary';
+                        seatBtn.addEventListener('click', () => selectModalSeat(seatBtn, seatId));
+                    }
+
+                    rowDiv.appendChild(seatBtn);
+                }
+                mapTable.appendChild(rowDiv);
+            }
+            modalSeatMap.appendChild(mapTable);
+        }
+
+        function selectModalSeat(btn, seatId) {
+            // Remove selection properties from alternative map nodes
+            modalSeatMap.querySelectorAll('.seat-unit').forEach(b => {
+                if (!b.disabled) {
+                    b.classList.remove('btn-primary', 'text-white');
+                    b.classList.add('btn-outline-secondary');
+                }
+            });
+
+            // Activate select status properties inside active button target
+            btn.classList.remove('btn-outline-secondary');
+            btn.classList.add('btn-primary', 'text-white');
+
+            modalSeatInput.value = seatId;
+            modalSelectedSeatLabel.textContent = seatId;
+            modalSeatError.textContent = '';
+        }
+
+        saveSeatBtn.addEventListener('click', async () => {
+            const reservationId = modifyModal.dataset.reservationId;
+            const seatNumber = modalSeatInput.value.trim();
+
+            if (!seatNumber) {
+                modalSeatError.textContent = 'Please choose a dynamic configuration square layout.';
+                return;
+            }
+
+            saveSeatBtn.disabled = true;
+            try {
+                const response = await fetch(`/reservations/update/${reservationId}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ seatNumber })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok || !data.success) {
+                    modalSeatError.textContent = data.message || 'Could not update this reservation.';
+                    showToast(data.message || 'Could not update this reservation.', 'error');
+                    return;
+                }
+
+                applyUpdatedSeatToCard(reservationId, data.reservation.seatDisplay);
+                showToast('Seat updated successfully.', 'success');
+                $(modifyModal).modal('hide');
+            } catch (err) {
+                console.error(err);
+                showToast('Something went wrong. Please try again.', 'error');
+            } finally {
+                saveSeatBtn.disabled = false;
+            }
+        });
+    }
+
     if (!cancelModal || !confirmCancelBtn) return;
  
-    // 1. Capture which reservation's "Cancel Booking" button opened the modal.
-    //    Event delegation so this works for every card, including ones added later.
     document.addEventListener('click', (event) => {
         const trigger = event.target.closest('.btn-action-cancel');
         if (!trigger) return;
@@ -156,7 +322,6 @@
         cancelModal.dataset.reservationId = reservationId;
     });
  
-    // 2. Fire the cancellation when "Confirm Cancellation" is clicked.
     confirmCancelBtn.addEventListener('click', async () => {
         const reservationId = cancelModal.dataset.reservationId;
         if (!reservationId) return;
@@ -186,8 +351,6 @@
     });
 });
  
-// Updates the card's badge/actions in place to reflect the cancelled status,
-// without needing to reload or re-render the whole reservations list.
 function applyCancelledStateToCard(reservationId) {
     const card = document.querySelector(`.reservation-card[data-reservation-id="${reservationId}"]`);
     if (!card) return;
@@ -217,7 +380,18 @@ function applyCancelledStateToCard(reservationId) {
     }
 }
  
-// Minimal Bootstrap-style toast, appended to the #toastContainer already in reservations.hbs
+function applyUpdatedSeatToCard(reservationId, seatDisplay) {
+    const card = document.querySelector(`.reservation-card[data-reservation-id="${reservationId}"]`);
+    if (!card) return;
+
+    const headings = card.querySelectorAll('.info-row-heading');
+    const seatHeading = Array.from(headings).find(h => h.textContent.trim() === 'Seat Selection');
+    const seatValue = seatHeading ? seatHeading.nextElementSibling : null;
+    if (seatValue) {
+        seatValue.textContent = seatDisplay;
+    }
+}
+
 function showToast(message, type = 'success') {
     const container = document.getElementById('toastContainer');
     if (!container) return;

@@ -343,3 +343,116 @@ exports.cancelUserReservation = async (req, res) => {
     }
 
 };
+
+exports.updateUserReservations = async (req, res) => {
+
+    try {
+
+        // TODO(auth): once login/session is implemented, check that the user is the owner of the
+        // reservation before letting them modify it, same as cancelUserReservation.
+
+        //get the reservation id from the request parameters and validate it
+        const { id } = req.params;
+        if (!id.match(/^[0-9a-fA-F]{24}$/)) {
+            return res.status(400).json({ success: false, message: 'Invalid reservation id' });
+        }
+
+
+
+       
+        //get the seat number from the hbs and validate it
+        const { seatNumber } = req.body;
+
+        if (!seatNumber || !seatNumber.trim()) {
+            return res.status(400).json({ success: false, message: 'A seat number is required' });
+        }
+
+        const newSeat = seatNumber.trim();
+
+        const reservation = await Reservation.findById(id).populate('flight');
+
+        if (!reservation) {
+            return res.status(404).json({ success: false, message: 'Reservation not found' });
+        }
+
+        // Cancelled bookings can't be modified (mirrors the notice already shown in the UI)
+
+        if (reservation.status === 'Cancelled') {
+            return res.status(400).json({ success: false, message: 'This reservation has been cancelled and cannot be modified' });
+        }
+
+
+        if (!reservation.flight) {
+            return res.status(400).json({ success: false, message: 'The flight for this reservation could not be found' });
+        }
+
+
+        if (!reservation.passengers || reservation.passengers.length === 0) {
+            return res.status(400).json({ success: false, message: 'No passengers found on this reservation' });
+        }
+
+
+
+        // Required passenger information (Full Name, Email, Passport Number) must already
+        // be on file; this endpoint only ever touches seatNumber.
+
+        const missingInfo = reservation.passengers.some(
+            p => !p.fullName || !p.email || !p.passportNumber
+        );
+
+        if (missingInfo) {
+            return res.status(400).json({ success: false, message: 'Required passenger information is missing on this reservation' });
+        }
+
+        // Business rule - Seat Availability: "A seat may only be assigned to one passenger."
+        // Guard against the new seat colliding with another passenger on THIS reservation...
+
+        const isSeatTaken = reservation.passengers.some((p, idx) => idx !== 0 && p.seatNumber === newSeat);
+
+        if (isSeatTaken) {
+
+            return res.status(400).json({ success: false, message: `Seat ${newSeat} is already assigned to another passenger on this booking` });
+
+        }
+
+        // ...and against every other active (non-cancelled) reservation on this same flight.
+        const seatTakenElsewhere = await Reservation.exists({
+
+            _id: { $ne: reservation._id },
+            flight: reservation.flight._id,
+            status: { $ne: 'Cancelled' },
+            'passengers.seatNumber': newSeat
+        });
+
+        if (seatTakenElsewhere) {
+            return res.status(400).json({ success: false, message: `Seat ${newSeat} is already taken on this flight` });
+        }
+
+        // The Modify Booking form only exposes a single seat field, so it applies to the
+        // primary passenger on the reservation (index 0).
+
+        reservation.passengers[0].seatNumber = newSeat;
+        await reservation.save();
+
+        const seatDisplay = reservation.passengers.map(p => p.seatNumber).join(', ');
+
+        res.status(200).json({
+
+            success: true,
+            message: 'Seat updated successfully',
+            reservation: {
+                ...reservation.toObject(),
+                seatDisplay,
+                isConfirmed: reservation.status === 'Confirmed',
+                isCancelled: reservation.status === 'Cancelled',
+                isPending: reservation.status === 'Pending'
+            }
+        });
+
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ success: false, message: 'Error updating reservation' });
+    }
+
+};
+
