@@ -358,6 +358,12 @@ exports.updateUserReservations = async (req, res) => {
             return res.status(404).json({ success: false, message: 'Reservation not found' });
         }
 
+        // Safety check: the referenced flight may have been deleted by an admin,
+        // leaving reservation.flight as null. Bail out before touching flight._id.
+        if (!reservation.flight) {
+            return res.status(400).json({ success: false, message: 'Flight no longer exists' });
+        }
+
         const passengerCount = reservation.passengers.length;
         if (newSeatsArray.length !== passengerCount) {
             return res.status(400).json({ 

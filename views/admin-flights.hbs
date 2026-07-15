@@ -51,6 +51,9 @@
               data-available-seats="{{this.availableSeats}}"
               data-total-seats="{{this.totalSeats}}"
               data-ticket-price="{{this.ticketPrice}}"
+              data-duration="{{this.duration}}"
+              data-layovers="{{this.layovers}}"
+              data-airline-logo="{{this.airlineLogo}}"
               data-bs-toggle="modal"
               data-bs-target="#editFlightModal"
             >
@@ -119,6 +122,18 @@
               <label for="ticketPrice">Ticket Price</label>
               <input name="ticketPrice" type="number" class="form-control" id="ticketPrice" min="0" required>
             </div>
+            <div class="form-group">
+              <label for="duration">Duration</label>
+              <input name="duration" type="text" class="form-control" id="duration" placeholder="e.g. 5h 30m">
+            </div>
+            <div class="form-group">
+              <label for="layovers">Layovers</label>
+              <input name="layovers" type="number" class="form-control" id="layovers" min="0" value="0">
+            </div>
+            <div class="form-group">
+              <label for="airlineLogo">Airline Logo (folder/filename under /airline)</label>
+              <input name="airlineLogo" type="text" class="form-control" id="airlineLogo" placeholder="e.g. philippine-airlines/logo.png">
+            </div>
 
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Discard</button>
@@ -178,6 +193,18 @@
               <label for="editTicketPrice">Ticket Price</label>
               <input name="ticketPrice" type="number" class="form-control" id="editTicketPrice" min="0" required>
             </div>
+            <div class="form-group">
+              <label for="editDuration">Duration</label>
+              <input name="duration" type="text" class="form-control" id="editDuration" placeholder="e.g. 5h 30m">
+            </div>
+            <div class="form-group">
+              <label for="editLayovers">Layovers</label>
+              <input name="layovers" type="number" class="form-control" id="editLayovers" min="0">
+            </div>
+            <div class="form-group">
+              <label for="editAirlineLogo">Airline Logo (folder/filename under /airline)</label>
+              <input name="airlineLogo" type="text" class="form-control" id="editAirlineLogo" placeholder="e.g. philippine-airlines/logo.png">
+            </div>
           </form>
         </div>
 
@@ -235,6 +262,9 @@ document.addEventListener('DOMContentLoaded', function () {
       document.getElementById('editAvailableSeats').value = this.dataset.availableSeats;
       document.getElementById('editTotalSeats').value = this.dataset.totalSeats;
       document.getElementById('editTicketPrice').value = this.dataset.ticketPrice;
+      document.getElementById('editDuration').value = this.dataset.duration || '';
+      document.getElementById('editLayovers').value = this.dataset.layovers || 0;
+      document.getElementById('editAirlineLogo').value = this.dataset.airlineLogo || '';
     });
   });
 
@@ -252,7 +282,10 @@ document.addEventListener('DOMContentLoaded', function () {
         arrivalDateTime: document.getElementById('editArrivalDateTime').value,
         availableSeats: document.getElementById('editAvailableSeats').value,
         totalSeats: document.getElementById('editTotalSeats').value,
-        ticketPrice: document.getElementById('editTicketPrice').value
+        ticketPrice: document.getElementById('editTicketPrice').value,
+        duration: document.getElementById('editDuration').value,
+        layovers: document.getElementById('editLayovers').value,
+        airlineLogo: document.getElementById('editAirlineLogo').value
       };
 
 // Send a PUT request to update the flight data

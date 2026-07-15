@@ -38,19 +38,23 @@
                     <div id="collapse-{{this._id}}" class="collapse{{#if @first}} show{{/if}}" aria-labelledby="heading-{{this._id}}" data-parent="#reservationsAccordion">
                         <div class="card-body pt-0 px-5 pb-4">
                             <div class="row">
-                                <div class="col-md-3 mb-3 mb-md-0">
+                                <div class="col-md-2 col-6 mb-3 mb-md-0">
                                     <h6 class="info-row-heading">Reservation #</h6>
                                     <p class="info-row-data">{{this.reservationNumber}}</p>
                                 </div>
-                                <div class="col-md-3 mb-3 mb-md-0">
+                                <div class="col-md-2 col-6 mb-3 mb-md-0">
+                                    <h6 class="info-row-heading">Flight Number</h6>
+                                    <p class="info-row-data">{{this.flight.flightNumber}}</p>
+                                </div>
+                                <div class="col-md-3 col-6 mb-3 mb-md-0">
                                     <h6 class="info-row-heading">Passenger</h6>
                                     <p class="info-row-data">{{#each this.passengers}}{{this.fullName}}{{#unless @last}}, {{/unless}}{{/each}}</p>
                                 </div>
-                                <div class="col-md-3 mb-3 mb-md-0">
+                                <div class="col-md-2 col-6 mb-3 mb-md-0">
                                     <h6 class="info-row-heading">Seat Selection</h6>
                                     <p class="info-row-data">{{this.seatDisplay}}</p>
                                 </div>
-                                <div class="col-md-3 text-md-right">
+                                <div class="col-md-3 col-12 text-md-right">
                                     <h6 class="info-row-heading">Total Price</h6>
                                     <p class="info-row-data price-display-tag">${{this.totalPrice}}</p>
                                 </div>
