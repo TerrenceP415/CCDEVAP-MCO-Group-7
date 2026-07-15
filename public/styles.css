@@ -4181,6 +4181,51 @@ body.admin-page {
   opacity: 0.6;
 }
 
+/* ─── Missing MCO1 Styles ──────────────────────────── */
+
+.seat-premium {
+  background: var(--color-blue-100);
+  border-color: var(--color-blue-600);
+  color: var(--color-blue-600);
+}
+.seat-premium:hover {
+  background: var(--color-blue-50);
+  border-color: var(--color-blue-600);
+  transform: scale(1.08);
+}
+
+.seat-aisle-gap {
+  width: 24px;
+  flex-shrink: 0;
+}
+
+.result-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  align-items: center;
+  margin-top: var(--space-3);
+  font-size: 13px;
+  color: var(--color-slate-500);
+}
+
+.result-airline-logo {
+  height: 24px;
+  width: auto;
+  object-fit: contain;
+}
+
+.result-duration, .result-layover {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.result-layover.direct {
+  color: var(--color-green-600);
+  font-weight: 600;
+}
+
 /* ─── Toast Notifications ───────────────────────────── */
 .toast-container {
   position: fixed;

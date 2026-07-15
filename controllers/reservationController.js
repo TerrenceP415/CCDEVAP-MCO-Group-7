@@ -260,6 +260,7 @@ exports.getUserReservations = async (req, res) => {
     try {
         const reservations = await Reservation.find()
             .populate('flight')
+            .sort({ createdAt: -1 })
             .lean(); 
         
         const formattedReservations = reservations.map(resObj => {

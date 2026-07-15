@@ -6,7 +6,8 @@
             <h1><i class="bi bi-ticket-perforated"></i> Book Your Flight</h1>
             <p class="booking-copy">
                 Booking <strong>{{ flight.flightNumber }}</strong> &mdash;
-                {{ flight.origin }} &rarr; {{ flight.destination }}
+                {{ flight.origin }} &rarr; {{ flight.destination }}.
+                Complete each step below. Your total updates in real time on the right.
             </p>
 
             <!-- Server-side validation errors -->
@@ -21,7 +22,7 @@
                 </div>
             {{/if}}
 
-            <!-- Booking progress steps -->
+            <!-- Booking progress steps (3 steps) -->
             <div class="booking-stepper">
                 <div class="step active">
                     <div class="step-circle">1</div>
@@ -31,6 +32,11 @@
                 <div class="step">
                     <div class="step-circle">2</div>
                     <div class="step-label">Seat Selection</div>
+                </div>
+                <div class="step-line"></div>
+                <div class="step">
+                    <div class="step-circle">3</div>
+                    <div class="step-label">Meal &amp; Extras</div>
                 </div>
             </div>
 
@@ -59,6 +65,15 @@
                             <span class="field-error" id="emailError">Enter a valid email address.</span>
                         </div>
 
+                        <!-- Contact Number -->
+                        <div class="booking-field">
+                            <label for="contactNumber"><i class="bi bi-phone"></i> Contact Number</label>
+                            <input type="text" id="contactNumber" name="contactNumber"
+                                   placeholder="Enter contact number"
+                                   value="{{#if body}}{{ body.contactNumber }}{{/if}}" required>
+                            <span class="field-error" id="contactError">Enter a valid contact number (min. 7 digits).</span>
+                        </div>
+
                         <!-- Passport Number -->
                         <div class="booking-field">
                             <label for="passportNumber"><i class="bi bi-passport"></i> Passport Number</label>
@@ -67,15 +82,63 @@
                                    value="{{#if body}}{{ body.passportNumber }}{{/if}}" required>
                             <span class="field-error" id="passportError">Passport number must be at least 6 characters.</span>
                         </div>
+
+                        <!-- Nationality -->
+                        <div class="booking-field">
+                            <label for="nationality"><i class="bi bi-flag"></i> Nationality</label>
+                            <select name="nationality" id="nationality">
+                                <option value="philippines" {{#if body}}{{#if (eq body.nationality 'philippines')}}selected{{/if}}{{/if}}>Philippines</option>
+                                <option value="usa" {{#if body}}{{#if (eq body.nationality 'usa')}}selected{{/if}}{{/if}}>United States</option>
+                                <option value="canada" {{#if body}}{{#if (eq body.nationality 'canada')}}selected{{/if}}{{/if}}>Canada</option>
+                                <option value="uk" {{#if body}}{{#if (eq body.nationality 'uk')}}selected{{/if}}{{/if}}>United Kingdom</option>
+                                <option value="australia" {{#if body}}{{#if (eq body.nationality 'australia')}}selected{{/if}}{{/if}}>Australia</option>
+                                <option value="japan" {{#if body}}{{#if (eq body.nationality 'japan')}}selected{{/if}}{{/if}}>Japan</option>
+                                <option value="singapore" {{#if body}}{{#if (eq body.nationality 'singapore')}}selected{{/if}}{{/if}}>Singapore</option>
+                                <option value="other" {{#if body}}{{#if (eq body.nationality 'other')}}selected{{/if}}{{/if}}>Other</option>
+                            </select>
+                        </div>
+
+                        <!-- Date of Birth -->
+                        <div class="booking-field">
+                            <label for="dateOfBirth"><i class="bi bi-calendar"></i> Date of Birth</label>
+                            <input type="date" id="dateOfBirth" name="dateOfBirth"
+                                   value="{{#if body}}{{ body.dateOfBirth }}{{/if}}" required>
+                            <span class="field-error" id="dobError">Date of birth is required.</span>
+                        </div>
+
+                        <!-- Gender Selection -->
+                        <div class="booking-field">
+                            <label><i class="bi bi-gender-ambiguous"></i> Gender</label>
+                            <div class="radio-group">
+                                <label for="male">
+                                    <input type="radio" id="male" name="gender" value="male"
+                                           {{#if body}}{{#if (eq body.gender 'male')}}checked{{/if}}{{/if}}> Male
+                                </label>
+                                <label for="female">
+                                    <input type="radio" id="female" name="gender" value="female"
+                                           {{#if body}}{{#if (eq body.gender 'female')}}checked{{/if}}{{/if}}> Female
+                                </label>
+                            </div>
+                            <span class="field-error" id="genderError">Please select a gender.</span>
+                        </div>
+
+                        <!-- Emergency Contact -->
+                        <div class="booking-field">
+                            <label for="emergencyContact"><i class="bi bi-telephone"></i> Emergency Contact Number</label>
+                            <input type="text" id="emergencyContact" name="emergencyContact"
+                                   placeholder="Enter emergency contact"
+                                   value="{{#if body}}{{ body.emergencyContact }}{{/if}}" required>
+                            <span class="field-error" id="emergencyError">Enter a valid emergency contact number (min. 7 digits).</span>
+                        </div>
                     </div>
                 </details>
 
                 <!-- Step 2: Seat Selection -->
-                <details class="booking-section">
+                <details class="booking-section" open>
                     <summary><span><i class="bi bi-grid-3x3"></i> Seat Selection</span></summary>
                     <div class="booking-section-body">
                         <p class="booking-copy" style="margin-bottom: var(--space-3);">
-                            Choose your seat below. Occupied seats are grayed out.
+                            Choose your seat below. Premium seats (rows 1-2) include extra legroom for an additional fee.
                             Total seats: <strong>{{ flight.totalSeats }}</strong> |
                             Available: <strong>{{ flight.availableSeats }}</strong>
                         </p>
@@ -85,6 +148,7 @@
                             <div class="seat-legend">
                                 <div class="legend-item"><span class="legend-swatch available"></span> Available</div>
                                 <div class="legend-item"><span class="legend-swatch selected"></span> Selected</div>
+                                <div class="legend-item"><span class="legend-swatch premium"></span> Premium (+$30)</div>
                                 <div class="legend-item"><span class="legend-swatch occupied"></span> Occupied</div>
                             </div>
 
@@ -107,9 +171,92 @@
                     </div>
                 </details>
 
+                <!-- Step 3: Meal & Extra Services -->
+                <details class="booking-section" open>
+                    <summary><span><i class="bi bi-bag-check"></i> Meal &amp; Extra Services</span></summary>
+                    <div class="booking-section-body">
+
+                        <!-- Meal Preference -->
+                        <label style="font-size:13px; font-weight:700; color: var(--color-slate-700);">
+                            <i class="bi bi-cup-hot"></i> Meal Preference
+                        </label>
+                        <div class="meal-options" id="mealOptions"></div>
+
+                        <!-- Extra Services -->
+                        <div class="extras-list">
+                            <!-- Additional Baggage -->
+                            <div class="extra-row" title="Each item allows 20 kg of checked luggage. You can add up to 5 extra bags per booking.">
+                                <div class="extra-info">
+                                    <span class="extra-title"><i class="bi bi-suitcase"></i> Additional Baggage <i class="bi bi-info-circle extra-tooltip-icon"></i></span>
+                                    <span class="extra-desc">Add extra checked baggage (20kg per item) &mdash; $25.00 each</span>
+                                </div>
+                                <div class="extra-control">
+                                    <div class="qty-control">
+                                        <button type="button" id="baggageDecrease" aria-label="Decrease baggage quantity">&minus;</button>
+                                        <span id="baggageQty">0</span>
+                                        <button type="button" id="baggageIncrease" aria-label="Increase baggage quantity">&plus;</button>
+                                    </div>
+                                    <span class="extra-price">$25.00 ea</span>
+                                </div>
+                            </div>
+
+                            <!-- Priority Boarding -->
+                            <div class="extra-row" title="Be among the first to board the aircraft. Enjoy early overhead bin access and a stress-free boarding experience.">
+                                <div class="extra-info">
+                                    <span class="extra-title"><i class="bi bi-lightning-charge"></i> Priority Boarding <i class="bi bi-info-circle extra-tooltip-icon"></i></span>
+                                    <span class="extra-desc">Skip the line and board first</span>
+                                </div>
+                                <div class="extra-control">
+                                    <label class="switch">
+                                        <input type="checkbox" id="priorityBoarding" name="priorityBoarding">
+                                        <span class="slider"></span>
+                                    </label>
+                                    <span class="extra-price">+$15.00</span>
+                                </div>
+                            </div>
+
+                            <!-- Travel Insurance -->
+                            <div class="extra-row" title="Comprehensive coverage including trip cancellations, delays, lost baggage, and medical emergencies up to $50,000.">
+                                <div class="extra-info">
+                                    <span class="extra-title"><i class="bi bi-shield-check"></i> Travel Insurance <i class="bi bi-info-circle extra-tooltip-icon"></i></span>
+                                    <span class="extra-desc">Coverage for trip cancellations and medical emergencies</span>
+                                </div>
+                                <div class="extra-control">
+                                    <label class="switch">
+                                        <input type="checkbox" id="travelInsurance" name="travelInsurance">
+                                        <span class="slider"></span>
+                                    </label>
+                                    <span class="extra-price">+$20.00</span>
+                                </div>
+                            </div>
+
+                            <!-- Lounge Access -->
+                            <div class="extra-row" title="Relax in our premium airport lounge with complimentary refreshments, Wi-Fi, charging stations, and comfortable seating before departure.">
+                                <div class="extra-info">
+                                    <span class="extra-title"><i class="bi bi-cup-straw"></i> Lounge Access <i class="bi bi-info-circle extra-tooltip-icon"></i></span>
+                                    <span class="extra-desc">Relax in the airport lounge before departure</span>
+                                </div>
+                                <div class="extra-control">
+                                    <label class="switch">
+                                        <input type="checkbox" id="loungeAccess" name="loungeAccess">
+                                        <span class="slider"></span>
+                                    </label>
+                                    <span class="extra-price">+$35.00</span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </details>
+
+                <!-- Hidden fields for meal/extras/total (outside <details> for reliable POST) -->
+                <input type="hidden" name="mealPackage" id="mealPackageInput" value="Standard Meal">
+                <input type="hidden" name="extraServices" id="extraServicesInput" value="">
+                <input type="hidden" name="totalPrice" id="totalPriceInput" value="{{ flight.ticketPrice }}">
+
                 <!-- Submit Button -->
                 <button type="submit" class="booking-submit">
-                    <i class="bi bi-check-circle"></i> Confirm Booking
+                    <i class="bi bi-check-circle"></i> Confirm Booking &amp; View Reservations
                 </button>
             </form>
         </div>
@@ -119,36 +266,106 @@
     <aside class="booking-summary">
         <h3><i class="bi bi-receipt"></i> Booking Summary</h3>
 
+        <!-- Flight Info -->
         <div class="summary-flight">
-            <strong>{{ flight.origin }} &rarr; {{ flight.destination }}</strong><br>
-            <span>{{ flight.airline }}</span><br>
-            <span>{{ flight.flightNumber }}</span><br>
-            <span>{{ formatDate flight.departureDateTime }}</span>
+            <strong id="summaryRoute">{{ flight.origin }} &rarr; {{ flight.destination }}</strong><br>
+            <span id="summaryAirline">{{ flight.airline }} &middot; {{ flight.flightNumber }}</span><br>
+            <span id="summaryTime">{{ formatDate flight.departureDateTime }}</span><br>
+            Class: <span id="summaryClass">{{ flight.cabinClass }}</span>
         </div>
 
         <div class="summary-row">
-            <span>Ticket Price</span>
-            <span>${{ formatCurrency flight.ticketPrice }}</span>
+            <span>Passengers</span>
+            <span id="summaryPassengers">1</span>
         </div>
+
         <div class="summary-row">
             <span>Seat</span>
             <span id="summarySeat">Not selected</span>
         </div>
+        <div class="summary-row">
+            <span>Meal Package</span>
+            <span id="summaryMeal">Standard Meal</span>
+        </div>
+        <div class="summary-row">
+            <span>Extra Services</span>
+            <span id="summaryExtras">None</span>
+        </div>
 
+        <!-- Expandable Price Breakdown -->
+        <button type="button" class="summary-breakdown-toggle" id="breakdownToggle">
+            <i class="bi bi-chevron-down"></i> Show price breakdown
+        </button>
+
+        <div class="summary-breakdown" id="summaryBreakdown">
+            <div class="summary-row"><span>Base Fare</span><span id="priceFlight">$0.00</span></div>
+            <div class="summary-row"><span>Seat Upgrade</span><span id="priceSeat">$0.00</span></div>
+            <div class="summary-row"><span>Meal Package</span><span id="priceMeal">$0.00</span></div>
+            <div class="summary-row"><span>Extra Services</span><span id="priceExtras">$0.00</span></div>
+            <div class="summary-row"><span>Taxes &amp; Fees (12%)</span><span id="priceTaxes">$0.00</span></div>
+        </div>
+
+        <!-- Grand Total -->
         <div class="summary-total">
-            <span class="total-label">Total</span>
-            <span class="total-value">${{ formatCurrency flight.ticketPrice }}</span>
+            <span class="total-label">Grand Total</span>
+            <span class="total-value" id="priceTotal">$0.00</span>
         </div>
     </aside>
 </main>
 
+<!-- Seat detail popup modal -->
+<div class="modal fade" id="seatDetailModal" tabindex="-1" role="dialog" aria-labelledby="seatDetailModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="seatDetailModalLabel"><i class="bi bi-grid-3x3"></i> Seat Details</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="seat-modal-info">
+                    <div class="seat-modal-row">
+                        <span class="seat-modal-label">Seat Number</span>
+                        <span class="seat-modal-value" id="modalSeatNumber">&mdash;</span>
+                    </div>
+                    <div class="seat-modal-row">
+                        <span class="seat-modal-label">Row</span>
+                        <span class="seat-modal-value" id="modalSeatRow">&mdash;</span>
+                    </div>
+                    <div class="seat-modal-row">
+                        <span class="seat-modal-label">Column</span>
+                        <span class="seat-modal-value" id="modalSeatCol">&mdash;</span>
+                    </div>
+                    <div class="seat-modal-row">
+                        <span class="seat-modal-label">Type</span>
+                        <span class="seat-modal-value" id="modalSeatType">&mdash;</span>
+                    </div>
+                    <div class="seat-modal-row">
+                        <span class="seat-modal-label">Price</span>
+                        <span class="seat-modal-value" id="modalSeatPrice">&mdash;</span>
+                    </div>
+                    <div class="seat-modal-row">
+                        <span class="seat-modal-label">Status</span>
+                        <span class="seat-modal-value" id="modalSeatStatus">&mdash;</span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="modalSelectSeatBtn" data-dismiss="modal">Select This Seat</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Toast Notification Container -->
 <div class="toast-container" id="toastContainer"></div>
 
-<!-- Booking Client Script (seat map + validation) -->
+<!-- Booking Client Script (seat map + meal + extras + validation + pricing) -->
 <script>
-    // Pass flight ID to client JS
     var FLIGHT_ID = '{{ flight._id }}';
     var TOTAL_SEATS = {{ flight.totalSeats }};
+    var BASE_PRICE = {{ flight.ticketPrice }};
 </script>
 <script src="/scripts/booking-client.js"></script>
