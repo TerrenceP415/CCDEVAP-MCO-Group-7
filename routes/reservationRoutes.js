@@ -15,5 +15,6 @@ router.get('/admin/dashboard', reservationController.getAdminDashboard);
 router.get('/my-reservations', reservationController.getUserReservations);
 router.patch('/reservations/cancel/:id', reservationController.cancelUserReservation);
 router.put('/reservations/update/:id', reservationController.updateUserReservations);
+router.get('/admin/reservations/flight-lookup/:flightNumber', reservationController.lookupFlightByNumber);
 
 module.exports = router;

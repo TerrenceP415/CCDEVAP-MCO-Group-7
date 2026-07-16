@@ -40,10 +40,7 @@
                             <button id="editReservation" type="button" class="btn btn-primary action-btn-admin btn-edit-reservation" data-toggle="modal" data-target="#editReservationModal"
                                 data-id="{{this._id}}"
                                 data-reservation-number="{{this.reservationNumber}}"
-                                data-origin="{{this.flight.origin}}"
-                                data-destination="{{this.flight.destination}}"
-                                data-departure-time="{{this.flight.departureDateTime}}"
-                                data-arrival-time="{{this.flight.arrivalDateTime}}"
+                                data-flight-number="{{this.flight.flightNumber}}"
                                 data-seat-number="{{this.seatDisplay}}"
                                 data-total-price="{{this.totalPrice}}"
                                 data-status="{{this.status}}"
@@ -140,20 +137,15 @@
                         <input name="reservationNumber" type="text" class="form-control" id="addReservationNumber" placeholder="e.g., RN789" required>
                     </div>
                     <div class="form-group">
-                        <label for="addOrigin">Origin</label>
-                        <input name="origin" type="text" class="form-control" id="addOrigin" placeholder="Enter origin" required>
+                        <label for="addFlightNumber">Flight Number</label>
+                        <input name="flightNumber" type="text" class="form-control" id="addFlightNumber" placeholder="e.g., FL-1234" required autocomplete="off">
+                        <small id="addFlightLookupStatus" class="form-text"></small>
                     </div>
                     <div class="form-group">
-                        <label for="addDestination">Destination</label>
-                        <input name="destination" type="text" class="form-control" id="addDestination" placeholder="Enter destination" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="addDepartureTime">Departure Time</label>
-                        <input name="departureTime" type="datetime-local" class="form-control" id="addDepartureTime" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="addArrivalTime">Arrival Time</label>
-                        <input name="arrivalTime" type="datetime-local" class="form-control" id="addArrivalTime" required>
+                        <label>Flight Details</label>
+                        <div class="form-control-plaintext flight-preview border rounded p-2" id="addFlightPreview">
+                            <span class="text-muted">Enter a flight number to load flight details</span>
+                        </div>
                     </div>
                     </div>
 
@@ -246,20 +238,15 @@
                                 <input name="reservationNumber" type="text" class="form-control" id="editReservationNumber" readonly>
                             </div>
                             <div class="form-group">
-                                <label for="editOrigin">Origin</label>
-                                <input name="origin" type="text" class="form-control" id="editOrigin" placeholder="Enter origin" required>
+                                <label for="editFlightNumber">Flight Number</label>
+                                <input name="flightNumber" type="text" class="form-control" id="editFlightNumber" placeholder="e.g., FL-1234" required autocomplete="off">
+                                <small id="editFlightLookupStatus" class="form-text"></small>
                             </div>
                             <div class="form-group">
-                                <label for="editDestination">Destination</label>
-                                <input name="destination" type="text" class="form-control" id="editDestination" placeholder="Enter destination" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="editDepartureTime">Departure Time</label>
-                                <input name="departureTime" type="datetime-local" class="form-control" id="editDepartureTime" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="editArrivalTime">Arrival Time</label>
-                                <input name="arrivalTime" type="datetime-local" class="form-control" id="editArrivalTime" required>
+                                <label>Flight Details</label>
+                                <div class="form-control-plaintext flight-preview border rounded p-2" id="editFlightPreview">
+                                    <span class="text-muted">Enter a flight number to load flight details</span>
+                                </div>
                             </div>
                         </div>
 
@@ -401,6 +388,81 @@
                     return dateString + ' ' + timeString;
                 }
 
+                // Looks up a flight by number as the admin types it, and renders a read-only
+                // preview (origin, destination, times, seats) so the reservation always
+                // links to a real, existing flight instead of duplicating flight data by hand.
+                function setupFlightLookup(inputId, previewId, statusId) {
+                    var input = document.getElementById(inputId);
+                    var preview = document.getElementById(previewId);
+                    var statusEl = document.getElementById(statusId);
+                    var lookupTimer = null;
+                    var currentFlight = null;
+
+                    function renderPreview(flight) {
+                        if (!flight) {
+                            preview.innerHTML = '<span class="text-muted">Enter a flight number to load flight details</span>';
+                            return;
+                        }
+                        preview.innerHTML =
+                            '<div>' + escapeHtml(flight.origin) + ' &rarr; ' + escapeHtml(flight.destination) + '</div>' +
+                            '<div class="text-muted small">Departs: ' + formatDateDisplay(flight.departureDateTime) + '</div>' +
+                            '<div class="text-muted small">Arrives: ' + formatDateDisplay(flight.arrivalDateTime) + '</div>' +
+                            '<div class="text-muted small">Available seats: ' + flight.availableSeats + ' / ' + flight.totalSeats + '</div>';
+                    }
+
+                    function doLookup() {
+                        var value = input.value.trim();
+                        currentFlight = null;
+
+                        if (!value) {
+                            renderPreview(null);
+                            statusEl.textContent = '';
+                            return;
+                        }
+
+                        statusEl.textContent = 'Looking up flight...';
+                        statusEl.className = 'form-text text-muted';
+
+                        fetch('/admin/reservations/flight-lookup/' + encodeURIComponent(value))
+                            .then(function (response) {
+                                return response.json().then(function (data) { return { ok: response.ok, data: data }; });
+                            })
+                            .then(function (result) {
+                                if (!result.ok || !result.data.success) {
+                                    renderPreview(null);
+                                    statusEl.textContent = result.data.message || 'Flight not found';
+                                    statusEl.className = 'form-text text-danger';
+                                    return;
+                                }
+                                currentFlight = result.data.flight;
+                                renderPreview(currentFlight);
+                                statusEl.textContent = 'Flight found';
+                                statusEl.className = 'form-text text-success';
+                            })
+                            .catch(function () {
+                                renderPreview(null);
+                                statusEl.textContent = 'Error looking up flight';
+                                statusEl.className = 'form-text text-danger';
+                            });
+                    }
+
+                    input.addEventListener('input', function () {
+                        clearTimeout(lookupTimer);
+                        lookupTimer = setTimeout(doLookup, 400);
+                    });
+
+                    return {
+                        refresh: doLookup,
+                        setValue: function (value) {
+                            input.value = value || '';
+                            doLookup();
+                        }
+                    };
+                }
+
+                window.addFlightLookup = setupFlightLookup('addFlightNumber', 'addFlightPreview', 'addFlightLookupStatus');
+                window.editFlightLookup = setupFlightLookup('editFlightNumber', 'editFlightPreview', 'editFlightLookupStatus');
+
                 // DELEGATED EVENT LISTENER: This ensures dynamically updated rows can still be edited!
                 document.addEventListener('click', function (e) {
                     var btn = e.target.closest('.btn-edit-reservation');
@@ -409,10 +471,11 @@
                     pendingEditId = btn.getAttribute('data-id');
 
                     document.getElementById('editReservationNumber').value = btn.getAttribute('data-reservation-number') || '';
-                    document.getElementById('editOrigin').value = btn.getAttribute('data-origin') || '';
-                    document.getElementById('editDestination').value = btn.getAttribute('data-destination') || '';
-                    document.getElementById('editDepartureTime').value = toDatetimeLocalValue(btn.getAttribute('data-departure-time'));
-                    document.getElementById('editArrivalTime').value = toDatetimeLocalValue(btn.getAttribute('data-arrival-time'));
+                    if (window.editFlightLookup) {
+                        window.editFlightLookup.setValue(btn.getAttribute('data-flight-number') || '');
+                    } else {
+                        document.getElementById('editFlightNumber').value = btn.getAttribute('data-flight-number') || '';
+                    }
                     document.getElementById('editSeatNumber').value = btn.getAttribute('data-seat-number') || '';
                     document.getElementById('editTotalPrice').value = btn.getAttribute('data-total-price') || '';
                     document.getElementById('editReservationStatus').value = btn.getAttribute('data-status') || 'Pending';
@@ -478,10 +541,7 @@
                     var editBtn = row.querySelector('.btn-edit-reservation');
                     if (editBtn) {
                         editBtn.setAttribute('data-reservation-number', reservation.reservationNumber);
-                        editBtn.setAttribute('data-origin', reservation.flight ? reservation.flight.origin : '');
-                        editBtn.setAttribute('data-destination', reservation.flight ? reservation.flight.destination : '');
-                        editBtn.setAttribute('data-departure-time', reservation.flight ? reservation.flight.departureDateTime : '');
-                        editBtn.setAttribute('data-arrival-time', reservation.flight ? reservation.flight.arrivalDateTime : '');
+                        editBtn.setAttribute('data-flight-number', reservation.flight ? reservation.flight.flightNumber : '');
                         editBtn.setAttribute('data-seat-number', reservation.seatDisplay);
                         editBtn.setAttribute('data-total-price', reservation.totalPrice);
                         editBtn.setAttribute('data-status', reservation.status);
