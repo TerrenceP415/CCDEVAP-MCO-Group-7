@@ -9,7 +9,7 @@
                 <div class="carousel-caption d-none d-md-block">
                     <h1 class="logo">Sky<span class="ease">Ease</span></h1>
                     <p>Book your next adventure with SkyEase!</p>
-                    <a href="search.html" class="btn-flight-action carousel-cta">
+                    <a href="/search" class="btn-flight-action carousel-cta">
                         <i class="bi bi-search"></i> Start Searching
                     </a>
                 </div>
@@ -21,7 +21,7 @@
                 <div class="carousel-caption d-none d-md-block">
                     <h1 class="logo">Sky<span class="ease">Ease</span></h1>
                     <p>Discover amazing destinations with SkyEase!</p>
-                    <a href="search.html" class="btn-flight-action carousel-cta">
+                    <a href="/search" class="btn-flight-action carousel-cta">
                         <i class="bi bi-search"></i> Start Searching
                     </a>
                 </div>
@@ -33,7 +33,7 @@
                 <div class="carousel-caption d-none d-md-block">
                     <h1 class="logo">Sky<span class="ease">Ease</span></h1>
                     <p>Plan your perfect getaway with SkyEase!</p>
-                    <a href="search.html" class="btn-flight-action carousel-cta">
+                    <a href="search/search" class="btn-flight-action carousel-cta">
                         <i class="bi bi-search"></i> Start Searching
                     </a>
                 </div>
@@ -52,7 +52,7 @@
 
     <!-- Quick Search Widget -->
     <div class="quick-search-container">
-        <form class="quick-search-form" action="results.html" method="get">
+        <form class="quick-search-form" action="/search" method="get">
             <h5><i class="bi bi-search"></i> Find Your Flight</h5>
             
             <!-- Quick Search Widget Filter-->
@@ -168,7 +168,7 @@
             <div class="card-body">
                 <h5 class="card-title">Philippines</h5>
                 <p class="card-text">Pristine beaches, island-hopping, and tropical adventures await across the archipelago.</p>
-                <a href="search.html?destination=MNL" class="btn btn-primary">Book Now!</a>
+                <a href="/search?destination=MNL" class="btn btn-primary">Book Now!</a>
             </div>
         </div>
 
@@ -178,7 +178,7 @@
             <div class="card-body">
                 <h5 class="card-title">Japan</h5>
                 <p class="card-text">From neon-lit cities to quiet temples, experience the best of modern and traditional Japan.</p>
-                <a href="search.html?destination=NRT" class="btn btn-primary">Book Now!</a>
+                <a href="/search?destination=NRT" class="btn btn-primary">Book Now!</a>
             </div>
         </div>
 
@@ -188,7 +188,7 @@
             <div class="card-body">
                 <h5 class="card-title">Italy</h5>
                 <p class="card-text">Indulge in world-class cuisine, art, and history across Rome, Florence, and beyond.</p>
-                <a href="search.html?destination=LHR" class="btn btn-primary">Book Now!</a>
+                <a href="/search?destination=LHR" class="btn btn-primary">Book Now!</a>
             </div>
         </div>
     </div>
@@ -287,4 +287,4 @@
         originSelect.addEventListener("change", () => syncAirportSelections(originSelect, destinationSelect));
         destinationSelect.addEventListener("change", () => syncAirportSelections(destinationSelect, originSelect));
     </script>
-    <div class="toast-container" id="toastContainer"></div>
+    <div class="toast-container" id="toastContainer"></div>
