@@ -194,55 +194,40 @@
     </div>
 
 
-    <!-- Recently Viewed/Suggested Flights Section -->
+    <!-- Recently Added Flight Section -->
     <div class="recently-viewed-section">
         <div class="recently-viewed-header">
             <h3><i class="bi bi-clock-history"></i> Continue Exploring!</h3>
-            <p>Based on your recent searches and bookings.</p>
+            <p>Discover the newest flight added to SkyEase.</p>
         </div>
-        <!-- Flight Card 1 | Recent-->
         <div class="flights-container">
-            <div class="flight-card">
-                <div class="route-info">
-                    <div class="airport-code">MNL</div>
-                    <i class="bi bi-airplane"></i>
-                    <div class="airport-code">NRT</div>
-                </div>
+            {{#if latestFlight}}
+                <div class="flight-card">
+                    <div class="route-info">
+                        <div class="airport-code">{{latestFlight.origin}}</div>
+                        <i class="bi bi-airplane"></i>
+                        <div class="airport-code">{{latestFlight.destination}}</div>
+                    </div>
 
-                <div class="flight-segment flight-details">
-                    <span class="airline-name">SkyEase Airways</span>
-                    <span class="flight-route-type">Direct | 4h 15m</span>
-                    <span class="flight-class">Economy</span>
-                </div>
+                    <div class="flight-segment flight-details">
+                        <span class="airline-name">{{latestFlight.airline}}</span>
+                        <span class="flight-route-type">{{#if latestFlight.duration}}{{latestFlight.duration}}{{else}}Direct{{/if}}</span>
+                        <span class="flight-class">{{latestFlight.cabinClass}}</span>
+                    </div>
 
-                <div class="flight-segment flight-action">
-                    <span class="recently-searched">Recent Search</span>
-                    <div class="flight-price">$200</div>
-                    <a href="booking.html?flight=FL-003" class="btn-flight-action">Book Again</a>
+                    <div class="flight-segment flight-action">
+                        <span class="recently-searched">Recently Added</span>
+                        <div class="flight-price">$ {{latestFlight.ticketPrice}}</div>
+                        <a href="/search?destination={{latestFlight.destination}}" class="btn-flight-action">Book Again</a>
+                    </div>
                 </div>
-            </div>
-
-            <!-- Flight Card 2 | Suggested -->
-
-            <div class="flight-card">
-                <div class="route-info">
-                    <div class="airport-code">MNL</div>
-                    <i class="bi bi-airplane"></i>
-                    <div class="airport-code">NRT</div>
+            {{else}}
+                <div class="flight-card">
+                    <div class="flight-segment flight-details">
+                        <span class="airline-name">No flights available yet.</span>
+                    </div>
                 </div>
-
-                <div class="flight-segment flight-details">
-                    <span class="airline-name">SkyEase Airways</span>
-                    <span class="flight-route-type">Direct | 4h 15m</span>
-                    <span class="flight-class">Business</span>
-                </div>
-
-                <div class="flight-segment flight-action">
-                    <span class="suggested-route">Suggested</span>
-                    <div class="flight-price">$1000</div>
-                    <a href="booking.html?flight=FL-003" class="btn-flight-action">Book Again</a>
-                </div>
-            </div>
+            {{/if}}
         </div>
     </div>
 
