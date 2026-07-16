@@ -3866,7 +3866,7 @@ body.admin-page {
 
 /* ─── Search Results Section ────────────────────────── */
 .search-results-section {
-  max-width: 960px;
+  max-width: 100%;
   margin: 0 auto var(--space-12);
   padding: 0 var(--space-4);
 }

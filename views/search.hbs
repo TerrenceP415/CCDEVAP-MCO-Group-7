@@ -4,7 +4,7 @@
         <form class="search-card" id="searchForm" novalidate>
             <p class="eyebrow">SkyEase</p>
             <h1><i class="bi bi-search"></i> Search Flights</h1>
-            <p class="search-copy">Find your perfect flight. Results load instantly below.</p>
+            <p class="search-copy">Find your perfect flight.</p>
 
             <!-- Search Fields -->
             <div class="form-grid">
@@ -63,7 +63,7 @@
                             <span class="pax-hint">12+ years</span>
                         </div>
                         <div class="pax-stepper">
-                            <button type="button" class="pax-btn pax-minus" data-target="adults" aria-label="Decrease adults">−</button>
+                            <button type="button" class="pax-btn pax-minus" data-target="adults" aria-label="Decrease adults">&minus;</button>
                             <input type="number" id="adults" name="adults" value="1" min="1" max="9" readonly>
                             <button type="button" class="pax-btn pax-plus" data-target="adults" aria-label="Increase adults">+</button>
                         </div>
@@ -71,10 +71,10 @@
                     <div class="pax-row">
                         <div class="pax-info">
                             <span class="pax-label">Children</span>
-                            <span class="pax-hint">2–11 years</span>
+                            <span class="pax-hint">2&ndash;11 years</span>
                         </div>
                         <div class="pax-stepper">
-                            <button type="button" class="pax-btn pax-minus" data-target="children" aria-label="Decrease children">−</button>
+                            <button type="button" class="pax-btn pax-minus" data-target="children" aria-label="Decrease children">&minus;</button>
                             <input type="number" id="children" name="children" value="0" min="0" max="9" readonly>
                             <button type="button" class="pax-btn pax-plus" data-target="children" aria-label="Increase children">+</button>
                         </div>
@@ -85,7 +85,7 @@
                             <span class="pax-hint">Under 2 years</span>
                         </div>
                         <div class="pax-stepper">
-                            <button type="button" class="pax-btn pax-minus" data-target="infants" aria-label="Decrease infants">−</button>
+                            <button type="button" class="pax-btn pax-minus" data-target="infants" aria-label="Decrease infants">&minus;</button>
                             <input type="number" id="infants" name="infants" value="0" min="0" max="4" readonly>
                             <button type="button" class="pax-btn pax-plus" data-target="infants" aria-label="Increase infants">+</button>
                         </div>
@@ -147,91 +147,6 @@
             <button type="submit" class="search-button">Search Flights</button>
         </form>
     </section>
-
-    <!-- AJAX Search Results Container -->
-    <section class="search-results-section" id="searchResultsSection" style="display:none;">
-        <div class="results-header">
-            <h3><i class="bi bi-search"></i> Search Results</h3>
-            <p id="resultsSubtitle">Showing available flights based on your search criteria.</p>
-        </div>
-
-        <div class="results-shell">
-        <div class="results-layout">
-
-            <!-- Filter Sidebar -->
-            <aside class="filter-sidebar">
-                <h5><i class="bi bi-airplane"></i> Airlines</h5>
-                <div id="airline-checkboxes"></div>
-
-                <hr class="sidebar-divider">
-
-                <h5><i class="bi bi-currency-dollar"></i> Price Range</h5>
-                <div class="price-inputs">
-                    <input type="number" id="filter-price-min" placeholder="Min" min="0">
-                    <input type="number" id="filter-price-max" placeholder="Max" min="0">
-                </div>
-
-                <hr class="sidebar-divider">
-
-                <h5><i class="bi bi-bezier2"></i> Max Stops</h5>
-                <select id="sidebar-stops">
-                    <option value="">Any</option>
-                    <option value="0">Direct only</option>
-                    <option value="1">Up to 1 stop</option>
-                    <option value="2">Up to 2 stops</option>
-                </select>
-
-                <hr class="sidebar-divider">
-
-                <h5><i class="bi bi-clock"></i> Departure</h5>
-                <select id="sidebar-depart-time">
-                    <option value="">Any time</option>
-                    <option value="morning">Morning (00:00–11:59)</option>
-                    <option value="afternoon">Afternoon (12:00–17:59)</option>
-                    <option value="evening">Evening (18:00–23:59)</option>
-                </select>
-
-                <button class="sidebar-clear-btn" id="clear-filters"><i class="bi bi-x-circle"></i> Clear All Filters</button>
-            </aside>
-
-            <!-- Main Results Content -->
-            <div class="results-main">
-                <!-- Top bar with sort and count -->
-                <div class="results-topbar">
-                    <div class="topbar-search-wrap">
-                        <i class="bi bi-search"></i>
-                        <input type="text" id="topbar-airline" placeholder="Filter by airline name">
-                    </div>
-                    <div class="sort-wrap">
-                        <i class="bi bi-sort-down"></i>
-                        <select id="sort-select">
-                            <option value="">Sort By</option>
-                            <option value="price_asc">Price: Low → High</option>
-                            <option value="price_desc">Price: High → Low</option>
-                            <option value="depart_asc">Departure: Earliest</option>
-                            <option value="duration_asc">Duration: Shortest</option>
-                        </select>
-                    </div>
-                    <span class="results-count" id="results-count">0 flights</span>
-                </div>
-
-                <div id="searchResults" class="search-results-grid"></div>
-
-                <div id="noResults" class="no-results" style="display:none;">
-                    <i class="bi bi-airplane-engines"></i>
-                    <strong>No flights found.</strong>
-                    <p>Try adjusting your search criteria.</p>
-                </div>
-            </div>
-
-        </div>
-        </div>
-
-        <div id="searchLoading" class="search-loading" style="display:none;">
-            <i class="bi bi-arrow-repeat spin"></i>
-            <span>Searching flights...</span>
-        </div>
-    </section>
 </main>
 
 <!-- Toast Notification Container -->
@@ -240,22 +155,13 @@
 <!-- Search form interaction script (trip type, dates, passengers, price slider) -->
 <script src="/scripts/search-script.js"></script>
 
-<!-- AJAX Flight Search + Filter/Sort Script -->
+<!-- Validate, then redirect to the results page (server-rendered results.hbs) -->
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     var form = document.getElementById('searchForm');
-    var resultsSection = document.getElementById('searchResultsSection');
-    var resultsContainer = document.getElementById('searchResults');
-    var noResults = document.getElementById('noResults');
-    var loadingIndicator = document.getElementById('searchLoading');
-    var subtitle = document.getElementById('resultsSubtitle');
-
-    // Store fetched flights for client-side filtering/sorting
-    var allFlights = [];
 
     form.addEventListener('submit', function (e) {
         e.preventDefault();
-        e.stopImmediatePropagation();
 
         var origin = document.getElementById('origin').value;
         var destination = document.getElementById('destination').value;
@@ -263,248 +169,37 @@ document.addEventListener('DOMContentLoaded', function () {
         var returnDateEl = document.getElementById('return_date');
         var returnDate = returnDateEl ? returnDateEl.value : '';
         var tripType = (document.querySelector('input[name="trip_type"]:checked') || {}).value;
-        var returnDateError = document.getElementById('return-date-error');
+        var cabinClass = document.getElementById('cabin_class') ? document.getElementById('cabin_class').value : '';
+        var airline = document.getElementById('airline') ? document.getElementById('airline').value : '';
+        var directFlight = document.getElementById('direct_flight') && document.getElementById('direct_flight').checked ? 'yes' : '';
 
-        // Validate return date before doing anything else.
+        // Validate return date
+        var returnDateError = document.getElementById('return-date-error');
         if (tripType === 'round_trip' && date && returnDate && new Date(returnDate) < new Date(date)) {
             if (returnDateError) returnDateError.style.display = 'block';
-            showToast('Return date must be after the departure date.', 'warning');
             return;
         }
         if (returnDateError) returnDateError.style.display = 'none';
 
         if (!origin && !destination && !date) {
-            showToast('Please enter at least one search criterion.', 'warning');
+            alert('Please enter at least one search criterion.');
             return;
         }
 
-        resultsSection.style.display = 'block';
-        resultsContainer.innerHTML = '';
-        noResults.style.display = 'none';
-        loadingIndicator.style.display = 'flex';
-
-        var cabin_class = document.getElementById('cabin_class') ? document.getElementById('cabin_class').value : '';
-        var airline = document.getElementById('airline') ? document.getElementById('airline').value : '';
-
+        // Build query string and redirect to the results page.
+        // NOTE: this route must be registered server-side, e.g.
+        //   router.get('/results', (req, res) => res.render('results'));
         var params = new URLSearchParams();
         if (origin) params.set('origin', origin);
         if (destination) params.set('destination', destination);
         if (date) params.set('date', date);
-        if (cabin_class) params.set('cabin_class', cabin_class);
+        if (returnDate) params.set('return_date', returnDate);
+        if (cabinClass) params.set('cabin_class', cabinClass);
         if (airline) params.set('airline', airline);
+        if (tripType) params.set('trip_type', tripType);
+        if (directFlight) params.set('direct_flight', directFlight);
 
-        fetch('/api/flights/search?' + params.toString())
-            .then(function (response) { return response.json(); })
-            .then(function (data) {
-                loadingIndicator.style.display = 'none';
-
-                if (!data.success || !data.flights || data.flights.length === 0) {
-                    allFlights = [];
-                    noResults.style.display = 'block';
-                    subtitle.textContent = 'No flights match your search.';
-                    buildAirlineCheckboxes();
-                    return;
-                }
-
-                allFlights = data.flights;
-                subtitle.textContent = allFlights.length + ' flight' + (allFlights.length !== 1 ? 's' : '') + ' found.';
-                buildAirlineCheckboxes();
-                applyFiltersAndSort();
-            })
-            .catch(function (err) {
-                loadingIndicator.style.display = 'none';
-                noResults.style.display = 'block';
-                subtitle.textContent = 'An error occurred while searching.';
-                console.error('Search error:', err);
-            });
+        window.location.href = '/results?' + params.toString();
     });
-
-    // ─── Client-side filter / sort ───────────────────────
-    var selectedAirlines = {};
-
-    function timeBucket(dateStr) {
-        if (!dateStr) return '';
-        var d = new Date(dateStr);
-        var h = d.getHours();
-        if (h < 12) return 'morning';
-        if (h < 18) return 'afternoon';
-        return 'evening';
-    }
-
-    function parseDuration(str) {
-        if (!str) return 0;
-        var hMatch = str.match(/(\d+)h/);
-        var mMatch = str.match(/(\d+)m/);
-        return (hMatch ? parseInt(hMatch[1]) * 60 : 0) + (mMatch ? parseInt(mMatch[1]) : 0);
-    }
-
-    function applyFiltersAndSort() {
-        var topbarAirline = (document.getElementById('topbar-airline').value || '').trim().toLowerCase();
-        var sortVal = document.getElementById('sort-select').value;
-        var priceMin = parseFloat(document.getElementById('filter-price-min').value) || 0;
-        var priceMax = parseFloat(document.getElementById('filter-price-max').value) || Infinity;
-        var maxStops = document.getElementById('sidebar-stops').value;
-        var departTime = document.getElementById('sidebar-depart-time').value;
-
-        var hasAirlineFilter = Object.keys(selectedAirlines).length > 0;
-
-        var filtered = allFlights.filter(function (f) {
-            if (topbarAirline && f.airline.toLowerCase().indexOf(topbarAirline) === -1) return false;
-            if (hasAirlineFilter && !selectedAirlines[f.airline]) return false;
-            if (f.ticketPrice < priceMin || f.ticketPrice > priceMax) return false;
-            if (maxStops !== '' && (f.layovers || 0) > parseInt(maxStops)) return false;
-            if (departTime && timeBucket(f.departureDateTime) !== departTime) return false;
-            return true;
-        });
-
-        // Sort
-        if (sortVal === 'price_asc') filtered.sort(function (a, b) { return a.ticketPrice - b.ticketPrice; });
-        if (sortVal === 'price_desc') filtered.sort(function (a, b) { return b.ticketPrice - a.ticketPrice; });
-        if (sortVal === 'depart_asc') filtered.sort(function (a, b) { return new Date(a.departureDateTime) - new Date(b.departureDateTime); });
-        if (sortVal === 'duration_asc') filtered.sort(function (a, b) { return parseDuration(a.duration) - parseDuration(b.duration); });
-
-        renderFlights(filtered);
-    }
-
-    function renderFlights(flights) {
-        document.getElementById('results-count').textContent =
-            flights.length + ' flight' + (flights.length !== 1 ? 's' : '');
-
-        if (flights.length === 0) {
-            resultsContainer.innerHTML = '';
-            noResults.style.display = 'block';
-            return;
-        }
-        noResults.style.display = 'none';
-
-        resultsContainer.innerHTML = flights.map(function (flight) {
-            var depDate = new Date(flight.departureDateTime);
-            var arrDate = new Date(flight.arrivalDateTime);
-
-            var depStr = depDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) +
-                ' ' + depDate.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
-            var arrStr = arrDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) +
-                ' ' + arrDate.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
-
-            var seatClass = flight.availableSeats <= 0 ? 'seats-none' :
-                flight.availableSeats <= 5 ? 'seats-few' : 'seats-many';
-            var seatText = flight.availableSeats <= 0 ? 'Sold Out' :
-                flight.availableSeats + ' seat' + (flight.availableSeats !== 1 ? 's' : '') + ' left';
-
-            var bookBtn = flight.availableSeats <= 0 ?
-                '<button class="book-btn" disabled style="opacity:.5;cursor:not-allowed;">Sold Out</button>' :
-                '<a href="/flights/' + flight._id + '/book" class="book-btn">Book Now</a>';
-
-            var logoHtml = flight.airlineLogo ?
-                '<img src="/airline/' + flight.airlineLogo + '" alt="' + flight.airline + '" class="result-airline-logo" onerror="this.style.display=\'none\'">' :
-                '<i class="bi bi-airplane" style="font-size:20px;color:#0ea5e9;"></i>';
-
-            var durationHtml = flight.duration ? '<span class="result-duration"><i class="bi bi-clock"></i> ' + flight.duration + '</span>' : '';
-            var layoverHtml = '';
-            if (typeof flight.layovers !== 'undefined') {
-                layoverHtml = flight.layovers === 0 ?
-                    '<span class="result-layover direct"><i class="bi bi-check-circle"></i> Direct</span>' :
-                    '<span class="result-layover"><i class="bi bi-bezier2"></i> ' + flight.layovers + ' stop' + (flight.layovers > 1 ? 's' : '') + '</span>';
-            }
-
-            return '<div class="result-card">' +
-                '<div class="result-card-header">' +
-                    '<div class="result-airline">' +
-                        logoHtml +
-                        '<div>' +
-                            '<strong>' + flight.flightNumber + '</strong>' +
-                            '<span class="result-airline-name">' + flight.airline + '</span>' +
-                        '</div>' +
-                    '</div>' +
-                    '<span class="result-price">$' + flight.ticketPrice.toFixed(2) + '</span>' +
-                '</div>' +
-                '<div class="result-card-body">' +
-                    '<div class="result-route">' +
-                        '<div class="route-point">' +
-                            '<span class="route-code">' + flight.origin + '</span>' +
-                            '<span class="route-time">' + depStr + '</span>' +
-                        '</div>' +
-                        '<div class="route-arrow"><i class="bi bi-arrow-right"></i></div>' +
-                        '<div class="route-point">' +
-                            '<span class="route-code">' + flight.destination + '</span>' +
-                            '<span class="route-time">' + arrStr + '</span>' +
-                        '</div>' +
-                    '</div>' +
-                    '<div class="result-meta">' +
-                        durationHtml +
-                        layoverHtml +
-                        '<span class="seats-badge ' + seatClass + '">' + seatText + '</span>' +
-                    '</div>' +
-                '</div>' +
-                '<div class="result-card-actions">' +
-                    '<a href="/flights/' + flight._id + '" class="details-link"><i class="bi bi-info-circle"></i> View Details</a>' +
-                    bookBtn +
-                '</div>' +
-            '</div>';
-        }).join('');
-    }
-
-    // ─── Airline checkboxes in sidebar ───────────────────
-    function buildAirlineCheckboxes() {
-        var airlines = {};
-        allFlights.forEach(function (f) { airlines[f.airline] = true; });
-        var container = document.getElementById('airline-checkboxes');
-        var names = Object.keys(airlines);
-
-        container.innerHTML = names.map(function (name) {
-            return '<label><input type="checkbox" class="airline-cb" value="' + name + '"> ' + name + '</label>';
-        }).join('');
-
-        container.querySelectorAll('.airline-cb').forEach(function (cb) {
-            cb.addEventListener('change', function () {
-                if (cb.checked) selectedAirlines[cb.value] = true;
-                else delete selectedAirlines[cb.value];
-                applyFiltersAndSort();
-            });
-        });
-    }
-
-    // ─── Hook up filter / sort inputs ────────────────────
-    ['topbar-airline', 'filter-price-min', 'filter-price-max'].forEach(function (id) {
-        var el = document.getElementById(id);
-        if (el) el.addEventListener('input', applyFiltersAndSort);
-    });
-    ['sort-select', 'sidebar-stops', 'sidebar-depart-time'].forEach(function (id) {
-        var el = document.getElementById(id);
-        if (el) {
-            el.addEventListener('change', applyFiltersAndSort);
-            el.addEventListener('input', applyFiltersAndSort);
-        }
-    });
-
-    // Clear filters
-    var clearBtn = document.getElementById('clear-filters');
-    if (clearBtn) {
-        clearBtn.addEventListener('click', function () {
-            document.getElementById('topbar-airline').value = '';
-            document.getElementById('sort-select').value = '';
-            document.getElementById('filter-price-min').value = '';
-            document.getElementById('filter-price-max').value = '';
-            document.getElementById('sidebar-stops').value = '';
-            document.getElementById('sidebar-depart-time').value = '';
-            selectedAirlines = {};
-            document.querySelectorAll('.airline-cb').forEach(function (cb) { cb.checked = false; });
-            applyFiltersAndSort();
-        });
-    }
-
-    // ─── Toast helper ────────────────────────────────────
-    function showToast(message, type) {
-        var container = document.getElementById('toastContainer');
-        var toast = document.createElement('div');
-        toast.className = 'toast toast-' + (type || 'info');
-        toast.textContent = message;
-        container.appendChild(toast);
-        setTimeout(function () { toast.classList.add('toast-visible'); }, 10);
-        setTimeout(function () {
-            toast.classList.remove('toast-visible');
-            setTimeout(function () { toast.remove(); }, 300);
-        }, 3000);
-    }
 });
 </script>

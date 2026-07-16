@@ -6,6 +6,11 @@ exports.renderSearchPage = (req, res) => {
   res.render('search', { title: 'Search Flights', layout: 'main' });
 };
 
+// ─── Render the results page ─────────────────────────
+exports.renderResultsPage = (req, res) => {
+  res.render('results', { title: 'Search Results', layout: 'main' });
+};
+
 // ─── AJAX: Search flights (JSON) ─────────────────────
 exports.searchFlights = async (req, res) => {
   try {
