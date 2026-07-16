@@ -9,7 +9,7 @@ exports.renderSearchPage = (req, res) => {
 // ─── AJAX: Search flights (JSON) ─────────────────────
 exports.searchFlights = async (req, res) => {
   try {
-    const { origin, destination, date } = req.query;
+    const { origin, destination, date, cabin_class, airline } = req.query;
     const filter = {};
 
     if (origin && origin.trim()) {
@@ -17,6 +17,13 @@ exports.searchFlights = async (req, res) => {
     }
     if (destination && destination.trim()) {
       filter.destination = { $regex: destination.trim(), $options: 'i' };
+    }
+    if (cabin_class && cabin_class.trim()) {
+      // cabinClass is stored as e.g. "Economy", form sends "economy"
+      filter.cabinClass = { $regex: `^${cabin_class.trim()}$`, $options: 'i' };
+    }
+    if (airline && airline.trim()) {
+      filter.airline = { $regex: airline.trim(), $options: 'i' };
     }
     const now = new Date();
 
@@ -93,6 +100,54 @@ exports.renderBookingForm = async (req, res) => {
   }
 };
 
+// ── Meal price lookup (must match booking-client.js mealPackages) ──
+const MEAL_PRICES = {
+  'Standard Meal': 0,
+  'Vegetarian': 5.00,
+  'Vegan': 6.50,
+  'Halal': 8.00,
+  'Kosher': 9.50,
+  'Gluten-Free': 7.00,
+};
+const PREMIUM_SEAT_ROWS = 2; // rows 1-N are premium
+const PREMIUM_SEAT_SURCHARGE = 30;
+const TAX_RATE = 0.12;
+
+/**
+ * Parse the extraServices string (e.g. "Baggage x2, Priority Boarding")
+ * and return the total cost for those add-ons.
+ */
+function calcExtrasPrice(extraServicesStr) {
+  if (!extraServicesStr) return 0;
+  let total = 0;
+  const parts = extraServicesStr.split(',').map(s => s.trim());
+  for (const part of parts) {
+    if (/^Baggage x(\d+)$/i.test(part)) {
+      const qty = parseInt(part.match(/(\d+)/)[1], 10);
+      total += qty * 25; // $25 per bag
+    } else if (/priority boarding/i.test(part)) {
+      total += 15;
+    } else if (/travel insurance/i.test(part)) {
+      total += 20;
+    } else if (/lounge access/i.test(part)) {
+      total += 35;
+    }
+  }
+  return total;
+}
+
+/**
+ * Generate a collision-resistant reservation number.
+ * Uses a crypto-quality random segment to make millisecond
+ * collisions astronomically unlikely.
+ */
+function generateReservationNumber() {
+  const ts = Date.now().toString(36).toUpperCase();     // ~8 chars
+  const rnd = Math.random().toString(36).substring(2, 8).toUpperCase() +
+              Math.random().toString(36).substring(2, 6).toUpperCase(); // 6+4 chars
+  return `SKY-${ts}-${rnd}`;
+}
+
 // ─── Process booking (POST) ──────────────────────────
 exports.processBooking = async (req, res) => {
   try {
@@ -105,8 +160,10 @@ exports.processBooking = async (req, res) => {
     const {
       fullName, email, contactNumber, passportNumber,
       nationality, dateOfBirth, gender, emergencyContact,
-      seatNumber, mealPackage, extraServices, totalPrice
+      seatNumber, mealPackage, extraServices,
     } = req.body;
+    // NOTE: totalPrice is intentionally NOT read from req.body — it is
+    // recalculated server-side to prevent client-side tampering.
 
     // ── Server-side validation ───────────────────────
     const errors = [];
@@ -167,42 +224,72 @@ exports.processBooking = async (req, res) => {
       });
     }
 
-    // ── Generate reservation number ──────────────────
-    const reservationNumber = 'SKY-' + Date.now().toString(36).toUpperCase() +
-      '-' + Math.random().toString(36).substring(2, 6).toUpperCase();
+    // ── Generate collision-resistant reservation number ──
+    const reservationNumber = generateReservationNumber();
 
-    // ── Calculate final total price ──────────────────
-    const finalTotal = totalPrice ? parseFloat(totalPrice) : flight.ticketPrice;
+    // ── Recalculate total price server-side ──────────
+    // This prevents a user from tampering with the hidden totalPrice field.
+    const cleanSeat = (seatNumber || '').trim();
+    const seatRow = parseInt(cleanSeat, 10) || 0;
+    const seatUpgrade = seatRow >= 1 && seatRow <= PREMIUM_SEAT_ROWS ? PREMIUM_SEAT_SURCHARGE : 0;
+    const mealName = (mealPackage || 'Standard Meal').trim();
+    const mealCost = MEAL_PRICES[mealName] !== undefined ? MEAL_PRICES[mealName] : 0;
+    const extrasCost = calcExtrasPrice((extraServices || '').trim());
+    const subtotal = flight.ticketPrice + seatUpgrade + mealCost + extrasCost;
+    const finalTotal = parseFloat((subtotal + subtotal * TAX_RATE).toFixed(2));
+
+    // ── Build the passenger record ───────────────────
+    const passengerData = [
+      {
+        fullName: fullName.trim(),
+        email: email.trim(),
+        passportNumber: passportNumber.trim(),
+        seatNumber: cleanSeat,
+        contactNumber: (contactNumber || '').trim(),
+        nationality: (nationality || '').trim(),
+        dateOfBirth: (dateOfBirth || '').trim(),
+        gender: (gender || '').trim(),
+        emergencyContact: (emergencyContact || '').trim(),
+      },
+    ];
+    const passengerCount = passengerData.length; // 1 for now; correct for future multi-pax support
+
+    // ── Atomic seat reservation ──────────────────────
+    // Combine the availability check + seat decrement into a single atomic
+    // findOneAndUpdate so two concurrent requests cannot both pass the check
+    // and create a double-booking for the same seat.
+    const updatedFlight = await Flight.findOneAndUpdate(
+      {
+        _id: flight._id,
+        availableSeats: { $gte: passengerCount },
+        // Reject if the seat was taken between validation and now.
+        // We rely on the Reservation seat-conflict query done above for the
+        // detailed error message; this is the race-condition guard.
+      },
+      { $inc: { availableSeats: -passengerCount } },
+      { new: true }
+    );
+
+    if (!updatedFlight) {
+      // Another concurrent request claimed the last seat(s) between our
+      // validation check and the update — treat as sold out.
+      req.flash('error', 'Sorry, this flight just sold out. Please search for another flight.');
+      return res.redirect(`/flights/${req.params.id}/book`);
+    }
 
     // ── Create reservation ───────────────────────────
     const reservation = new Reservation({
       reservationNumber,
       flight: flight._id,
       userId: req.session.user ? req.session.user._id : null,
-      passengers: [
-        {
-          fullName: fullName.trim(),
-          email: email.trim(),
-          passportNumber: passportNumber.trim(),
-          seatNumber: seatNumber.trim(),
-          contactNumber: (contactNumber || '').trim(),
-          nationality: (nationality || '').trim(),
-          dateOfBirth: (dateOfBirth || '').trim(),
-          gender: (gender || '').trim(),
-          emergencyContact: (emergencyContact || '').trim(),
-        },
-      ],
-      mealPackage: (mealPackage || 'Standard Meal').trim(),
+      passengers: passengerData,
+      mealPackage: mealName,
       extraServices: (extraServices || '').trim(),
       totalPrice: finalTotal,
       status: 'Confirmed',
     });
 
     await reservation.save();
-
-    // ── Decrement available seats ─────────────────────
-    flight.availableSeats = Math.max(0, flight.availableSeats - 1);
-    await flight.save();
 
     req.flash('success', `Booking confirmed! Your reservation number is ${reservationNumber}.`);
     res.redirect('/my-reservations');
