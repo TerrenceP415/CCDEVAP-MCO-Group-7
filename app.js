@@ -73,7 +73,9 @@ mongoose.connect(process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/skyEase')
 
 // Member 1 - Auth routes (register, profile)
 const authRoutes = require('./routes/authRoutes');
+const indexRoutes = require('./routes/indexRoutes');
 app.use('/', authRoutes);
+app.use('/', indexRoutes);
 
 // Member 2 - Flight routes (admin flight management)
 const flightRoutes = require('./routes/flights');
@@ -100,10 +102,6 @@ app.use('/admin', (req, res, next) => {
 }, userRoutes);
 
 // ─── Legacy Static HTML Routes (from MCO1) ────────────
-app.get('/', (req, res) => {
-  res.render('index', { title: 'Home', layout: 'main' });
-});
-
 app.get('/admin', (req, res) => {
   res.redirect('/admin/dashboard',);
 });

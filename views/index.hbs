@@ -131,7 +131,7 @@
             <div class="panel panel-default">
                 <div class="panel-body">
                     <i class="bi bi-airplane-fill"></i>
-                    <div class="stat-number" id="available-Flights">0</div>
+                    <div class="stat-number" id="available-Flights">{{availableFlights}}</div>
                     <div class="stat-label">Available Flights</div>
                 </div>
             </div>
@@ -139,7 +139,7 @@
             <div class="panel panel-default">
                 <div class="panel-body">
                     <i class="bi bi-calendar-check-fill"></i>
-                    <div class="stat-number" id="active-Bookings">0</div>
+                    <div class="stat-number" id="active-Bookings">{{activeBookings}}</div>
                     <div class="stat-label">Active Bookings</div>
                 </div>
             </div>
@@ -148,7 +148,7 @@
             <div class="panel panel-default">
                 <div class="panel-body">
                     <i class="bi bi-geo-alt-fill"></i>
-                    <div class="stat-number" id="popular-Destinations">0</div>
+                    <div class="stat-number" id="popular-Destinations">{{destinations}}</div>
                     <div class="stat-label">Destinations Worldwide</div>
                 </div>
             </div>
@@ -249,10 +249,7 @@
     <div class="page-bottom-spacer"></div>
 
     <script>
-        // Populate "SkyEase at a Glance" stats (values come from backend/data.js)
-        document.getElementById("available-Flights").textContent = availableFlights;
-        document.getElementById("active-Bookings").textContent = activeBookings;
-        document.getElementById("popular-Destinations").textContent = destinations;
+        // Stats are rendered server-side from the controller.
 
         // Region filter restricts which airports show up in Origin/Destination selects
         const regionFilter = document.getElementById("region-filter");

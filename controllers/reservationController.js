@@ -158,7 +158,7 @@ exports.updateAdminReservations = async (req, res) => {
         if (!id.match(/^[0-9a-fA-F]{24}$/)) {
             return res.status(400).json({ success: false, message: 'Invalid reservation id' });
         }
-        // prepare data for update
+        // get the following variables from req.body
         const {
             reservationNumber, flightNumber, seatNumber, totalPrice, status,
             passengerNames, passengerEmails, passengerPassports,
