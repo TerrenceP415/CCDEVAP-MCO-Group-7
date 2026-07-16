@@ -108,9 +108,7 @@ app.get('/admin', (req, res) => {
   res.redirect('/admin/dashboard',);
 });
 
-app.get('/admin/dashboard', (req, res) => {
-  res.render('admin-dashboard', { title: 'Admin Dashboard', layout: 'admin' });
-});
+// /admin/dashboard is handled by reservationController.getAdminDashboard (via reservationRoutes)
 
 app.get('/admin/flights', (req, res) => {
   res.render('admin-flights', { title: 'Admin Flights', layout: 'admin' });
@@ -121,9 +119,7 @@ app.get('/admin/users', (req, res) => {
 });
 
 
-app.get('/admin/reservations', (req, res) => {
-  res.render('admin-reservations', { title: 'Admin Reservations', layout: 'admin' });
-});
+// /admin/reservations is handled by reservationController.getAdminReservations (via reservationRoutes)
 
 
 

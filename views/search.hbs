@@ -283,10 +283,15 @@ document.addEventListener('DOMContentLoaded', function () {
         noResults.style.display = 'none';
         loadingIndicator.style.display = 'flex';
 
+        var cabin_class = document.getElementById('cabin_class') ? document.getElementById('cabin_class').value : '';
+        var airline = document.getElementById('airline') ? document.getElementById('airline').value : '';
+
         var params = new URLSearchParams();
         if (origin) params.set('origin', origin);
         if (destination) params.set('destination', destination);
         if (date) params.set('date', date);
+        if (cabin_class) params.set('cabin_class', cabin_class);
+        if (airline) params.set('airline', airline);
 
         fetch('/api/flights/search?' + params.toString())
             .then(function (response) { return response.json(); })
