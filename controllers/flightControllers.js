@@ -45,6 +45,9 @@ exports.createFlight = async (req, res) => {
       availableSeats,
       totalSeats,
       ticketPrice,
+      duration,
+      layovers,
+      airlineLogo,
     } = req.body;
 
     if (new Date(departureDateTime) >= new Date(arrivalDateTime)) {
@@ -66,6 +69,9 @@ exports.createFlight = async (req, res) => {
       availableSeats,
       totalSeats,
       ticketPrice,
+      duration: duration || '',
+      layovers: layovers || 0,
+      airlineLogo: airlineLogo || '',
     });
 
     await flight.save();
@@ -112,6 +118,9 @@ exports.updateFlight = async (req, res) => {
       availableSeats,
       totalSeats,
       ticketPrice,
+      duration,
+      layovers,
+      airlineLogo,
     } = req.body;
 
     // Validate required fields
@@ -145,6 +154,9 @@ exports.updateFlight = async (req, res) => {
         availableSeats,
         totalSeats,
         ticketPrice,
+        duration: duration || '',
+        layovers: layovers || 0,
+        airlineLogo: airlineLogo || '',
       },
       { returnDocument: 'after', runValidators: true }
     );

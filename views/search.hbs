@@ -255,10 +255,23 @@ document.addEventListener('DOMContentLoaded', function () {
 
     form.addEventListener('submit', function (e) {
         e.preventDefault();
+        e.stopImmediatePropagation();
 
         var origin = document.getElementById('origin').value;
         var destination = document.getElementById('destination').value;
         var date = document.getElementById('departure_date').value;
+        var returnDateEl = document.getElementById('return_date');
+        var returnDate = returnDateEl ? returnDateEl.value : '';
+        var tripType = (document.querySelector('input[name="trip_type"]:checked') || {}).value;
+        var returnDateError = document.getElementById('return-date-error');
+
+        // Validate return date before doing anything else.
+        if (tripType === 'round_trip' && date && returnDate && new Date(returnDate) < new Date(date)) {
+            if (returnDateError) returnDateError.style.display = 'block';
+            showToast('Return date must be after the departure date.', 'warning');
+            return;
+        }
+        if (returnDateError) returnDateError.style.display = 'none';
 
         if (!origin && !destination && !date) {
             showToast('Please enter at least one search criterion.', 'warning');
