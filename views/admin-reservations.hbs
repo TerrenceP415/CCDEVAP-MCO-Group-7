@@ -360,7 +360,7 @@
                 var editForm = document.getElementById('editReservationForm');
                 var pendingEditId = null;
 
-                // Converts a date into "YYYY-MM-DDTHH:mm" format for datetime-local input fields
+                // Format date
                 function toDatetimeLocalValue(dateInput) {
                     if (!dateInput) return '';
                     var d = new Date(dateInput);
@@ -369,14 +369,14 @@
                     return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()) +
                         'T' + pad(d.getHours()) + ':' + pad(d.getMinutes());
                 }
-
+                
                 function escapeHtml(str) {
                     var div = document.createElement('div');
                     div.textContent = str == null ? '' : String(str);
                     return div.innerHTML;
                 }
 
-                // Mirrors your backend system/timezone formatting helper
+                // format display
                 function formatDateDisplay(dateInput) {
                     if (!dateInput) return '';
                     var d = new Date(dateInput);
@@ -390,14 +390,15 @@
 
                 // Looks up a flight by number as the admin types it, and renders a read-only
                 // preview (origin, destination, times, seats) so the reservation always
-                // links to a real, existing flight instead of duplicating flight data by hand.
+                
                 function setupFlightLookup(inputId, previewId, statusId) {
+                    //get field elements
                     var input = document.getElementById(inputId);
                     var preview = document.getElementById(previewId);
                     var statusEl = document.getElementById(statusId);
                     var lookupTimer = null;
                     var currentFlight = null;
-
+                    //placeholder and display flight details when flight number is found
                     function renderPreview(flight) {
                         if (!flight) {
                             preview.innerHTML = '<span class="text-muted">Enter a flight number to load flight details</span>';
@@ -409,7 +410,7 @@
                             '<div class="text-muted small">Arrives: ' + formatDateDisplay(flight.arrivalDateTime) + '</div>' +
                             '<div class="text-muted small">Available seats: ' + flight.availableSeats + ' / ' + flight.totalSeats + '</div>';
                     }
-
+                    //search flight
                     function doLookup() {
                         var value = input.value.trim();
                         currentFlight = null;
@@ -445,7 +446,7 @@
                                 statusEl.className = 'form-text text-danger';
                             });
                     }
-
+                    
                     input.addEventListener('input', function () {
                         clearTimeout(lookupTimer);
                         lookupTimer = setTimeout(doLookup, 400);
@@ -459,23 +460,24 @@
                         }
                     };
                 }
-
+                //do for both add and edit
                 window.addFlightLookup = setupFlightLookup('addFlightNumber', 'addFlightPreview', 'addFlightLookupStatus');
                 window.editFlightLookup = setupFlightLookup('editFlightNumber', 'editFlightPreview', 'editFlightLookupStatus');
 
-                // DELEGATED EVENT LISTENER: This ensures dynamically updated rows can still be edited!
+                // use flight and reservation numbers to get flight and reservation data.
                 document.addEventListener('click', function (e) {
                     var btn = e.target.closest('.btn-edit-reservation');
                     if (!btn) return;
 
                     pendingEditId = btn.getAttribute('data-id');
-
+        
                     document.getElementById('editReservationNumber').value = btn.getAttribute('data-reservation-number') || '';
                     if (window.editFlightLookup) {
                         window.editFlightLookup.setValue(btn.getAttribute('data-flight-number') || '');
                     } else {
                         document.getElementById('editFlightNumber').value = btn.getAttribute('data-flight-number') || '';
                     }
+                    //load in previous data
                     document.getElementById('editSeatNumber').value = btn.getAttribute('data-seat-number') || '';
                     document.getElementById('editTotalPrice').value = btn.getAttribute('data-total-price') || '';
                     document.getElementById('editReservationStatus').value = btn.getAttribute('data-status') || 'Pending';
@@ -487,7 +489,7 @@
                     document.getElementById('editExtraServices').value = btn.getAttribute('data-extra-services') || '';
                 });
 
-                // Build the collapsible details panel for reservation
+                //accordion for reservation
                 function buildDetailsHTML(reservation) {
                     var passengersHtml = '<p class="mb-1 text-muted text-italic">No passengers listed</p>';
                     if (reservation.passengers && reservation.passengers.length > 0) {
@@ -512,7 +514,7 @@
                         '</div></div>';
                 }
 
-                // Patches summary row and datasets dynamically
+                // update row
                 function updateReservationRowDOM(reservation) {
                     var row = document.getElementById('reservationRow-' + reservation._id);
                     if (!row) return;
@@ -564,7 +566,7 @@
                     }
                 }
 
-                // AJAX submit handler
+                // submit; uses Ajax for no refresh change
                 editForm.addEventListener('submit', function (e) {
                     e.preventDefault();
                     if (!pendingEditId) return;
@@ -611,7 +613,7 @@
                         });
                 });
 
-                // Capture delete targets
+                // get delete button and ID to delete
                 document.addEventListener('click', function (e) {
                     var btn = e.target.closest('.btn-delete-reservation');
                     if (!btn) return;
@@ -656,7 +658,7 @@
                             pendingDeleteId = null;
                         });
                 });
-
+        
                 function showToast(message, variant) {
                     var container = document.getElementById('toastContainer');
                     if (!container) return;

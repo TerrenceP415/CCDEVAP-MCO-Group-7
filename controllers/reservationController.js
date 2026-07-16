@@ -91,17 +91,16 @@ exports.createAdminReservations = async (req, res) => {
             passengerNames, passengerEmails, passengerPassports,
             mealPackage, extraServices
         } = req.body;
-
+        //validate flight exists
         if (!flightNumber || !flightNumber.trim()) {
             return res.status(400).send('Flight number is required');
         }
 
-        // The flight must already exist - reservations connect to real flights only
         const flight = await Flight.findOne({ flightNumber: flightNumber.trim() });
         if (!flight) {
             return res.status(404).send(`No flight found with flight number "${flightNumber}"`);
         }
-
+        //gather passenger information
         let passengers;
         try {
             passengers = buildPassengersFromRequest({ passengerNames, passengerEmails, passengerPassports, seatNumber });
@@ -109,7 +108,7 @@ exports.createAdminReservations = async (req, res) => {
             return res.status(400).send(validationErr.message);
         }
 
-        // Make sure the flight actually has enough open seats for this booking
+        // validate the flight actually has enough open seats for this booking
         if (flight.availableSeats < passengers.length) {
             return res.status(400).send(`Only ${flight.availableSeats} seat(s) left on flight ${flight.flightNumber}`);
         }
@@ -137,7 +136,7 @@ exports.createAdminReservations = async (req, res) => {
         });
         await newReservation.save();
 
-        // Take up the seats on the flight, unless the reservation is created as already Cancelled
+        // If flight is cancelled, release the assigned seating
         if (status !== 'Cancelled') {
             flight.availableSeats -= passengers.length;
             await flight.save();
@@ -171,12 +170,12 @@ exports.updateAdminReservations = async (req, res) => {
             return res.status(404).json({ success: false, message: 'Reservation not found' });
         }
 
-        const oldFlight = reservation.flight; // currently linked flight (may be null)
+        const oldFlight = reservation.flight; 
         const oldStatus = reservation.status;
         const oldPassengerCount = reservation.passengers.length;
 
-        // Resolve the flight this reservation should point to. If the flight number
-        // wasn't changed, keep using the flight that's already attached.
+        //validate old and new flight to match
+        //new flight is the old flight after update
         let newFlight = oldFlight;
         if (!flightNumber || !flightNumber.trim()) {
             return res.status(400).json({ success: false, message: 'Flight number is required' });
@@ -201,7 +200,7 @@ exports.updateAdminReservations = async (req, res) => {
         const oldOccupiedSeats = (oldFlight && oldStatus !== 'Cancelled') ? oldPassengerCount : 0;
         const newOccupiedSeats = status !== 'Cancelled' ? passengers.length : 0;
 
-        // Work out how many additional seats need to come out of newFlight's pool
+        // calculate the new amount of available seats for the newflight
         const seatsNeededFromNewFlight = flightChanged ? newOccupiedSeats : (newOccupiedSeats - oldOccupiedSeats);
         if (seatsNeededFromNewFlight > 0 && newFlight.availableSeats < seatsNeededFromNewFlight) {
             return res.status(400).json({ success: false, message: `Only ${newFlight.availableSeats} seat(s) left on flight ${newFlight.flightNumber}` });
@@ -232,7 +231,7 @@ exports.updateAdminReservations = async (req, res) => {
         // save the updated reservation
         await reservation.save();
 
-        // Reconcile seat counts across whichever flight(s) are involved
+        // Reassign seat values
         if (flightChanged) {
             if (oldFlight && oldOccupiedSeats > 0) {
                 oldFlight.availableSeats += oldOccupiedSeats;
