@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const session = require('express-session');
 const flash = require('connect-flash');
 const path = require('path');
+const { isAuthenticated } = require('./middlewares/auth');
 require('dotenv').config();
 
 const app = express();
@@ -48,9 +49,14 @@ app.use(express.static(path.join(__dirname, 'views')));
 
 // ─── Session ──────────────────────────────────────────
 app.use(session({
-  secret: 'ccdevap_skybook_secret',
+  secret: process.env.SESSION_SECRET || 'ccdevap_skybook_secret',
   resave: false,
-  saveUninitialized: false
+  saveUninitialized: false,
+  cookie: {
+    httpOnly: true,
+    sameSite: 'lax',
+    secure: false
+  }
 }));
 
 // ─── Flash Messages ───────────────────────────────────
@@ -70,6 +76,7 @@ mongoose.connect(process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/skyEase')
   .catch(err => console.error('MongoDB connection error:', err));
 
 // ─── Routes ───────────────────────────────────────────
+app.use(['/profile', '/settings', '/admin/dashboard', '/admin/flights', '/admin/reservations'], isAuthenticated);
 
 // Member 1 - Auth routes (register, profile)
 const authRoutes = require('./routes/authRoutes');
@@ -134,6 +141,10 @@ app.get('/settings', (req, res) => {
 });
 
 
-app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
-});
+module.exports = app;
+
+if (require.main === module) {
+  app.listen(port, () => {
+    console.log(`Server is running on http://localhost:${port}`);
+  });
+}

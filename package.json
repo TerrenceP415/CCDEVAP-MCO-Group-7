@@ -15,7 +15,7 @@
   "type": "commonjs",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest --runInBand"
   },
   "dependencies": {
     "bcrypt": "^6.0.0",
@@ -27,5 +27,9 @@
     "handlebars": "^4.7.9",
     "hbs": "^4.2.1",
     "mongoose": "^9.7.4"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "supertest": "^7.0.0"
   }
 }

@@ -3,36 +3,50 @@ const User = require('../models/User');
 
 // GET /login
 exports.getLogin = (req, res) => {
+  if (req.session && req.session.user) {
+    return res.redirect('/profile');
+  }
   return res.render('login', { title: 'Login' });
 };
 
-// POST /login  (DB check only; no session/cookie)
+// POST /login
 exports.postLogin = async (req, res) => {
   try {
     const email = (req.body.email || '').toLowerCase().trim();
     const password = req.body.password || '';
 
     if (!email || !password) {
-      return res.status(400).render('login', { title: 'Login', error: 'Email and password are required.' });
+      req.flash('error', 'Email and password are required.');
+      return res.redirect('/login');
     }
 
     const user = await User.findOne({ email });
     if (!user) {
-      return res.status(401).render('login', { title: 'Login', error: 'Invalid email or password.' });
+      req.flash('error', 'Invalid email or password.');
+      return res.redirect('/login');
     }
 
-    // Assumes User model has comparePassword method (bcrypt)
     const match = await user.comparePassword(password);
     if (!match) {
-      return res.status(401).render('login', { title: 'Login', error: 'Invalid email or password.' });
+      req.flash('error', 'Invalid email or password.');
+      return res.redirect('/login');
     }
 
-    // Success: professor asked to check DB but not enforce state.
-    // You can either render a success page or redirect with a message.
-    return res.render('login-success', { title: 'Login Success', message: 'Credentials validated (no session stored).' });
+    req.session.user = {
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      role: user.role || 'passenger'
+    };
+
+    const redirectTo = req.session.returnTo || '/profile';
+    delete req.session.returnTo;
+    req.flash('success', 'Logged in successfully.');
+    return res.redirect(redirectTo);
   } catch (err) {
     console.error('postLogin error:', err);
-    return res.status(500).render('login', { title: 'Login', error: 'An error occurred. Please try again.' });
+    req.flash('error', 'An error occurred. Please try again.');
+    return res.redirect('/login');
   }
 };
 
@@ -41,24 +55,21 @@ exports.getRegister = (req, res) => {
   res.render('register', { title: 'Register' });
 };
 
-// Handle registration (store name consistently)
+// Handle registration
 exports.postRegister = async (req, res) => {
   const { fullName, email, password, passportNumber } = req.body;
   try {
     if (!fullName || !email || !password) {
-      return res.render('register', { title: 'Register', error: 'Name, email and password are required.', body: req.body });
+      req.flash('error', 'Name, email and password are required.');
+      return res.redirect('/register');
     }
 
     const existingUser = await User.findOne({ email: email.toLowerCase().trim() });
     if (existingUser) {
-      return res.render('register', {
-        title: 'Register',
-        error: 'Email already in use.',
-        body: req.body
-      });
+      req.flash('error', 'Email already in use.');
+      return res.redirect('/register');
     }
 
-    // Save using `name` field in DB for clarity
     await User.create({
       name: fullName.trim(),
       email: email.toLowerCase().trim(),
@@ -66,29 +77,43 @@ exports.postRegister = async (req, res) => {
       passportNumber: passportNumber ? passportNumber.trim() : ''
     });
 
-    return res.render('register', {
-      title: 'Register',
-      success: 'Account created successfully!'
-    });
+    req.flash('success', 'Account created successfully!');
+    return res.redirect('/login');
   } catch (err) {
     console.log(err);
-    return res.render('register', {
-      title: 'Register',
-      error: 'Something went wrong. Please try again.'
-    });
+    req.flash('error', 'Something went wrong. Please try again.');
+    return res.redirect('/register');
   }
 };
 
-// Show profile (by email lookup — no session enforcement)
+exports.logout = (req, res) => {
+  req.session.destroy((err) => {
+    if (err) {
+      console.error('logout error:', err);
+      req.flash('error', 'Unable to log out right now.');
+      return res.redirect('/profile');
+    }
+
+    res.clearCookie('connect.sid');
+    req.flash('success', 'You have been logged out.');
+    return res.redirect('/login');
+  });
+};
+
+// Show profile from the current session
 exports.getProfile = async (req, res) => {
   try {
-    const { email } = req.query;
-    if (!email) return res.render('profile', { title: 'Profile' });
+    const currentUser = req.session.user;
+    if (!currentUser) {
+      return res.redirect('/login');
+    }
 
-    const user = await User.findOne({ email: email.toLowerCase().trim() }).lean();
-    if (!user) return res.render('profile', { title: 'Profile', error: 'User not found.' });
+    const user = await User.findById(currentUser._id).lean();
+    if (!user) {
+      req.flash('error', 'User not found.');
+      return res.redirect('/login');
+    }
 
-    // Remove sensitive fields before rendering
     delete user.password;
     return res.render('profile', { title: 'Profile', user });
   } catch (err) {
@@ -97,21 +122,29 @@ exports.getProfile = async (req, res) => {
   }
 };
 
-// Update profile (identify by email in form body)
+// Update profile from the current session
 exports.updateProfile = async (req, res) => {
-  const { email, fullName, passportNumber } = req.body;
+  const { fullName, passportNumber } = req.body;
   try {
-    if (!email || !fullName) {
-      return res.render('profile', { title: 'Profile', error: 'Email and name are required.' });
+    const currentUser = req.session.user;
+    if (!currentUser) {
+      return res.redirect('/login');
     }
 
-    const user = await User.findOneAndUpdate(
-      { email: email.toLowerCase().trim() },
+    if (!fullName) {
+      return res.render('profile', { title: 'Profile', error: 'Name is required.' });
+    }
+
+    const user = await User.findByIdAndUpdate(
+      currentUser._id,
       { name: fullName.trim(), passportNumber: passportNumber ? passportNumber.trim() : '' },
       { new: true }
     ).lean();
 
-    if (!user) return res.render('profile', { title: 'Profile', error: 'User not found.' });
+    if (!user) {
+      req.flash('error', 'User not found.');
+      return res.redirect('/login');
+    }
 
     delete user.password;
     return res.render('profile', {
