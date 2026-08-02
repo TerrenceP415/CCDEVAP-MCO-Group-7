@@ -1,5 +1,5 @@
+const mongoose = require('mongoose');
 const request = require('supertest');
-const { jest } = require('@jest/globals');
 
 // Mock the User model to avoid actual database calls
 jest.mock('../models/User', () => ({
@@ -83,4 +83,9 @@ describe('authentication flow', () => {
     expect(res.status).toBe(302);
     expect(res.headers.location).toBe('/login');
   });
+});
+
+afterAll(async () => {
+  // Close the database connection after all tests finish
+  await mongoose.connection.close();
 });
