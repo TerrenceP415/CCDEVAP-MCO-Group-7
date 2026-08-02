@@ -1,5 +1,6 @@
 const Reservation = require('../models/reservation');
 const Flight = require('../models/flight');
+const { logActivity } = require('../utils/auditLogger');
 
 
 exports.getAdminReservations = async (req, res) => {
@@ -140,6 +141,16 @@ exports.createAdminReservations = async (req, res) => {
         if (status !== 'Cancelled') {
             flight.availableSeats -= passengers.length;
             await flight.save();
+        }
+
+        // Audit trail: Reservation Created (Admin)
+        if (req.session && req.session.user) {
+            await logActivity({
+                username: req.session.user.email || req.session.user.name,
+                userRole: req.session.user.role || 'admin',
+                activity: 'Reservation Created',
+                details: `Reservation ${reservationNumber} created for flight ${flightNumber}`
+            });
         }
 
         res.redirect('/admin/reservations');
@@ -291,6 +302,16 @@ exports.deleteAdminReservations = async (req, res) => {
             });
         }
 
+        // Audit trail: Reservation Deleted (Admin)
+        if (req.session && req.session.user) {
+            await logActivity({
+                username: req.session.user.email || req.session.user.name,
+                userRole: req.session.user.role || 'admin',
+                activity: 'Reservation Deleted',
+                details: `Reservation ${deleted.reservationNumber} deleted`
+            });
+        }
+
         res.status(200).json({ success: true, message: 'Reservation deleted successfully' });
     } catch (err) {
         console.error(err);
@@ -420,6 +441,17 @@ exports.cancelUserReservation = async (req, res) => {
             ? reservation.passengers.map(p => p.seatNumber).join(', ')
             : 'N/A';
         //respond with success, seat display, and status.
+
+        // Audit trail: Reservation Cancelled (User)
+        if (req.session && req.session.user) {
+            await logActivity({
+                username: req.session.user.email || req.session.user.name,
+                userRole: req.session.user.role || 'passenger',
+                activity: 'Reservation Cancelled',
+                details: `Reservation ${reservation.reservationNumber} cancelled`
+            });
+        }
+
         res.status(200).json({
             success: true,
             message: 'Reservation cancelled successfully',

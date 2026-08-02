@@ -1,5 +1,6 @@
 const Flight = require('../models/flight');
 const Reservation = require('../models/reservation');
+const { logActivity } = require('../utils/auditLogger');
 
 // ─── Render the search page ──────────────────────────
 exports.renderSearchPage = (req, res) => {
@@ -295,6 +296,17 @@ exports.processBooking = async (req, res) => {
     });
 
     await reservation.save();
+
+    // Audit trail: Reservation Created (Passenger Booking)
+    const bookingUser = req.session && req.session.user
+      ? { name: req.session.user.email || req.session.user.name, role: req.session.user.role || 'passenger' }
+      : { name: email.trim(), role: 'passenger' };
+    await logActivity({
+      username: bookingUser.name,
+      userRole: bookingUser.role,
+      activity: 'Reservation Created',
+      details: `Reservation ${reservationNumber} booked for flight ${flight.flightNumber}`
+    });
 
     req.flash('success', `Booking confirmed! Your reservation number is ${reservationNumber}.`);
     res.redirect('/my-reservations');

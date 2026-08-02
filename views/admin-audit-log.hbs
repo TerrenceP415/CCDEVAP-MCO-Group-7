@@ -1,0 +1,135 @@
+<div id="AuditLog" class="tabcontent">
+    <div class="analytics-header">
+        <h3><i class="bi bi-journal-text"></i> Audit Trail Log</h3>
+        <p>Track all user activities across the system.</p>
+    </div>
+
+    <!-- Filter Controls -->
+    <div class="audit-filter-bar">
+        <div class="audit-filter-group">
+            <label for="auditSearchInput"><i class="bi bi-search"></i> Search</label>
+            <input type="text" id="auditSearchInput" placeholder="Search by username, activity, or details..." onkeyup="filterAuditLogs()">
+        </div>
+        <div class="audit-filter-group">
+            <label for="auditActivityFilter"><i class="bi bi-funnel"></i> Activity</label>
+            <select id="auditActivityFilter" onchange="filterAuditLogs()">
+                <option value="">All Activities</option>
+                <option value="User Registration">User Registration</option>
+                <option value="User Login">User Login</option>
+                <option value="User Logout">User Logout</option>
+                <option value="Flight Created">Flight Created</option>
+                <option value="Flight Updated">Flight Updated</option>
+                <option value="Flight Deleted">Flight Deleted</option>
+                <option value="Reservation Created">Reservation Created</option>
+                <option value="Reservation Cancelled">Reservation Cancelled</option>
+                <option value="Reservation Deleted">Reservation Deleted</option>
+            </select>
+        </div>
+        <div class="audit-filter-group">
+            <label for="auditRoleFilter"><i class="bi bi-person-badge"></i> Role</label>
+            <select id="auditRoleFilter" onchange="filterAuditLogs()">
+                <option value="">All Roles</option>
+                <option value="admin">Admin</option>
+                <option value="passenger">Passenger</option>
+            </select>
+        </div>
+        <button class="audit-clear-btn" onclick="clearAuditFilters()"><i class="bi bi-x-circle"></i> Clear</button>
+    </div>
+
+    <!-- Audit Log Table -->
+    <div class="audit-table-wrapper">
+        <table class="admin-table audit-table" id="auditTable">
+            <thead>
+                <tr>
+                    <th>Date & Time</th>
+                    <th>Username</th>
+                    <th>Role</th>
+                    <th>Activity</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody id="auditTableBody">
+                {{#if auditLogs.length}}
+                    {{#each auditLogs}}
+                        <tr data-activity="{{this.activity}}" data-role="{{this.userRole}}">
+                            <td>{{formatDate this.timestamp}}</td>
+                            <td>{{this.username}}</td>
+                            <td>
+                                <span class="audit-role-badge {{#if (eq this.userRole 'admin')}}audit-role-admin{{else}}audit-role-passenger{{/if}}">
+                                    {{this.userRole}}
+                                </span>
+                            </td>
+                            <td>
+                                <span class="audit-activity-badge
+                                    {{#if (eq this.activity 'User Registration')}}audit-act-register{{/if}}
+                                    {{#if (eq this.activity 'User Login')}}audit-act-login{{/if}}
+                                    {{#if (eq this.activity 'User Logout')}}audit-act-logout{{/if}}
+                                    {{#if (eq this.activity 'Flight Created')}}audit-act-create{{/if}}
+                                    {{#if (eq this.activity 'Flight Updated')}}audit-act-update{{/if}}
+                                    {{#if (eq this.activity 'Flight Deleted')}}audit-act-delete{{/if}}
+                                    {{#if (eq this.activity 'Reservation Created')}}audit-act-create{{/if}}
+                                    {{#if (eq this.activity 'Reservation Cancelled')}}audit-act-delete{{/if}}
+                                    {{#if (eq this.activity 'Reservation Deleted')}}audit-act-delete{{/if}}
+                                ">
+                                    {{this.activity}}
+                                </span>
+                            </td>
+                            <td class="audit-details-cell">{{this.details}}</td>
+                        </tr>
+                    {{/each}}
+                {{else}}
+                    <tr id="noLogsRow">
+                        <td colspan="5" style="text-align:center; color:#888; padding:2rem;">No audit log entries recorded yet.</td>
+                    </tr>
+                {{/if}}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Entry Count -->
+    <div class="audit-footer">
+        <span id="auditEntryCount">
+            {{#if auditLogs.length}}
+                Showing {{auditLogs.length}} entries
+            {{else}}
+                No entries
+            {{/if}}
+        </span>
+    </div>
+</div>
+
+<script>
+function filterAuditLogs() {
+    var searchVal = document.getElementById('auditSearchInput').value.toLowerCase();
+    var activityVal = document.getElementById('auditActivityFilter').value;
+    var roleVal = document.getElementById('auditRoleFilter').value;
+    var rows = document.querySelectorAll('#auditTableBody tr[data-activity]');
+    var visibleCount = 0;
+
+    rows.forEach(function(row) {
+        var text = row.textContent.toLowerCase();
+        var matchSearch = !searchVal || text.indexOf(searchVal) !== -1;
+        var matchActivity = !activityVal || row.getAttribute('data-activity') === activityVal;
+        var matchRole = !roleVal || row.getAttribute('data-role') === roleVal;
+
+        if (matchSearch && matchActivity && matchRole) {
+            row.style.display = '';
+            visibleCount++;
+        } else {
+            row.style.display = 'none';
+        }
+    });
+
+    var countEl = document.getElementById('auditEntryCount');
+    if (countEl) {
+        countEl.textContent = 'Showing ' + visibleCount + ' of ' + rows.length + ' entries';
+    }
+}
+
+function clearAuditFilters() {
+    document.getElementById('auditSearchInput').value = '';
+    document.getElementById('auditActivityFilter').value = '';
+    document.getElementById('auditRoleFilter').value = '';
+    filterAuditLogs();
+}
+</script>

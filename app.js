@@ -12,6 +12,11 @@ require('dotenv').config();
 const app = express();
 const port = process.env.PORT || 3000;
 
+// ─── Production settings ──────────────────────────────
+if (process.env.NODE_ENV === 'production') {
+  app.set('trust proxy', 1); // trust first proxy (CCSCloud / nginx)
+}
+
 // ─── Handlebars Setup ─────────────────────────────────
 app.engine('hbs', engine({
   extname: 'hbs',
@@ -57,7 +62,7 @@ app.use(session({
   cookie: {
     httpOnly: true,
     sameSite: 'lax',
-    secure: false
+    secure: process.env.NODE_ENV === 'production'
   }
 }));
 
@@ -78,7 +83,7 @@ mongoose.connect(process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/skyEase')
   .catch(err => console.error('MongoDB connection error:', err));
 
 // ─── Routes ───────────────────────────────────────────
-const protectedRoutes = ['/profile', '/settings', '/admin/dashboard', '/admin/flights', '/admin/reservations'];
+const protectedRoutes = ['/profile', '/settings', '/admin/dashboard', '/admin/flights', '/admin/reservations', '/admin/audit-log'];
 app.use(protectedRoutes, isAuthenticated);
 
 // Member 1 - Auth routes (register, profile)
@@ -110,6 +115,13 @@ app.use('/admin', (req, res, next) => {
   res.locals.layout = 'admin';
   next();
 }, userRoutes);
+
+// Audit Trail routes
+const auditRoutes = require('./routes/auditRoutes');
+app.use('/admin', (req, res, next) => {
+  res.locals.layout = 'admin';
+  next();
+}, auditRoutes);
 
 // ─── Legacy Static HTML Routes (from MCO1) ────────────
 app.get('/admin',isAuthenticated, requireRole('admin'), (req, res) => {

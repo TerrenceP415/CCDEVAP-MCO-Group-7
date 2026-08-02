@@ -1,7 +1,9 @@
 const mongoose = require('mongoose');
 require('dotenv').config();
-const Flight = require('./models/flight'); // Ensure the path is correct
+const Flight = require('../models/flight');
+
 const MONGO_URI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/skyEase';
+
 const sampleFlights = [
   {
     flightNumber: 'PR101',
@@ -81,19 +83,21 @@ const sampleFlights = [
     ticketPrice: 850.00
   }
 ];
+
 const seedDB = async () => {
   try {
-    // Connect to MongoDB
     await mongoose.connect(MONGO_URI);
     console.log('MongoDB connected successfully for seeding.');
+
     // Clear previous sample flights based on flightNumber to avoid duplicate key errors
     const flightNumbers = sampleFlights.map(f => f.flightNumber);
     await Flight.deleteMany({ flightNumber: { $in: flightNumbers } });
     console.log('Cleared existing sample flights.');
+
     // Insert new sample flights
     await Flight.insertMany(sampleFlights);
     console.log('Successfully seeded database with sample flights!');
-    // Close the connection
+
     mongoose.connection.close();
     console.log('MongoDB connection closed.');
   } catch (error) {
@@ -101,4 +105,5 @@ const seedDB = async () => {
     process.exit(1);
   }
 };
+
 seedDB();

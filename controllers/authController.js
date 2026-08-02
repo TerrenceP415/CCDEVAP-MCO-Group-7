@@ -1,5 +1,6 @@
 // controllers/authController.js
 const User = require('../models/User');
+const { logActivity } = require('../utils/auditLogger');
 
 // GET /login
 exports.getLogin = (req, res) => {
@@ -43,6 +44,14 @@ exports.postLogin = async (req, res) => {
       role: user.role || 'passenger'
     };
 
+    // Audit trail: User Login
+    await logActivity({
+      username: user.email,
+      userRole: user.role || 'passenger',
+      activity: 'User Login',
+      details: `User ${user.name} logged in`
+    });
+
     // Redirect to the originally requested page or profile
     const redirectTo = req.session.returnTo || '/profile';
     delete req.session.returnTo;
@@ -84,6 +93,14 @@ exports.postRegister = async (req, res) => {
       passportNumber: passportNumber ? passportNumber.trim() : ''
     });
 
+    // Audit trail: User Registration
+    await logActivity({
+      username: email.toLowerCase().trim(),
+      userRole: 'passenger',
+      activity: 'User Registration',
+      details: `New account created for ${fullName.trim()}`
+    });
+
     // Redirect to login after successful registration
     req.flash('success', 'Account created successfully!');
     return res.redirect('/login');
@@ -95,16 +112,28 @@ exports.postRegister = async (req, res) => {
 };
 
 // Handle logout
-exports.logout = (req, res) => {
+exports.logout = async (req, res) => {
   // Check if req.session exists to prevent errors
   if (!req.session) {
     return res.redirect('/login');
   }
 
+  // Capture user info before destroying session
+  const sessionUser = req.session.user;
+
+  // Audit trail: User Logout (must run before session.destroy)
+  if (sessionUser) {
+    await logActivity({
+      username: sessionUser.email || sessionUser.name,
+      userRole: sessionUser.role || 'passenger',
+      activity: 'User Logout',
+      details: `User ${sessionUser.name} logged out`
+    });
+  }
+
   req.session.destroy((err) => {
     if (err) {
       console.error('logout error:', err);
-      req.flash('error', 'Unable to log out right now.');
       return res.redirect('/profile');
     }
 

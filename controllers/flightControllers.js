@@ -1,4 +1,5 @@
 const Flight = require('../models/flight');
+const { logActivity } = require('../utils/auditLogger');
 
 // Helper function to format date for input[type="datetime-local"]
 const formatDateTimeLocal = (value) => {
@@ -75,6 +76,17 @@ exports.createFlight = async (req, res) => {
     });
 
     await flight.save();
+
+    // Audit trail: Flight Created
+    if (req.session && req.session.user) {
+      await logActivity({
+        username: req.session.user.email || req.session.user.name,
+        userRole: req.session.user.role || 'admin',
+        activity: 'Flight Created',
+        details: `Flight ${flightNumber} created (${origin} → ${destination})`
+      });
+    }
+
     res.redirect('/admin/flights');
   } catch (err) {
     console.error(err);
@@ -165,6 +177,16 @@ exports.updateFlight = async (req, res) => {
       return res.status(404).json({ success: false, message: 'Flight not found.' });
     }
 
+    // Audit trail: Flight Updated
+    if (req.session && req.session.user) {
+      await logActivity({
+        username: req.session.user.email || req.session.user.name,
+        userRole: req.session.user.role || 'admin',
+        activity: 'Flight Updated',
+        details: `Flight ${flightNumber} updated`
+      });
+    }
+
     res.json({ success: true, message: 'Flight updated successfully.' });
   } catch (err) {
     console.error(err);
@@ -177,6 +199,16 @@ exports.deleteFlight = async (req, res) => {
     const flight = await Flight.findByIdAndDelete(req.params.id);
     if (!flight) {
       return res.status(404).json({ success: false, message: 'Flight not found' });
+    }
+
+    // Audit trail: Flight Deleted
+    if (req.session && req.session.user) {
+      await logActivity({
+        username: req.session.user.email || req.session.user.name,
+        userRole: req.session.user.role || 'admin',
+        activity: 'Flight Deleted',
+        details: `Flight ${flight.flightNumber} deleted`
+      });
     }
 
     res.json({ success: true });
