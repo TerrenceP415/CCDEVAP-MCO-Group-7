@@ -50,7 +50,7 @@
                                 data-passenger-names="{{#each this.passengers}}{{this.fullName}}{{#unless @last}}&#10;{{/unless}}{{/each}}"
                                 data-passenger-emails="{{#each this.passengers}}{{this.email}}{{#unless @last}}&#10;{{/unless}}{{/each}}"
                                 data-passenger-passports="{{#each this.passengers}}{{this.passportNumber}}{{#unless @last}}&#10;{{/unless}}{{/each}}">Edit</button>
-                            <button type="button" class="btn btn-danger btn-primary action-btn-admin btn-delete" data-toggle="modal" data-target="#deleteConfirmationModal" data-id="{{this._id}}" data-reservation-number="{{this.reservationNumber}}">Delete</button>
+                            <button type="button" class="btn btn-danger btn-primary action-btn-admin btn-delete-reservation" data-toggle="modal" data-target="#deleteConfirmationModal" data-id="{{this._id}}" data-reservation-number="{{this.reservationNumber}}">Delete</button>
                             </td>
                             
                         </tr>
