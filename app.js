@@ -5,6 +5,8 @@ const session = require('express-session');
 const flash = require('connect-flash');
 const path = require('path');
 const { isAuthenticated } = require('./middlewares/auth');
+const { requireRole } = require('./middlewares/auth');
+
 require('dotenv').config();
 
 const app = express();
@@ -109,17 +111,17 @@ app.use('/admin', (req, res, next) => {
 }, userRoutes);
 
 // ─── Legacy Static HTML Routes (from MCO1) ────────────
-app.get('/admin', (req, res) => {
+app.get('/admin',isAuthenticated, requireRole('admin'), (req, res) => {
   res.redirect('/admin/dashboard',);
 });
 
 // /admin/dashboard is handled by reservationController.getAdminDashboard (via reservationRoutes)
 
-app.get('/admin/flights', (req, res) => {
+app.get('/admin/flights',isAuthenticated, requireRole('admin'), (req, res) => {
   res.render('admin-flights', { title: 'Admin Flights', layout: 'admin' });
 });
 
-app.get('/admin/users', (req, res) => {
+app.get('/admin/users',isAuthenticated, requireRole('admin'), (req, res) => {
   res.render('admin-users', { title: 'Admin Users', layout: 'admin' });
 });
 
