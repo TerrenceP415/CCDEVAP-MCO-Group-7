@@ -66,7 +66,7 @@ app.use(flash());
 
 // ─── Make user + flash available in ALL views ─────────
 app.use((req, res, next) => {
-  res.locals.user = req.session.user || null;
+  res.locals.user = (req.session && req.session.user) ? req.session.user : null;
   res.locals.success = req.flash('success');
   res.locals.error = req.flash('error');
   next();

@@ -96,16 +96,21 @@ exports.postRegister = async (req, res) => {
 
 // Handle logout
 exports.logout = (req, res) => {
+  // Check if req.session exists to prevent errors
+  if (!req.session) {
+    return res.redirect('/login');
+  }
+
   req.session.destroy((err) => {
-    // Clear the session and redirect to login
     if (err) {
       console.error('logout error:', err);
       req.flash('error', 'Unable to log out right now.');
       return res.redirect('/profile');
     }
-// Clear the session cookie
-    res.clearCookie('connect.sid');
-    req.flash('success', 'You have been logged out.');
+
+    // Clear the session cookie
+    res.clearCookie('connect.sid', { path: '/' });
+
     return res.redirect('/login');
   });
 };
