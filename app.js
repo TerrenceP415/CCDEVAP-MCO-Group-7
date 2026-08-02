@@ -78,7 +78,8 @@ mongoose.connect(process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/skyEase')
   .catch(err => console.error('MongoDB connection error:', err));
 
 // ─── Routes ───────────────────────────────────────────
-app.use(['/profile', '/settings', '/admin/dashboard', '/admin/flights', '/admin/reservations'], isAuthenticated);
+const protectedRoutes = ['/profile', '/settings', '/admin/dashboard', '/admin/flights', '/admin/reservations'];
+app.use(protectedRoutes, isAuthenticated);
 
 // Member 1 - Auth routes (register, profile)
 const authRoutes = require('./routes/authRoutes');
@@ -127,9 +128,6 @@ app.get('/admin/users',isAuthenticated, requireRole('admin'), (req, res) => {
 
 
 // /admin/reservations is handled by reservationController.getAdminReservations (via reservationRoutes)
-
-
-
 app.get('/login', (req, res) => {
   res.render('login', { title: 'Login', layout: 'main' });
 });
