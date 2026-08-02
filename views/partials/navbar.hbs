@@ -5,6 +5,7 @@
         <li><a href="/" class="{{#if (eq title 'Home')}}current{{/if}}">Home</a></li>
         <li><a href="/search" class="{{#if (eq title 'Search Flights')}}current{{/if}}">Search Flights</a></li>
 
+        {{#if user}}
         <li><a href="/my-reservations" class="{{#if (eq title 'My Reservations')}}current{{/if}}">My Reservations</a></li>
         <li><a href="#" class="{{#if (eq title 'Settings')}}current
         {{else if (eq title 'Profile')}}current
@@ -17,12 +18,17 @@
                 </ul>
             </div>
         </li>
+        {{#if (eq user.role 'admin')}}
         <li><a href="/admin/dashboard" class="navbar-class {{#if (eq title 'Admin Dashboard')}}current
         {{else if (eq title 'Admin Flights')}}current
         {{else if (eq title 'Admin Users')}}current
         {{else if (eq title 'Admin Reservations')}}current
         {{/if}}">Admin Panel</a></li>
+        {{/if}}
+        <li><a class="login" href="/logout">Logout</a></li>
+        {{else}}
         <li><a class="login" href="/login">Login</a></li>
+        {{/if}}
     </ul>
 
     <div class="hamburger">

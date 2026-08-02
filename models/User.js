@@ -11,6 +11,14 @@ const UserSchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now }
 });
 
+UserSchema.virtual('fullName')
+  .get(function () {
+    return this.name;
+  })
+  .set(function (v) {
+    this.name = v;
+  });
+
 UserSchema.pre('save', async function () {
   if (!this.isModified('password')) return;
   const salt = await bcrypt.genSalt(10);

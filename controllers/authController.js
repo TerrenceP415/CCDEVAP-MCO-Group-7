@@ -40,6 +40,7 @@ exports.postLogin = async (req, res) => {
     req.session.user = {
       _id: user._id,
       name: user.name,
+      fullName: user.name,
       email: user.email,
       role: user.role || 'passenger'
     };
@@ -159,6 +160,7 @@ exports.getProfile = async (req, res) => {
       return res.redirect('/login');
     }
 // Remove sensitive information before rendering
+    user.fullName = user.name || user.fullName || '';
     delete user.password;
     return res.render('profile', { title: 'Profile', user });
   } catch (err) {
@@ -192,6 +194,9 @@ exports.updateProfile = async (req, res) => {
       return res.redirect('/login');
     }
 // Update the session with the new user data
+    user.fullName = user.name || user.fullName || '';
+    req.session.user.name = user.name;
+    req.session.user.fullName = user.name;
     delete user.password;
     return res.render('profile', {
       title: 'Profile',
