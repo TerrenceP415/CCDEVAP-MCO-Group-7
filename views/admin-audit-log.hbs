@@ -21,6 +21,7 @@
                 <option value="Flight Updated">Flight Updated</option>
                 <option value="Flight Deleted">Flight Deleted</option>
                 <option value="Reservation Created">Reservation Created</option>
+                <option value="Reservation Updated">Reservation Updated</option>
                 <option value="Reservation Cancelled">Reservation Cancelled</option>
                 <option value="Reservation Deleted">Reservation Deleted</option>
             </select>
@@ -68,6 +69,7 @@
                                     {{#if (eq this.activity 'Flight Updated')}}audit-act-update{{/if}}
                                     {{#if (eq this.activity 'Flight Deleted')}}audit-act-delete{{/if}}
                                     {{#if (eq this.activity 'Reservation Created')}}audit-act-create{{/if}}
+                                    {{#if (eq this.activity 'Reservation Updated')}}audit-act-update{{/if}}
                                     {{#if (eq this.activity 'Reservation Cancelled')}}audit-act-delete{{/if}}
                                     {{#if (eq this.activity 'Reservation Deleted')}}audit-act-delete{{/if}}
                                 ">

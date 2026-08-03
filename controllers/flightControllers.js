@@ -89,8 +89,11 @@ exports.createFlight = async (req, res) => {
 
     res.redirect('/admin/flights');
   } catch (err) {
-    console.error(err);
-    res.status(500).send('Could not create flight');
+    console.error('Create flight error:', err);
+    const message = err.name === 'ValidationError'
+      ? Object.values(err.errors).map(e => e.message).join(', ')
+      : err.message || 'Could not create flight';
+    res.status(500).send(message);
   }
 };
 

@@ -94,7 +94,7 @@ app.use('/', indexRoutes);
 
 // Member 2 - Flight routes (admin flight management)
 const flightRoutes = require('./routes/flights');
-app.use('/admin/flights', (req, res, next) => {
+app.use('/admin/flights', requireRole('admin'), (req, res, next) => {
   res.locals.layout = 'admin';
   next();
 }, flightRoutes);
@@ -129,10 +129,6 @@ app.get('/admin',isAuthenticated, requireRole('admin'), (req, res) => {
 });
 
 // /admin/dashboard is handled by reservationController.getAdminDashboard (via reservationRoutes)
-
-app.get('/admin/flights',isAuthenticated, requireRole('admin'), (req, res) => {
-  res.render('admin-flights', { title: 'Admin Flights', layout: 'admin' });
-});
 
 app.get('/admin/users',isAuthenticated, requireRole('admin'), (req, res) => {
   res.render('admin-users', { title: 'Admin Users', layout: 'admin' });

@@ -207,7 +207,12 @@ document.addEventListener('DOMContentLoaded', function () {
       if (preselected && !preselected.classList.contains('seat-occupied')) {
         state.seat = selectedSeat;
         state.seatPrice = preselected.getAttribute('data-premium') === 'true' ? PREMIUM_SEAT_PRICE : 0;
+        // Unlock Meal & Extras for pre-selected seat
+        var seatSection = preselected.closest('details.booking-section');
+        if (seatSection) seatSection.setAttribute('data-complete', '');
+        if (typeof unlockMealExtras === 'function') unlockMealExtras();
         updateSummary();
+        if (typeof refreshStepper === 'function') refreshStepper();
       }
     }
   }
@@ -265,6 +270,8 @@ document.addEventListener('DOMContentLoaded', function () {
       var seatBtn = seatMap.querySelector('.seat[data-seat="' + modalSeatId + '"]');
       if (!seatBtn || seatBtn.classList.contains('seat-occupied')) return;
 
+      var seatSection = seatBtn.closest('details.booking-section');
+
       if (seatBtn.classList.contains('seat-selected')) {
         // Deselect
         seatBtn.classList.remove('seat-selected');
@@ -272,6 +279,9 @@ document.addEventListener('DOMContentLoaded', function () {
         seatBtn.classList.add(isPrem ? 'seat-premium' : 'seat-available');
         state.seat = null;
         state.seatPrice = 0;
+        // Lock Meal & Extras again
+        if (typeof lockMealExtras === 'function') lockMealExtras();
+        if (seatSection) seatSection.removeAttribute('data-complete');
       } else {
         // Deselect previous
         var prev = seatMap.querySelector('.seat-selected');
@@ -286,12 +296,16 @@ document.addEventListener('DOMContentLoaded', function () {
         state.seat = modalSeatId;
         state.seatPrice = seatBtn.getAttribute('data-premium') === 'true' ? PREMIUM_SEAT_PRICE : 0;
         seatError.style.display = 'none';
+        // Unlock Meal & Extras
+        if (typeof unlockMealExtras === 'function') unlockMealExtras();
+        if (seatSection) seatSection.setAttribute('data-complete', '');
       }
 
       seatInput.value = state.seat || '';
       seatLabel.textContent = state.seat || 'None selected';
       if (summarySeat) summarySeat.textContent = state.seat || 'Not selected';
       updateSummary();
+      if (typeof refreshStepper === 'function') refreshStepper();
 
       // Close modal
       if (typeof bootstrap !== 'undefined' && bootstrap.Modal) {
@@ -412,9 +426,11 @@ document.addEventListener('DOMContentLoaded', function () {
     if (totalInput) totalInput.value = grandTotal.toFixed(2);
   }
 
-  // ─── Stepper progress tracking ─────────────────────
+  // ─── Stepper progress tracking + section gating ────
   var sections = document.querySelectorAll('.booking-section');
   var steps = document.querySelectorAll('.booking-stepper .step');
+  var stepLines = document.querySelectorAll('.booking-stepper .step-line');
+  var mealExtrasSection = document.getElementById('mealExtrasSection');
 
   function refreshStepper() {
     sections.forEach(function (section, i) {
@@ -423,6 +439,15 @@ document.addEventListener('DOMContentLoaded', function () {
       if (section.hasAttribute('data-complete')) {
         step.classList.add('complete');
         step.classList.remove('active');
+        // Fill the line BEFORE this step (if any)
+        if (i > 0 && stepLines[i - 1]) {
+          stepLines[i - 1].classList.add('completed');
+        }
+      } else {
+        step.classList.remove('complete');
+        if (i > 0 && stepLines[i - 1]) {
+          stepLines[i - 1].classList.remove('completed');
+        }
       }
       if (section.open) {
         step.classList.add('active');
@@ -432,8 +457,43 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
+  // Prevent opening the Meal & Extras section if no seat is selected
+  function isSeatSelected() {
+    return !!(seatInput && seatInput.value);
+  }
+
+  function unlockMealExtras() {
+    if (mealExtrasSection) {
+      mealExtrasSection.classList.remove('booking-section-locked');
+      var lockMsg = mealExtrasSection.querySelector('.section-lock-msg');
+      if (lockMsg) lockMsg.style.display = 'none';
+      // Auto-open the section
+      mealExtrasSection.setAttribute('open', '');
+      refreshStepper();
+    }
+  }
+
+  function lockMealExtras() {
+    if (mealExtrasSection) {
+      mealExtrasSection.classList.add('booking-section-locked');
+      mealExtrasSection.removeAttribute('open');
+      var lockMsg = mealExtrasSection.querySelector('.section-lock-msg');
+      if (lockMsg) lockMsg.style.display = '';
+    }
+  }
+
+  // Intercept Meal & Extras toggle — block if locked
+  if (mealExtrasSection) {
+    mealExtrasSection.addEventListener('click', function (e) {
+      if (mealExtrasSection.classList.contains('booking-section-locked')) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+    }, true);
+  }
+
   // Refresh stepper on toggle
-  sections.forEach(function (section, idx) {
+  sections.forEach(function (section) {
     section.addEventListener('toggle', function () {
       refreshStepper();
     });

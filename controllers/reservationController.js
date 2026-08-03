@@ -261,7 +261,27 @@ exports.updateAdminReservations = async (req, res) => {
         const seatDisplay = updated.passengers && updated.passengers.length > 0
             ? updated.passengers.map(p => p.seatNumber).join(', ')
             : 'N/A';
- 
+
+        // Audit trail: Reservation Updated (Admin)
+        if (req.session && req.session.user) {
+            // If status changed to Cancelled, log as Reservation Cancelled
+            if (status === 'Cancelled' && oldStatus !== 'Cancelled') {
+                await logActivity({
+                    username: req.session.user.email || req.session.user.name,
+                    userRole: req.session.user.role || 'admin',
+                    activity: 'Reservation Cancelled',
+                    details: `Reservation ${reservationNumber} cancelled by admin`
+                });
+            } else {
+                await logActivity({
+                    username: req.session.user.email || req.session.user.name,
+                    userRole: req.session.user.role || 'admin',
+                    activity: 'Reservation Updated',
+                    details: `Reservation ${reservationNumber} updated`
+                });
+            }
+        }
+
         res.status(200).json({
             success: true,
             message: 'Reservation updated successfully',
