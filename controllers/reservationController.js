@@ -397,7 +397,7 @@ exports.getUserReservations = async (req, res) => {
 
     try {
     
-        const reservations = await Reservation.find({ userId: req.session.user.id })
+        const reservations = await Reservation.find({ userId: req.session.user._id })
             .populate('flight')
             .sort({ createdAt: -1 })
             .lean(); 
