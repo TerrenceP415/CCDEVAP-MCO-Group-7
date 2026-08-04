@@ -41,7 +41,7 @@ describe('createFlight', () => {
     const saveMock = jest.fn().mockResolvedValue(true);
     Flight.mockImplementation(() => ({ save: saveMock }));
 
-    const req = { body: baseBody, session: { user: { email: 'admin@test.com', role: 'admin' } } };
+    const req = { body: baseBody, session: { user: { email: 'admin@skyease.com', role: 'admin' } } };
     const res = mockRes();
 
     await createFlight(req, res);
@@ -57,7 +57,7 @@ describe('createFlight', () => {
   test('rejects when flight number already exists', async () => {
     Flight.findOne.mockResolvedValue({ flightNumber: 'PR101' });
 
-    const req = { body: baseBody, session: {} };
+    const req = { body: baseBody, session: { user: { email: 'admin@skyease.com', role: 'admin' } } };
     const res = mockRes();
 
     await createFlight(req, res);
@@ -69,7 +69,7 @@ describe('createFlight', () => {
   test('rejects when departure is not before arrival', async () => {
     const req = {
       body: { ...baseBody, departureDateTime: '2026-09-01T10:00', arrivalDateTime: '2026-09-01T09:30' },
-      session: {},
+      session: { user: { email: 'admin@skyease.com', role: 'admin' } },
     };
     const res = mockRes();
 
@@ -100,7 +100,7 @@ describe('updateFlight', () => {
     const req = {
       params: { id: 'abc123' },
       body: baseBody,
-      session: { user: { email: 'admin@test.com', role: 'admin' } },
+      session: { user: { email: 'admin@skyease.com', role: 'admin' } },
     };
     const res = mockRes();
 
@@ -148,7 +148,7 @@ describe('deleteFlight', () => {
   test('deletes a flight and returns success json', async () => {
     Flight.findByIdAndDelete.mockResolvedValue({ _id: 'abc123', flightNumber: 'PR101' });
 
-    const req = { params: { id: 'abc123' }, session: { user: { email: 'admin@test.com', role: 'admin' } } };
+    const req = { params: { id: 'abc123' }, session: { user: { email: 'admin@skyease.com', role: 'admin' } } };
     const res = mockRes();
 
     await deleteFlight(req, res);
