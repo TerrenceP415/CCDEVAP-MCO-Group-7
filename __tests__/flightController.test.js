@@ -5,11 +5,11 @@ const {
   updateFlight,
   deleteFlight,
 } = require('../controllers/flightControllers');
-
+///mock databases
 jest.mock('../models/flight');
 jest.mock('../utils/auditLogger');
 
-// Helper to build a fake res object with jest spies
+// fake response object for testing controller functions
 function mockRes() {
   const res = {};
   res.status = jest.fn().mockReturnValue(res);
