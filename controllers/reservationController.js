@@ -396,7 +396,8 @@ exports.getAdminDashboard = async (req, res) => {
 exports.getUserReservations = async (req, res) => {
 
     try {
-        const reservations = await Reservation.find()
+    
+        const reservations = await Reservation.find({ userId: req.session.user.id })
             .populate('flight')
             .sort({ createdAt: -1 })
             .lean(); 
