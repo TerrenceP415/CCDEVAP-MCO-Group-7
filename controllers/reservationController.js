@@ -1,5 +1,6 @@
 const Reservation = require('../models/reservation');
 const Flight = require('../models/flight');
+const User = require('../models/User');
 const { logActivity } = require('../utils/auditLogger');
 
 
@@ -7,6 +8,7 @@ exports.getAdminReservations = async (req, res) => {
     try {
         const reservations = await Reservation.find()
             .populate('flight')
+            .populate('userId', 'name email')
             .lean(); 
         
         const formattedReservations = reservations.map(resObj => {
@@ -28,10 +30,17 @@ exports.getAdminReservations = async (req, res) => {
             };
         });
 
+        // Users list for the "Assign to User" dropdown in the Add/Edit modals
+        const users = await User.find({ role: 'passenger' })
+            .select('name email')
+            .sort({ name: 1 })
+            .lean();
+
         res.render('admin-reservations', { 
             title: 'Admin Reservations',
             layout: 'admin', 
-            reservations: formattedReservations 
+            reservations: formattedReservations,
+            users
         });
 
     } catch (err) {
@@ -90,7 +99,7 @@ exports.createAdminReservations = async (req, res) => {
         const {
             reservationNumber, flightNumber, seatNumber, totalPrice, status,
             passengerNames, passengerEmails, passengerPassports,
-            mealPackage, extraServices
+            mealPackage, extraServices, userId
         } = req.body;
         //validate flight exists
         if (!flightNumber || !flightNumber.trim()) {
@@ -100,6 +109,14 @@ exports.createAdminReservations = async (req, res) => {
         const flight = await Flight.findOne({ flightNumber: flightNumber.trim() });
         if (!flight) {
             return res.status(404).send(`No flight found with flight number "${flightNumber}"`);
+        }
+
+        // validate the assigned user, if one was selected
+        if (userId) {
+            const assignedUser = await User.findById(userId);
+            if (!assignedUser) {
+                return res.status(404).send('Selected user was not found');
+            }
         }
         //gather passenger information
         let passengers;
@@ -129,6 +146,7 @@ exports.createAdminReservations = async (req, res) => {
         const newReservation = new Reservation({
             reservationNumber,
             flight: flight._id,
+            userId: userId || undefined,
             passengers,
             mealPackage,
             extraServices,
@@ -173,8 +191,16 @@ exports.updateAdminReservations = async (req, res) => {
         const {
             reservationNumber, flightNumber, seatNumber, totalPrice, status,
             passengerNames, passengerEmails, passengerPassports,
-            mealPackage, extraServices
+            mealPackage, extraServices, userId
         } = req.body;
+
+        // validate the assigned user, if one was selected
+        if (userId) {
+            const assignedUser = await User.findById(userId);
+            if (!assignedUser) {
+                return res.status(404).json({ success: false, message: 'Selected user was not found' });
+            }
+        }
         //get the reservation by ID 
         const reservation = await Reservation.findById(id).populate('flight');
         if (!reservation) {
@@ -234,6 +260,7 @@ exports.updateAdminReservations = async (req, res) => {
         // reassign updated values to the reservation object
         reservation.reservationNumber = reservationNumber;
         reservation.flight = newFlight._id;
+        reservation.userId = userId || undefined;
         reservation.passengers = passengers;
         reservation.mealPackage = mealPackage;
         reservation.extraServices = extraServices;
@@ -257,7 +284,7 @@ exports.updateAdminReservations = async (req, res) => {
             await newFlight.save();
         }
 
-        const updated = await Reservation.findById(id).populate('flight').lean();
+        const updated = await Reservation.findById(id).populate('flight').populate('userId', 'name email').lean();
         const seatDisplay = updated.passengers && updated.passengers.length > 0
             ? updated.passengers.map(p => p.seatNumber).join(', ')
             : 'N/A';

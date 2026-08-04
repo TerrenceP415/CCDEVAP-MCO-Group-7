@@ -19,6 +19,7 @@
                         <th>Seat Number</th>
                         <th>Total Price</th>
                         <th>Status</th>
+                        <th>Assigned To</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -36,6 +37,7 @@
                             <td>{{this.seatDisplay}}</td>
                             <td>${{this.totalPrice}}</td>
                             <td><span class="admin-status badge badge-{{#if this.isConfirmed}}success{{else if this.isCancelled}}danger{{else}}warning{{/if}}">{{this.status}}</span></td>
+                            <td>{{#if this.userId}}{{this.userId.name}}{{else}}<span class="text-muted">Unassigned</span>{{/if}}</td>
                             <td>
                             <button  type="button" class="btn btn-primary action-btn-admin btn-edit-reservation" data-toggle="modal" data-target="#editReservationModal"
                                 data-id="{{this._id}}"
@@ -44,6 +46,7 @@
                                 data-seat-number="{{this.seatDisplay}}"
                                 data-total-price="{{this.totalPrice}}"
                                 data-status="{{this.status}}"
+                                data-user-id="{{this.userId._id}}"
                                 data-meal-package="{{this.mealPackage}}"
                                 data-extra-services="{{this.extraServices}}"
                                 data-passenger-count="{{this.passengers.length}}"
@@ -55,7 +58,7 @@
                             
                         </tr>
                         <tr class="details-collapse-row">
-                            <td colspan="10" class="p-0 border-top-0">
+                            <td colspan="11" class="p-0 border-top-0">
                                 <!-- Match id to data-target of the parent clickable row using MongoDB _id -->
                                 <div id="details-{{this._id}}" class="collapse" data-parent="#reservationsTable">
                                     <div class="p-3 bg-light border-bottom">
@@ -170,6 +173,15 @@
                         <label for="addPassengerCount">Passenger Count</label>
                         <input name="passengerCount" type="text" class="form-control" id="addPassengerCount" placeholder="e.g., 3 Adults, 0 Children" required>
                     </div>
+                    <div class="form-group">
+                        <label for="addUserId">Assign To User</label>
+                        <select name="userId" class="form-control" id="addUserId">
+                            <option value="">-- Unassigned --</option>
+                            {{#each users}}
+                                <option value="{{this._id}}">{{this.name}} ({{this.email}})</option>
+                            {{/each}}
+                        </select>
+                    </div>
                     </div>
                 </div>
 
@@ -270,6 +282,15 @@
                             <div class="form-group">
                                 <label for="editPassengerCount">Passenger Count</label>
                                 <input name="passengerCount" type="text" class="form-control" id="editPassengerCount" placeholder="e.g., 3 Passengers" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="editUserId">Assign To User</label>
+                                <select name="userId" class="form-control" id="editUserId">
+                                    <option value="">-- Unassigned --</option>
+                                    {{#each users}}
+                                        <option value="{{this._id}}">{{this.name}} ({{this.email}})</option>
+                                    {{/each}}
+                                </select>
                             </div>
                         </div>
                     </div>
@@ -481,6 +502,7 @@
                     document.getElementById('editSeatNumber').value = btn.getAttribute('data-seat-number') || '';
                     document.getElementById('editTotalPrice').value = btn.getAttribute('data-total-price') || '';
                     document.getElementById('editReservationStatus').value = btn.getAttribute('data-status') || 'Pending';
+                    document.getElementById('editUserId').value = btn.getAttribute('data-user-id') || '';
                     document.getElementById('editPassengerCount').value = (btn.getAttribute('data-passenger-count') || '0') + ' Passenger(s)';
                     document.getElementById('editPassengerNames').value = btn.getAttribute('data-passenger-names') || '';
                     document.getElementById('editPassengerEmails').value = btn.getAttribute('data-passenger-emails') || '';
@@ -536,6 +558,8 @@
                         statusBadge.className = 'admin-status badge badge-' + statusClass;
                     }
 
+                    cells[9].textContent = reservation.userId ? reservation.userId.name : 'Unassigned';
+
                     var passengerNames = (reservation.passengers || []).map(function (p) { return p.fullName; }).join('\n');
                     var passengerEmails = (reservation.passengers || []).map(function (p) { return p.email; }).join('\n');
                     var passengerPassports = (reservation.passengers || []).map(function (p) { return p.passportNumber; }).join('\n');
@@ -547,6 +571,7 @@
                         editBtn.setAttribute('data-seat-number', reservation.seatDisplay);
                         editBtn.setAttribute('data-total-price', reservation.totalPrice);
                         editBtn.setAttribute('data-status', reservation.status);
+                        editBtn.setAttribute('data-user-id', reservation.userId ? reservation.userId._id : '');
                         editBtn.setAttribute('data-meal-package', reservation.mealPackage || '');
                         editBtn.setAttribute('data-extra-services', reservation.extraServices || '');
                         editBtn.setAttribute('data-passenger-count', (reservation.passengers || []).length);
