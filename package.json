@@ -16,7 +16,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node app.js",
-    "test": "jest --runInBand"
+    "test": "jest --coverage"
   },
   "dependencies": {
     "bcrypt": "^6.0.0",
