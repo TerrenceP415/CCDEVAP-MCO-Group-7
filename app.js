@@ -83,7 +83,7 @@ mongoose.connect(process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/skyEase')
   .catch(err => console.error('MongoDB connection error:', err));
 
 // ─── Routes ───────────────────────────────────────────
-const protectedRoutes = ['/profile', '/settings', '/admin/dashboard', '/admin/flights', '/admin/reservations', '/admin/audit-log'];
+const protectedRoutes = ['/profile', '/settings', '/my-reservations', '/admin/dashboard', '/admin/flights', '/admin/reservations', '/admin/users', '/admin/audit-log'];
 app.use(protectedRoutes, isAuthenticated);
 
 // Member 1 - Auth routes (register, profile)
@@ -128,21 +128,7 @@ app.get('/admin',isAuthenticated, requireRole('admin'), (req, res) => {
   res.redirect('/admin/dashboard',);
 });
 
-// /admin/dashboard is handled by reservationController.getAdminDashboard (via reservationRoutes)
-
-app.get('/admin/users',isAuthenticated, requireRole('admin'), (req, res) => {
-  res.render('admin-users', { title: 'Admin Users', layout: 'admin' });
-});
-
-
 // /admin/reservations is handled by reservationController.getAdminReservations (via reservationRoutes)
-app.get('/login', (req, res) => {
-  res.render('login', { title: 'Login', layout: 'main' });
-});
-
-app.get('/register', (req, res) => {
-  res.render('register', { title: 'Register', layout: 'main' });
-});
 
 app.get('/settings', (req, res) => {
   res.render('settings', { title: 'Settings', layout: 'main' });

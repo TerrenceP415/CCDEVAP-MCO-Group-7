@@ -140,6 +140,7 @@ describe('cancelUserReservation (Cancel Reservation)', () => {
 
     const reservation = {
       _id: validId,
+      userId: 'user-jane-1',
       status: 'Confirmed',
       reservationNumber: 'RN-001',
       passengers: [{ seatNumber: '1A' }],
@@ -154,7 +155,7 @@ describe('cancelUserReservation (Cancel Reservation)', () => {
 
     const req = {
       params: { id: validId },
-      session: { user: { email: 'jane@example.com', role: 'passenger' } },
+      session: { user: { _id: 'user-jane-1', email: 'jane@example.com', role: 'passenger' } },
     };
     const res = mockRes();
 
@@ -190,12 +191,12 @@ describe('cancelUserReservation (Cancel Reservation)', () => {
   });
 
   test('rejects cancelling a reservation that is already cancelled', async () => {
-    const reservation = { _id: validId, status: 'Cancelled' };
+    const reservation = { _id: validId, userId: 'user-jane-1', status: 'Cancelled' };
     Reservation.findById.mockReturnValue({
       populate: jest.fn().mockResolvedValue(reservation),
     });
 
-    const req = { params: { id: validId }, session: {} };
+    const req = { params: { id: validId }, session: { user: { _id: 'user-jane-1', email: 'jane@example.com', role: 'passenger' } } };
     const res = mockRes();
 
     await cancelUserReservation(req, res);

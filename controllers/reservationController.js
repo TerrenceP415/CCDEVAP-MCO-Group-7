@@ -473,6 +473,10 @@ exports.cancelUserReservation = async (req, res) => {
         if (!reservation) {
             return res.status(404).json({ success: false, message: 'Reservation not found' });
         }
+        // Ownership check: passengers can only cancel their own reservations
+        if (!reservation.userId || String(reservation.userId) !== String(req.session.user._id)) {
+            return res.status(403).json({ success: false, message: 'You are not authorized to cancel this reservation' });
+        }
         if (reservation.status === 'Cancelled') {
             return res.status(400).json({ success: false, message: 'This reservation is already cancelled' });
         }
@@ -541,6 +545,11 @@ exports.updateUserReservations = async (req, res) => {
 
         if (!reservation) {
             return res.status(404).json({ success: false, message: 'Reservation not found' });
+        }
+
+        // Ownership check: passengers can only update their own reservations
+        if (!reservation.userId || String(reservation.userId) !== String(req.session.user._id)) {
+            return res.status(403).json({ success: false, message: 'You are not authorized to update this reservation' });
         }
 
         // Safety check: the referenced flight may have been deleted by an admin,

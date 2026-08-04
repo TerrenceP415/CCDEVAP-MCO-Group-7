@@ -8,11 +8,11 @@ exports.getAdminUsersPage = async (req, res) => {
         // Maps your schema precisely to the variables expected by your layout template
         const users = rawUsers.map(user => ({
             id: user._id.toString(),
-            name: user.fullName, // Maps schema's fullName to the template's 'name'
+            name: user.name,
             email: user.email,
             passportNumber: user.passportNumber,
-            role: 'Passenger',   // Static UI value since it's not in the database
-            status: 'Active'     // Static UI value since it's not in the database
+            role: user.role || 'passenger',
+            status: 'Active'
         }));
 
         res.render('admin-users', { users, title: 'Admin Users', layout: 'admin' });
@@ -32,12 +32,10 @@ exports.createUser = async (req, res) => {
             return res.status(400).json({ success: false, message: 'Email address already registered.' });
         }
 
-        // Build with strict adherence to your 4 required properties
         const newUser = new User({
-            fullName: name,
+            name: name,
             email,
             password, // Automatically hashed by your pre-save hook
-            passportNumber: 'PENDING' // Placeholder string since schema enforces required: true
         });
 
         await newUser.save();
@@ -58,7 +56,7 @@ exports.updateUser = async (req, res) => {
             return res.status(404).json({ success: false, message: 'User reference not found.' });
         }
 
-        if (name) user.fullName = name;
+        if (name) user.name = name;
         if (email) user.email = email;
         
         // Only modify password if text was explicitly submitted from the reset form field

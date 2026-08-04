@@ -17,10 +17,14 @@ const isAuthenticated = (req, res, next) => {
  */
 function requireRole(role) {
   return function (req, res, next) {
+    if (!req.session || !req.session.user) {
+      req.flash('error', 'Please log in to continue.');
+      return res.redirect('/login');
+    }
     if (req.session.user.role === role) {
       return next();
     }
-    
+    req.flash('error', 'You do not have permission to access this page.');
     return res.redirect('/');
   };
 }

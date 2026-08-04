@@ -1,14 +1,6 @@
 const Flight = require('../models/flight');
 const { logActivity } = require('../utils/auditLogger');
 
-// Helper function to format date for input[type="datetime-local"]
-const formatDateTimeLocal = (value) => {
-  if (!value) return '';
-  const date = new Date(value);
-  const pad = (num) => String(num).padStart(2, '0');
-  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
-};
-
 exports.index = async (req, res) => {
   try {
     // Fetch all flights and sort by departureDateTime
@@ -21,16 +13,6 @@ exports.index = async (req, res) => {
     console.error(err);
     res.status(500).send('Unable to load flights');
   }
-};
-
-exports.newFlightForm = (req, res) => {
-  // Render the flight form for creating a new flight
-  res.render('flight-form', {
-    title: 'Add Flight',
-    flight: {},
-    action: '/admin/flights',
-    method: 'POST',
-  });
 };
 
 exports.createFlight = async (req, res) => {
@@ -94,29 +76,6 @@ exports.createFlight = async (req, res) => {
       ? Object.values(err.errors).map(e => e.message).join(', ')
       : err.message || 'Could not create flight';
     res.status(500).send(message);
-  }
-};
-
-exports.editFlightForm = async (req, res) => {
-  // Render the flight form for editing an existing flight
-  try {
-    const flight = await Flight.findById(req.params.id);
-    if (!flight) {
-      return res.status(404).send('Flight not found');
-    }
-
-  // Render the flight form with existing flight data
-    res.render('flight-form', {
-      title: 'Edit Flight',
-      flight,
-      action: `/admin/flights/${flight._id}`,
-      method: 'PUT',
-      departureDateTimeValue: formatDateTimeLocal(flight.departureDateTime),
-      arrivalDateTimeValue: formatDateTimeLocal(flight.arrivalDateTime),
-    });
-  } catch (err) {
-    console.error(err);
-    res.status(500).send('Unable to load flight for editing');
   }
 };
 
