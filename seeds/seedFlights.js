@@ -23,8 +23,8 @@ const sampleFlights = [
     destination: 'SIN',
     departureDateTime: new Date(new Date().getTime() + 3 * 24 * 60 * 60 * 1000), // 3 days from now
     arrivalDateTime: new Date(new Date().getTime() + 3 * 24 * 60 * 60 * 1000 + 3.5 * 60 * 60 * 1000), // 3.5 hours flight
-    availableSeats: 180,
-    totalSeats: 180,
+    availableSeats: 120,
+    totalSeats: 140,
     ticketPrice: 120.50
   },
   {
@@ -34,8 +34,8 @@ const sampleFlights = [
     destination: 'MNL',
     departureDateTime: new Date(new Date().getTime() + 5 * 24 * 60 * 60 * 1000), // 5 days from now
     arrivalDateTime: new Date(new Date().getTime() + 5 * 24 * 60 * 60 * 1000 + 3.5 * 60 * 60 * 1000), // 3.5 hours flight
-    availableSeats: 50,
-    totalSeats: 200,
+    availableSeats: 45,
+    totalSeats: 130,
     ticketPrice: 300.00
   },
   {
@@ -45,8 +45,8 @@ const sampleFlights = [
     destination: 'MNL',
     departureDateTime: new Date(new Date().getTime() + 6 * 24 * 60 * 60 * 1000), // 6 days from now
     arrivalDateTime: new Date(new Date().getTime() + 6 * 24 * 60 * 60 * 1000 + 4 * 60 * 60 * 1000), // 4 hours flight
-    availableSeats: 80,
-    totalSeats: 220,
+    availableSeats: 70,
+    totalSeats: 140,
     ticketPrice: 400.00
   },
   {
@@ -56,7 +56,7 @@ const sampleFlights = [
     destination: 'CEB',
     departureDateTime: new Date(new Date().getTime() + 1 * 24 * 60 * 60 * 1000), // 1 day from now
     arrivalDateTime: new Date(new Date().getTime() + 1 * 24 * 60 * 60 * 1000 + 1.5 * 60 * 60 * 1000), // 1.5 hours flight
-    availableSeats: 100,
+    availableSeats: 90,
     totalSeats: 100,
     ticketPrice: 50.00
   },
@@ -67,8 +67,8 @@ const sampleFlights = [
     destination: 'SIN',
     departureDateTime: new Date(new Date().getTime() + 3 * 60 * 60 * 1000), // 3 hours from now (today)
     arrivalDateTime: new Date(new Date().getTime() + 6.5 * 60 * 60 * 1000), // 6.5 hours from now
-    availableSeats: 120,
-    totalSeats: 150,
+    availableSeats: 100,
+    totalSeats: 120,
     ticketPrice: 145.00
   },
   {
@@ -78,8 +78,8 @@ const sampleFlights = [
     destination: 'LAX',
     departureDateTime: new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000), // 7 days from now
     arrivalDateTime: new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000 + 13 * 60 * 60 * 1000), // 13 hours flight
-    availableSeats: 250,
-    totalSeats: 300,
+    availableSeats: 130,
+    totalSeats: 150,
     ticketPrice: 850.00
   },
   {
@@ -89,8 +89,8 @@ const sampleFlights = [
     destination: 'DVO',
     departureDateTime: new Date(new Date().getTime() + 1 * 24 * 60 * 60 * 1000 + 4 * 60 * 60 * 1000),
     arrivalDateTime: new Date(new Date().getTime() + 1 * 24 * 60 * 60 * 1000 + 6 * 60 * 60 * 1000),
-    availableSeats: 140,
-    totalSeats: 160,
+    availableSeats: 110,
+    totalSeats: 130,
     ticketPrice: 65.00
   },
   {
@@ -100,8 +100,8 @@ const sampleFlights = [
     destination: 'ICN',
     departureDateTime: new Date(new Date().getTime() + 2 * 24 * 60 * 60 * 1000 + 8 * 60 * 60 * 1000),
     arrivalDateTime: new Date(new Date().getTime() + 2 * 24 * 60 * 60 * 1000 + 12 * 60 * 60 * 1000),
-    availableSeats: 190,
-    totalSeats: 200,
+    availableSeats: 125,
+    totalSeats: 145,
     ticketPrice: 175.00
   },
   {
@@ -111,8 +111,8 @@ const sampleFlights = [
     destination: 'HKG',
     departureDateTime: new Date(new Date().getTime() + 4 * 24 * 60 * 60 * 1000),
     arrivalDateTime: new Date(new Date().getTime() + 4 * 24 * 60 * 60 * 1000 + 2.5 * 60 * 60 * 1000),
-    availableSeats: 95,
-    totalSeats: 180,
+    availableSeats: 80,
+    totalSeats: 135,
     ticketPrice: 210.00
   },
   {
@@ -122,8 +122,8 @@ const sampleFlights = [
     destination: 'BKK',
     departureDateTime: new Date(new Date().getTime() + 4 * 24 * 60 * 60 * 1000 + 5 * 60 * 60 * 1000),
     arrivalDateTime: new Date(new Date().getTime() + 4 * 24 * 60 * 60 * 1000 + 8.5 * 60 * 60 * 1000),
-    availableSeats: 110,
-    totalSeats: 220,
+    availableSeats: 95,
+    totalSeats: 140,
     ticketPrice: 235.00
   },
   {
@@ -133,8 +133,8 @@ const sampleFlights = [
     destination: 'HND',
     departureDateTime: new Date(new Date().getTime() + 5 * 24 * 60 * 60 * 1000 + 2 * 60 * 60 * 1000),
     arrivalDateTime: new Date(new Date().getTime() + 5 * 24 * 60 * 60 * 1000 + 6.5 * 60 * 60 * 1000),
-    availableSeats: 130,
-    totalSeats: 200,
+    availableSeats: 100,
+    totalSeats: 145,
     ticketPrice: 420.00
   },
   {
@@ -144,8 +144,8 @@ const sampleFlights = [
     destination: 'KIX',
     departureDateTime: new Date(new Date().getTime() + 3 * 24 * 60 * 60 * 1000 + 6 * 60 * 60 * 1000),
     arrivalDateTime: new Date(new Date().getTime() + 3 * 24 * 60 * 60 * 1000 + 10 * 60 * 60 * 1000),
-    availableSeats: 105,
-    totalSeats: 170,
+    availableSeats: 90,
+    totalSeats: 130,
     ticketPrice: 310.00
   },
   {
@@ -155,8 +155,8 @@ const sampleFlights = [
     destination: 'TPE',
     departureDateTime: new Date(new Date().getTime() + 2 * 24 * 60 * 60 * 1000 + 10 * 60 * 60 * 1000),
     arrivalDateTime: new Date(new Date().getTime() + 2 * 24 * 60 * 60 * 1000 + 12.5 * 60 * 60 * 1000),
-    availableSeats: 160,
-    totalSeats: 190,
+    availableSeats: 115,
+    totalSeats: 140,
     ticketPrice: 195.00
   },
   {
@@ -166,8 +166,8 @@ const sampleFlights = [
     destination: 'DXB',
     departureDateTime: new Date(new Date().getTime() + 6 * 24 * 60 * 60 * 1000 + 7 * 60 * 60 * 1000),
     arrivalDateTime: new Date(new Date().getTime() + 6 * 24 * 60 * 60 * 1000 + 16 * 60 * 60 * 1000),
-    availableSeats: 280,
-    totalSeats: 350,
+    availableSeats: 125,
+    totalSeats: 150,
     ticketPrice: 680.00
   },
   {
@@ -177,8 +177,8 @@ const sampleFlights = [
     destination: 'SYD',
     departureDateTime: new Date(new Date().getTime() + 8 * 24 * 60 * 60 * 1000),
     arrivalDateTime: new Date(new Date().getTime() + 8 * 24 * 60 * 60 * 1000 + 8.5 * 60 * 60 * 1000),
-    availableSeats: 210,
-    totalSeats: 260,
+    availableSeats: 110,
+    totalSeats: 145,
     ticketPrice: 790.00
   },
   {
@@ -188,8 +188,8 @@ const sampleFlights = [
     destination: 'DPS',
     departureDateTime: new Date(new Date().getTime() + 5 * 24 * 60 * 60 * 1000 + 1 * 60 * 60 * 1000),
     arrivalDateTime: new Date(new Date().getTime() + 5 * 24 * 60 * 60 * 1000 + 5 * 60 * 60 * 1000),
-    availableSeats: 145,
-    totalSeats: 180,
+    availableSeats: 105,
+    totalSeats: 135,
     ticketPrice: 160.00
   },
   {
@@ -199,8 +199,8 @@ const sampleFlights = [
     destination: 'SFO',
     departureDateTime: new Date(new Date().getTime() + 9 * 24 * 60 * 60 * 1000),
     arrivalDateTime: new Date(new Date().getTime() + 9 * 24 * 60 * 60 * 1000 + 12.5 * 60 * 60 * 1000),
-    availableSeats: 220,
-    totalSeats: 300,
+    availableSeats: 120,
+    totalSeats: 150,
     ticketPrice: 890.00
   },
   {
@@ -210,8 +210,8 @@ const sampleFlights = [
     destination: 'JFK',
     departureDateTime: new Date(new Date().getTime() + 10 * 24 * 60 * 60 * 1000),
     arrivalDateTime: new Date(new Date().getTime() + 10 * 24 * 60 * 60 * 1000 + 16 * 60 * 60 * 1000),
-    availableSeats: 175,
-    totalSeats: 280,
+    availableSeats: 115,
+    totalSeats: 145,
     ticketPrice: 1050.00
   },
   {
@@ -221,8 +221,8 @@ const sampleFlights = [
     destination: 'BNE',
     departureDateTime: new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000 + 3 * 60 * 60 * 1000),
     arrivalDateTime: new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000 + 11 * 60 * 60 * 1000),
-    availableSeats: 130,
-    totalSeats: 200,
+    availableSeats: 95,
+    totalSeats: 130,
     ticketPrice: 720.00
   },
   {
@@ -232,8 +232,8 @@ const sampleFlights = [
     destination: 'SIN',
     departureDateTime: new Date(new Date().getTime() + 3 * 24 * 60 * 60 * 1000 + 9 * 60 * 60 * 1000),
     arrivalDateTime: new Date(new Date().getTime() + 3 * 24 * 60 * 60 * 1000 + 12.5 * 60 * 60 * 1000),
-    availableSeats: 165,
-    totalSeats: 180,
+    availableSeats: 110,
+    totalSeats: 135,
     ticketPrice: 130.00
   },
   {
@@ -243,8 +243,8 @@ const sampleFlights = [
     destination: 'BKK',
     departureDateTime: new Date(new Date().getTime() + 2 * 24 * 60 * 60 * 1000 + 11 * 60 * 60 * 1000),
     arrivalDateTime: new Date(new Date().getTime() + 2 * 24 * 60 * 60 * 1000 + 14.5 * 60 * 60 * 1000),
-    availableSeats: 140,
-    totalSeats: 180,
+    availableSeats: 100,
+    totalSeats: 125,
     ticketPrice: 115.00
   },
   {
@@ -254,8 +254,8 @@ const sampleFlights = [
     destination: 'DGT',
     departureDateTime: new Date(new Date().getTime() + 1 * 24 * 60 * 60 * 1000 + 7 * 60 * 60 * 1000),
     arrivalDateTime: new Date(new Date().getTime() + 1 * 24 * 60 * 60 * 1000 + 8.5 * 60 * 60 * 1000),
-    availableSeats: 85,
-    totalSeats: 120,
+    availableSeats: 80,
+    totalSeats: 110,
     ticketPrice: 58.00
   },
   {
@@ -265,8 +265,8 @@ const sampleFlights = [
     destination: 'USM',
     departureDateTime: new Date(new Date().getTime() + 4 * 24 * 60 * 60 * 1000 + 2 * 60 * 60 * 1000),
     arrivalDateTime: new Date(new Date().getTime() + 4 * 24 * 60 * 60 * 1000 + 6 * 60 * 60 * 1000),
-    availableSeats: 115,
-    totalSeats: 150,
+    availableSeats: 90,
+    totalSeats: 120,
     ticketPrice: 185.00
   },
   {
@@ -276,8 +276,8 @@ const sampleFlights = [
     destination: 'TPE',
     departureDateTime: new Date(new Date().getTime() + 5 * 24 * 60 * 60 * 1000 + 9 * 60 * 60 * 1000),
     arrivalDateTime: new Date(new Date().getTime() + 5 * 24 * 60 * 60 * 1000 + 11.5 * 60 * 60 * 1000),
-    availableSeats: 150,
-    totalSeats: 210,
+    availableSeats: 105,
+    totalSeats: 140,
     ticketPrice: 205.00
   },
   {
@@ -287,8 +287,8 @@ const sampleFlights = [
     destination: 'SIN',
     departureDateTime: new Date(new Date().getTime() + 6 * 24 * 60 * 60 * 1000 + 4 * 60 * 60 * 1000),
     arrivalDateTime: new Date(new Date().getTime() + 6 * 24 * 60 * 60 * 1000 + 7.5 * 60 * 60 * 1000),
-    availableSeats: 195,
-    totalSeats: 250,
+    availableSeats: 115,
+    totalSeats: 145,
     ticketPrice: 290.00
   },
   {
@@ -298,8 +298,8 @@ const sampleFlights = [
     destination: 'SIN',
     departureDateTime: new Date(new Date().getTime() + 3 * 24 * 60 * 60 * 1000 + 1 * 60 * 60 * 1000),
     arrivalDateTime: new Date(new Date().getTime() + 3 * 24 * 60 * 60 * 1000 + 4.5 * 60 * 60 * 1000),
-    availableSeats: 160,
-    totalSeats: 180,
+    availableSeats: 110,
+    totalSeats: 135,
     ticketPrice: 215.00
   },
   {
@@ -309,8 +309,8 @@ const sampleFlights = [
     destination: 'SIN',
     departureDateTime: new Date(new Date().getTime() + 2 * 24 * 60 * 60 * 1000 + 15 * 60 * 60 * 1000),
     arrivalDateTime: new Date(new Date().getTime() + 2 * 24 * 60 * 60 * 1000 + 18.5 * 60 * 60 * 1000),
-    availableSeats: 170,
-    totalSeats: 200,
+    availableSeats: 100,
+    totalSeats: 130,
     ticketPrice: 105.00
   },
   {
@@ -320,8 +320,8 @@ const sampleFlights = [
     destination: 'BKI',
     departureDateTime: new Date(new Date().getTime() + 4 * 24 * 60 * 60 * 1000 + 10 * 60 * 60 * 1000),
     arrivalDateTime: new Date(new Date().getTime() + 4 * 24 * 60 * 60 * 1000 + 12 * 60 * 60 * 1000),
-    availableSeats: 125,
-    totalSeats: 150,
+    availableSeats: 95,
+    totalSeats: 125,
     ticketPrice: 98.00
   },
   {
@@ -331,8 +331,8 @@ const sampleFlights = [
     destination: 'MNL',
     departureDateTime: new Date(new Date().getTime() + 1 * 24 * 60 * 60 * 1000 + 12 * 60 * 60 * 1000),
     arrivalDateTime: new Date(new Date().getTime() + 1 * 24 * 60 * 60 * 1000 + 13.5 * 60 * 60 * 1000),
-    availableSeats: 110,
-    totalSeats: 140,
+    availableSeats: 85,
+    totalSeats: 120,
     ticketPrice: 52.00
   },
   {
@@ -342,8 +342,8 @@ const sampleFlights = [
     destination: 'TAG',
     departureDateTime: new Date(new Date().getTime() + 2 * 24 * 60 * 60 * 1000 + 3 * 60 * 60 * 1000),
     arrivalDateTime: new Date(new Date().getTime() + 2 * 24 * 60 * 60 * 1000 + 4.2 * 60 * 60 * 1000),
-    availableSeats: 135,
-    totalSeats: 160,
+    availableSeats: 90,
+    totalSeats: 125,
     ticketPrice: 48.00
   },
   {
@@ -353,8 +353,8 @@ const sampleFlights = [
     destination: 'YVR',
     departureDateTime: new Date(new Date().getTime() + 11 * 24 * 60 * 60 * 1000),
     arrivalDateTime: new Date(new Date().getTime() + 11 * 24 * 60 * 60 * 1000 + 12 * 60 * 60 * 1000),
-    availableSeats: 210,
-    totalSeats: 290,
+    availableSeats: 120,
+    totalSeats: 150,
     ticketPrice: 930.00
   }
 ];
