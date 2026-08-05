@@ -101,6 +101,7 @@ describe('updateFlight', () => {
     };
 
     Flight.findOne.mockResolvedValue(null); // no duplicate
+    Flight.findById.mockReturnValue({ lean: jest.fn().mockResolvedValue({ _id: 'abc123', ...baseBody }) });
     Flight.findByIdAndUpdate.mockResolvedValue({ _id: 'abc123', ...updatedBody });
 
     const req = {
@@ -141,6 +142,7 @@ describe('updateFlight', () => {
 
   test('returns 404 when flight to update is not found', async () => {
     Flight.findOne.mockResolvedValue(null);
+    Flight.findById.mockReturnValue({ lean: jest.fn().mockResolvedValue(null) });
     Flight.findByIdAndUpdate.mockResolvedValue(null);
 
     const req = { params: { id: 'missing' }, body: baseBody, session: {} };
