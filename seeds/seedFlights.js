@@ -138,28 +138,6 @@ const sampleFlights = [
     ticketPrice: 420.00
   },
   {
-    flightNumber: 'PR426',
-    airline: 'Philippine Airlines',
-    origin: 'MNL',
-    destination: 'KIX',
-    departureDateTime: new Date(new Date().getTime() + 3 * 24 * 60 * 60 * 1000 + 6 * 60 * 60 * 1000),
-    arrivalDateTime: new Date(new Date().getTime() + 3 * 24 * 60 * 60 * 1000 + 10 * 60 * 60 * 1000),
-    availableSeats: 90,
-    totalSeats: 130,
-    ticketPrice: 310.00
-  },
-  {
-    flightNumber: 'BR272',
-    airline: 'EVA Air',
-    origin: 'MNL',
-    destination: 'TPE',
-    departureDateTime: new Date(new Date().getTime() + 2 * 24 * 60 * 60 * 1000 + 10 * 60 * 60 * 1000),
-    arrivalDateTime: new Date(new Date().getTime() + 2 * 24 * 60 * 60 * 1000 + 12.5 * 60 * 60 * 1000),
-    availableSeats: 115,
-    totalSeats: 140,
-    ticketPrice: 195.00
-  },
-  {
     flightNumber: 'EK337',
     airline: 'Emirates',
     origin: 'MNL',
@@ -182,17 +160,6 @@ const sampleFlights = [
     ticketPrice: 790.00
   },
   {
-    flightNumber: '5J803',
-    airline: 'Cebu Pacific',
-    origin: 'MNL',
-    destination: 'DPS',
-    departureDateTime: new Date(new Date().getTime() + 5 * 24 * 60 * 60 * 1000 + 1 * 60 * 60 * 1000),
-    arrivalDateTime: new Date(new Date().getTime() + 5 * 24 * 60 * 60 * 1000 + 5 * 60 * 60 * 1000),
-    availableSeats: 105,
-    totalSeats: 135,
-    ticketPrice: 160.00
-  },
-  {
     flightNumber: 'PR104',
     airline: 'Philippine Airlines',
     origin: 'MNL',
@@ -202,160 +169,6 @@ const sampleFlights = [
     availableSeats: 120,
     totalSeats: 150,
     ticketPrice: 890.00
-  },
-  {
-    flightNumber: 'PR126',
-    airline: 'Philippine Airlines',
-    origin: 'MNL',
-    destination: 'JFK',
-    departureDateTime: new Date(new Date().getTime() + 10 * 24 * 60 * 60 * 1000),
-    arrivalDateTime: new Date(new Date().getTime() + 10 * 24 * 60 * 60 * 1000 + 16 * 60 * 60 * 1000),
-    availableSeats: 115,
-    totalSeats: 145,
-    ticketPrice: 1050.00
-  },
-  {
-    flightNumber: 'PR730',
-    airline: 'Philippine Airlines',
-    origin: 'MNL',
-    destination: 'BNE',
-    departureDateTime: new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000 + 3 * 60 * 60 * 1000),
-    arrivalDateTime: new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000 + 11 * 60 * 60 * 1000),
-    availableSeats: 95,
-    totalSeats: 130,
-    ticketPrice: 720.00
-  },
-  {
-    flightNumber: '5J571',
-    airline: 'Cebu Pacific',
-    origin: 'CEB',
-    destination: 'SIN',
-    departureDateTime: new Date(new Date().getTime() + 3 * 24 * 60 * 60 * 1000 + 9 * 60 * 60 * 1000),
-    arrivalDateTime: new Date(new Date().getTime() + 3 * 24 * 60 * 60 * 1000 + 12.5 * 60 * 60 * 1000),
-    availableSeats: 110,
-    totalSeats: 135,
-    ticketPrice: 130.00
-  },
-  {
-    flightNumber: 'Z2888',
-    airline: 'AirAsia Zest',
-    origin: 'MNL',
-    destination: 'BKK',
-    departureDateTime: new Date(new Date().getTime() + 2 * 24 * 60 * 60 * 1000 + 11 * 60 * 60 * 1000),
-    arrivalDateTime: new Date(new Date().getTime() + 2 * 24 * 60 * 60 * 1000 + 14.5 * 60 * 60 * 1000),
-    availableSeats: 100,
-    totalSeats: 125,
-    ticketPrice: 115.00
-  },
-  {
-    flightNumber: 'PR2815',
-    airline: 'Philippine Airlines',
-    origin: 'MNL',
-    destination: 'DGT',
-    departureDateTime: new Date(new Date().getTime() + 1 * 24 * 60 * 60 * 1000 + 7 * 60 * 60 * 1000),
-    arrivalDateTime: new Date(new Date().getTime() + 1 * 24 * 60 * 60 * 1000 + 8.5 * 60 * 60 * 1000),
-    availableSeats: 80,
-    totalSeats: 110,
-    ticketPrice: 58.00
-  },
-  {
-    flightNumber: '5J389',
-    airline: 'Cebu Pacific',
-    origin: 'MNL',
-    destination: 'USM',
-    departureDateTime: new Date(new Date().getTime() + 4 * 24 * 60 * 60 * 1000 + 2 * 60 * 60 * 1000),
-    arrivalDateTime: new Date(new Date().getTime() + 4 * 24 * 60 * 60 * 1000 + 6 * 60 * 60 * 1000),
-    availableSeats: 90,
-    totalSeats: 120,
-    ticketPrice: 185.00
-  },
-  {
-    flightNumber: 'CI702',
-    airline: 'China Airlines',
-    origin: 'MNL',
-    destination: 'TPE',
-    departureDateTime: new Date(new Date().getTime() + 5 * 24 * 60 * 60 * 1000 + 9 * 60 * 60 * 1000),
-    arrivalDateTime: new Date(new Date().getTime() + 5 * 24 * 60 * 60 * 1000 + 11.5 * 60 * 60 * 1000),
-    availableSeats: 105,
-    totalSeats: 140,
-    ticketPrice: 205.00
-  },
-  {
-    flightNumber: 'SQ917',
-    airline: 'Singapore Airlines',
-    origin: 'MNL',
-    destination: 'SIN',
-    departureDateTime: new Date(new Date().getTime() + 6 * 24 * 60 * 60 * 1000 + 4 * 60 * 60 * 1000),
-    arrivalDateTime: new Date(new Date().getTime() + 6 * 24 * 60 * 60 * 1000 + 7.5 * 60 * 60 * 1000),
-    availableSeats: 115,
-    totalSeats: 145,
-    ticketPrice: 290.00
-  },
-  {
-    flightNumber: 'PR507',
-    airline: 'Philippine Airlines',
-    origin: 'MNL',
-    destination: 'SIN',
-    departureDateTime: new Date(new Date().getTime() + 3 * 24 * 60 * 60 * 1000 + 1 * 60 * 60 * 1000),
-    arrivalDateTime: new Date(new Date().getTime() + 3 * 24 * 60 * 60 * 1000 + 4.5 * 60 * 60 * 1000),
-    availableSeats: 110,
-    totalSeats: 135,
-    ticketPrice: 215.00
-  },
-  {
-    flightNumber: 'TR387',
-    airline: 'Scoot',
-    origin: 'MNL',
-    destination: 'SIN',
-    departureDateTime: new Date(new Date().getTime() + 2 * 24 * 60 * 60 * 1000 + 15 * 60 * 60 * 1000),
-    arrivalDateTime: new Date(new Date().getTime() + 2 * 24 * 60 * 60 * 1000 + 18.5 * 60 * 60 * 1000),
-    availableSeats: 100,
-    totalSeats: 130,
-    ticketPrice: 105.00
-  },
-  {
-    flightNumber: '5J963',
-    airline: 'Cebu Pacific',
-    origin: 'MNL',
-    destination: 'BKI',
-    departureDateTime: new Date(new Date().getTime() + 4 * 24 * 60 * 60 * 1000 + 10 * 60 * 60 * 1000),
-    arrivalDateTime: new Date(new Date().getTime() + 4 * 24 * 60 * 60 * 1000 + 12 * 60 * 60 * 1000),
-    availableSeats: 95,
-    totalSeats: 125,
-    ticketPrice: 98.00
-  },
-  {
-    flightNumber: 'PR2132',
-    airline: 'Philippine Airlines',
-    origin: 'CEB',
-    destination: 'MNL',
-    departureDateTime: new Date(new Date().getTime() + 1 * 24 * 60 * 60 * 1000 + 12 * 60 * 60 * 1000),
-    arrivalDateTime: new Date(new Date().getTime() + 1 * 24 * 60 * 60 * 1000 + 13.5 * 60 * 60 * 1000),
-    availableSeats: 85,
-    totalSeats: 120,
-    ticketPrice: 52.00
-  },
-  {
-    flightNumber: 'Z2350',
-    airline: 'AirAsia Zest',
-    origin: 'MNL',
-    destination: 'TAG',
-    departureDateTime: new Date(new Date().getTime() + 2 * 24 * 60 * 60 * 1000 + 3 * 60 * 60 * 1000),
-    arrivalDateTime: new Date(new Date().getTime() + 2 * 24 * 60 * 60 * 1000 + 4.2 * 60 * 60 * 1000),
-    availableSeats: 90,
-    totalSeats: 125,
-    ticketPrice: 48.00
-  },
-  {
-    flightNumber: 'PR116',
-    airline: 'Philippine Airlines',
-    origin: 'MNL',
-    destination: 'YVR',
-    departureDateTime: new Date(new Date().getTime() + 11 * 24 * 60 * 60 * 1000),
-    arrivalDateTime: new Date(new Date().getTime() + 11 * 24 * 60 * 60 * 1000 + 12 * 60 * 60 * 1000),
-    availableSeats: 120,
-    totalSeats: 150,
-    ticketPrice: 930.00
   }
 ];
 
