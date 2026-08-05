@@ -93,13 +93,19 @@ describe('updateFlight', () => {
     ticketPrice: 2500,
   };
 
-  test('updates a flight and returns success json', async () => {
+  test('updates price and available seats for a flight and returns success json', async () => {
+    const updatedBody = {
+      ...baseBody,
+      availableSeats: 80,
+      ticketPrice: 3000,
+    };
+
     Flight.findOne.mockResolvedValue(null); // no duplicate
-    Flight.findByIdAndUpdate.mockResolvedValue({ _id: 'abc123', ...baseBody });
+    Flight.findByIdAndUpdate.mockResolvedValue({ _id: 'abc123', ...updatedBody });
 
     const req = {
       params: { id: 'abc123' },
-      body: baseBody,
+      body: updatedBody,
       session: { user: { email: 'admin@skyease.com', role: 'admin' } },
     };
     const res = mockRes();
@@ -108,7 +114,10 @@ describe('updateFlight', () => {
 
     expect(Flight.findByIdAndUpdate).toHaveBeenCalledWith(
       'abc123',
-      expect.objectContaining({ flightNumber: 'PR101' }),
+      expect.objectContaining({
+        availableSeats: 80,
+        ticketPrice: 3000,
+      }),
       { returnDocument: 'after', runValidators: true }
     );
     expect(logActivity).toHaveBeenCalledWith(
