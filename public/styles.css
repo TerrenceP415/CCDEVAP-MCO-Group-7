@@ -4577,7 +4577,7 @@ body.admin-page {
   position: fixed;
   inset: 0;
   z-index: 9999;
-  background: rgba(0, 0, 0, 0.65);
+  background: rgba(15, 23, 42, 0.45);
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
   justify-content: center;
@@ -4600,16 +4600,17 @@ body.admin-page {
 }
 
 .audit-modal-panel {
-  background: var(--color-navy, #0f172a);
-  border: 1px solid var(--color-slate-700, #334155);
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
   border-radius: 12px;
   width: 90%;
   max-width: 680px;
   max-height: 80vh;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(14, 165, 233, 0.1);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.12), 0 4px 16px rgba(0, 0, 0, 0.06);
   animation: auditSlideUp 0.25s ease;
+  overflow: hidden;
 }
 
 .audit-modal-header {
@@ -4617,6 +4618,7 @@ body.admin-page {
   align-items: center;
   justify-content: space-between;
   padding: 18px 24px;
+  background: var(--color-navy, #0f172a);
   border-bottom: 1px solid var(--color-slate-700, #334155);
 }
 
@@ -4628,21 +4630,21 @@ body.admin-page {
 
 .audit-modal-title i {
   font-size: 1.2rem;
-  color: var(--color-sky-400, #38bdf8);
+  color: #38bdf8;
 }
 
 .audit-modal-title h4 {
   margin: 0;
   font-size: 1rem;
   font-weight: 700;
-  color: var(--color-white, #fff);
+  color: #ffffff;
   letter-spacing: 0.3px;
 }
 
 .audit-modal-close {
   background: none;
   border: none;
-  color: var(--color-slate-400, #94a3b8);
+  color: #cbd5e1;
   font-size: 1.1rem;
   cursor: pointer;
   padding: 4px 8px;
@@ -4651,8 +4653,8 @@ body.admin-page {
 }
 
 .audit-modal-close:hover {
-  color: var(--color-white, #fff);
-  background: rgba(239, 68, 68, 0.15);
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.15);
 }
 
 /* ─── Changes Diff Table ─────────────────────────────── */
@@ -4671,9 +4673,9 @@ body.admin-page {
   font-size: 0.7rem;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  color: var(--color-sky-300, #7dd3fc);
+  color: #0284c7;
   padding: 8px 12px;
-  border-bottom: 2px solid var(--color-slate-700, #334155);
+  border-bottom: 2px solid #e2e8f0;
   text-align: left;
   font-weight: 700;
 }
@@ -4681,7 +4683,7 @@ body.admin-page {
 .audit-changes-table tbody td {
   padding: 10px 12px;
   font-size: 0.82rem;
-  border-bottom: 1px solid rgba(51, 65, 85, 0.4);
+  border-bottom: 1px solid #f1f5f9;
   vertical-align: middle;
 }
 
@@ -4690,49 +4692,35 @@ body.admin-page {
 }
 
 .audit-changes-table tbody tr:hover {
-  background: rgba(14, 165, 233, 0.04);
+  background: #f8fafc;
 }
 
 .audit-change-field {
   font-weight: 600;
-  color: var(--color-slate-200, #e2e8f0);
+  color: #1e293b;
   white-space: nowrap;
 }
 
-.audit-change-old {
-  color: #f87171;
-  background: rgba(239, 68, 68, 0.08);
-  border-radius: 4px;
-  padding: 4px 10px !important;
-  font-family: 'SFMono-Regular', 'Consolas', 'Liberation Mono', monospace;
-  font-size: 0.78rem;
+.audit-change-old,
+.audit-change-new {
+  color: #334155;
+  font-size: 0.82rem;
   word-break: break-word;
   max-width: 200px;
 }
 
 .audit-change-arrow {
   text-align: center;
-  color: var(--color-slate-500, #64748b);
+  color: #94a3b8;
   font-size: 0.9rem;
   width: 30px;
   padding: 4px !important;
 }
 
-.audit-change-new {
-  color: #4ade80;
-  background: rgba(34, 197, 94, 0.08);
-  border-radius: 4px;
-  padding: 4px 10px !important;
-  font-family: 'SFMono-Regular', 'Consolas', 'Liberation Mono', monospace;
-  font-size: 0.78rem;
-  word-break: break-word;
-  max-width: 200px;
-}
-
 /* ─── Modal Footer ───────────────────────────────────── */
 .audit-modal-footer {
   padding: 14px 24px;
-  border-top: 1px solid var(--color-slate-700, #334155);
+  border-top: 1px solid #e2e8f0;
   display: flex;
   justify-content: flex-end;
 }
@@ -4740,9 +4728,9 @@ body.admin-page {
 .audit-modal-done-btn {
   padding: 8px 24px;
   border-radius: 8px;
-  border: 1px solid var(--color-sky-500, #0ea5e9);
-  background: rgba(14, 165, 233, 0.15);
-  color: var(--color-sky-400, #38bdf8);
+  border: 1px solid #0284c7;
+  background: #0284c7;
+  color: #ffffff;
   font-size: 0.8rem;
   font-weight: 600;
   cursor: pointer;
@@ -4750,8 +4738,9 @@ body.admin-page {
 }
 
 .audit-modal-done-btn:hover {
-  background: rgba(14, 165, 233, 0.3);
-  box-shadow: 0 2px 10px rgba(14, 165, 233, 0.2);
+  background: #0369a1;
+  border-color: #0369a1;
+  box-shadow: 0 4px 12px rgba(2, 132, 199, 0.25);
 }
 
 /* ─── Modal Responsive ───────────────────────────────── */
@@ -4771,4 +4760,72 @@ body.admin-page {
   .audit-change-new {
     max-width: 120px;
   }
+}
+
+/* ═══════════════════════════════════════════════════════
+   ADMIN DASHBOARD MODALS & CLOSE BUTTONS (X)
+   ═══════════════════════════════════════════════════════ */
+.modal-header {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  padding: 1rem 1.25rem !important;
+  background: var(--color-navy, #0f172a) !important;
+  border-bottom: 1px solid var(--color-slate-700, #334155) !important;
+  position: relative !important;
+  border-top-left-radius: calc(0.3rem - 1px);
+  border-top-right-radius: calc(0.3rem - 1px);
+}
+
+.modal-header .modal-title {
+  color: #ffffff !important;
+  font-weight: 600 !important;
+  font-size: 1.1rem !important;
+  margin: 0 !important;
+}
+
+/* Modal Close Button (X) for Bootstrap 4 & 5 */
+.modal-header .close,
+.modal-header .btn-close {
+  background: transparent !important;
+  border: none !important;
+  color: #cbd5e1 !important;
+  font-size: 1.25rem !important;
+  font-weight: 700 !important;
+  line-height: 1 !important;
+  opacity: 0.85 !important;
+  cursor: pointer !important;
+  padding: 6px 10px !important;
+  border-radius: 6px !important;
+  transition: all 0.2s ease-in-out !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-shadow: none !important;
+  outline: none !important;
+  margin: 0 !important;
+  filter: none !important;
+}
+
+.modal-header .close:hover,
+.modal-header .btn-close:hover,
+.modal-header .close:focus,
+.modal-header .btn-close:focus {
+  color: #ffffff !important;
+  opacity: 1 !important;
+  background: rgba(255, 255, 255, 0.15) !important;
+  text-decoration: none !important;
+}
+
+.modal-header .close i,
+.modal-header .btn-close i {
+  font-size: 1.25rem !important;
+  color: inherit !important;
+}
+
+.modal-header .close span,
+.modal-header .btn-close span {
+  font-size: 1.5rem !important;
+  line-height: 1 !important;
+  color: inherit !important;
 }
