@@ -47,12 +47,13 @@
                     <th>Role</th>
                     <th>Activity</th>
                     <th>Details</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody id="auditTableBody">
                 {{#if auditLogs.length}}
                     {{#each auditLogs}}
-                        <tr data-activity="{{this.activity}}" data-role="{{this.userRole}}">
+                        <tr data-activity="{{this.activity}}" data-role="{{this.userRole}}" data-changes="{{json this.changes}}">
                             <td>{{formatDate this.timestamp}}</td>
                             <td>{{this.username}}</td>
                             <td>
@@ -77,11 +78,20 @@
                                 </span>
                             </td>
                             <td class="audit-details-cell">{{this.details}}</td>
+                            <td>
+                                {{#if this.changes.length}}
+                                    <button class="audit-view-details-btn" onclick="showAuditDetails(this)">
+                                        <i class="bi bi-eye"></i> View Details
+                                    </button>
+                                {{else}}
+                                    <span class="audit-no-details">—</span>
+                                {{/if}}
+                            </td>
                         </tr>
                     {{/each}}
                 {{else}}
                     <tr id="noLogsRow">
-                        <td colspan="5" style="text-align:center; color:#888; padding:2rem;">No audit log entries recorded yet.</td>
+                        <td colspan="6" style="text-align:center; color:#888; padding:2rem;">No audit log entries recorded yet.</td>
                     </tr>
                 {{/if}}
             </tbody>
@@ -97,6 +107,39 @@
                 No entries
             {{/if}}
         </span>
+    </div>
+</div>
+
+<!-- Audit Details Modal -->
+<div class="audit-modal-overlay" id="auditDetailsModal">
+    <div class="audit-modal-panel">
+        <div class="audit-modal-header">
+            <div class="audit-modal-title">
+                <i class="bi bi-clipboard-data"></i>
+                <h4>Change Details</h4>
+            </div>
+            <button class="audit-modal-close" onclick="closeAuditDetails()">
+                <i class="bi bi-x-lg"></i>
+            </button>
+        </div>
+        <div class="audit-modal-body">
+            <table class="audit-changes-table">
+                <thead>
+                    <tr>
+                        <th>Field</th>
+                        <th>Previous Value</th>
+                        <th></th>
+                        <th>New Value</th>
+                    </tr>
+                </thead>
+                <tbody id="auditChangesBody">
+                    <!-- Dynamically populated -->
+                </tbody>
+            </table>
+        </div>
+        <div class="audit-modal-footer">
+            <button class="audit-modal-done-btn" onclick="closeAuditDetails()">Done</button>
+        </div>
     </div>
 </div>
 
@@ -133,5 +176,52 @@ function clearAuditFilters() {
     document.getElementById('auditActivityFilter').value = '';
     document.getElementById('auditRoleFilter').value = '';
     filterAuditLogs();
+}
+
+function showAuditDetails(btn) {
+    var row = btn.closest('tr');
+    var changesRaw = row.getAttribute('data-changes');
+    var changes = [];
+    try {
+        changes = JSON.parse(changesRaw);
+    } catch (e) {
+        changes = [];
+    }
+
+    var tbody = document.getElementById('auditChangesBody');
+    tbody.innerHTML = '';
+
+    if (!changes || changes.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;color:#888;padding:1.5rem;">No field-level changes recorded.</td></tr>';
+    } else {
+        changes.forEach(function(c) {
+            var tr = document.createElement('tr');
+            tr.innerHTML =
+                '<td class="audit-change-field">' + escapeHtml(c.field) + '</td>' +
+                '<td class="audit-change-old">' + escapeHtml(c.oldValue || '(empty)') + '</td>' +
+                '<td class="audit-change-arrow"><i class="bi bi-arrow-right"></i></td>' +
+                '<td class="audit-change-new">' + escapeHtml(c.newValue || '(empty)') + '</td>';
+            tbody.appendChild(tr);
+        });
+    }
+
+    document.getElementById('auditDetailsModal').classList.add('active');
+}
+
+function closeAuditDetails() {
+    document.getElementById('auditDetailsModal').classList.remove('active');
+}
+
+// Close modal when clicking overlay background
+document.getElementById('auditDetailsModal').addEventListener('click', function(e) {
+    if (e.target === this) {
+        closeAuditDetails();
+    }
+});
+
+function escapeHtml(str) {
+    var div = document.createElement('div');
+    div.appendChild(document.createTextNode(str));
+    return div.innerHTML;
 }
 </script>

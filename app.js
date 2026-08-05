@@ -35,6 +35,9 @@ app.engine('hbs', engine({
       if (val == null) return '0.00';
       return Number(val).toFixed(2);
     },
+    json: function (context) {
+      return JSON.stringify(context || []);
+    },
   },
 }));
 app.set('view engine', 'hbs');

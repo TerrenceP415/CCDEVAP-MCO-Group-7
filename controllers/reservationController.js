@@ -211,6 +211,18 @@ exports.updateAdminReservations = async (req, res) => {
         const oldStatus = reservation.status;
         const oldPassengerCount = reservation.passengers.length;
 
+        // Snapshot old values for change tracking
+        const oldValues = {
+            reservationNumber: reservation.reservationNumber,
+            flightNumber: oldFlight ? oldFlight.flightNumber : '',
+            seats: reservation.passengers.map(p => p.seatNumber).join(', '),
+            passengers: reservation.passengers.map(p => p.fullName).join(', '),
+            mealPackage: reservation.mealPackage || '',
+            extraServices: reservation.extraServices || '',
+            totalPrice: String(reservation.totalPrice),
+            status: reservation.status,
+        };
+
         //validate old and new flight to match
         //new flight is the old flight after update
         let newFlight = oldFlight;
@@ -289,6 +301,38 @@ exports.updateAdminReservations = async (req, res) => {
             ? updated.passengers.map(p => p.seatNumber).join(', ')
             : 'N/A';
 
+        // Build field-level change list for audit trail
+        const newValues = {
+            reservationNumber: reservationNumber,
+            flightNumber: flightNumber.trim(),
+            seats: passengers.map(p => p.seatNumber).join(', '),
+            passengers: passengers.map(p => p.fullName).join(', '),
+            mealPackage: mealPackage || '',
+            extraServices: extraServices || '',
+            totalPrice: String(cleanPrice),
+            status: status,
+        };
+
+        const fieldsToTrack = [
+            { key: 'reservationNumber', label: 'Reservation Number' },
+            { key: 'flightNumber', label: 'Flight' },
+            { key: 'seats', label: 'Seats' },
+            { key: 'passengers', label: 'Passengers' },
+            { key: 'mealPackage', label: 'Meal Package' },
+            { key: 'extraServices', label: 'Extra Services' },
+            { key: 'totalPrice', label: 'Total Price' },
+            { key: 'status', label: 'Status' },
+        ];
+
+        const changes = [];
+        fieldsToTrack.forEach(({ key, label }) => {
+            const oldVal = String(oldValues[key] ?? '');
+            const newVal = String(newValues[key] ?? '');
+            if (oldVal !== newVal) {
+                changes.push({ field: label, oldValue: oldVal, newValue: newVal });
+            }
+        });
+
         // Audit trail: Reservation Updated (Admin)
         if (req.session && req.session.user) {
             // If status changed to Cancelled, log as Reservation Cancelled
@@ -297,14 +341,16 @@ exports.updateAdminReservations = async (req, res) => {
                     username: req.session.user.email || req.session.user.name,
                     userRole: req.session.user.role || 'admin',
                     activity: 'Reservation Cancelled',
-                    details: `Reservation ${reservationNumber} cancelled by admin`
+                    details: `Reservation ${reservationNumber} cancelled by admin`,
+                    changes,
                 });
             } else {
                 await logActivity({
                     username: req.session.user.email || req.session.user.name,
                     userRole: req.session.user.role || 'admin',
                     activity: 'Reservation Updated',
-                    details: `Reservation ${reservationNumber} updated`
+                    details: `Reservation ${reservationNumber} updated` + (changes.length ? ` (${changes.length} field${changes.length > 1 ? 's' : ''} changed)` : ''),
+                    changes,
                 });
             }
         }

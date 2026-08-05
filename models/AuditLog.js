@@ -25,6 +25,11 @@ const auditLogSchema = new mongoose.Schema({
     trim: true,
     default: '',
   },
+  changes: [{
+    field: { type: String, trim: true },
+    oldValue: { type: String, default: '' },
+    newValue: { type: String, default: '' },
+  }],
 });
 
 // Index on timestamp for efficient sorting/querying
