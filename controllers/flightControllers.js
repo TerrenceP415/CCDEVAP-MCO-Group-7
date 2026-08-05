@@ -115,6 +115,12 @@ exports.updateFlight = async (req, res) => {
       return res.status(400).json({ success: false, message: 'A flight with that number already exists.' });
     }
 
+    // Snapshot old values BEFORE the update for change tracking
+    const oldFlight = await Flight.findById(req.params.id).lean();
+    if (!oldFlight) {
+      return res.status(404).json({ success: false, message: 'Flight not found.' });
+    }
+
       // Update the flight in the database
     const flight = await Flight.findByIdAndUpdate(
       req.params.id,
@@ -139,13 +145,39 @@ exports.updateFlight = async (req, res) => {
       return res.status(404).json({ success: false, message: 'Flight not found.' });
     }
 
+    // Build field-level change list for audit trail
+    const fieldsToTrack = [
+      { key: 'flightNumber', label: 'Flight Number' },
+      { key: 'airline', label: 'Airline' },
+      { key: 'origin', label: 'Origin' },
+      { key: 'destination', label: 'Destination' },
+      { key: 'departureDateTime', label: 'Departure' },
+      { key: 'arrivalDateTime', label: 'Arrival' },
+      { key: 'availableSeats', label: 'Available Seats' },
+      { key: 'totalSeats', label: 'Total Seats' },
+      { key: 'ticketPrice', label: 'Ticket Price' },
+      { key: 'duration', label: 'Duration' },
+      { key: 'layovers', label: 'Layovers' },
+      { key: 'airlineLogo', label: 'Airline Logo' },
+    ];
+
+    const changes = [];
+    fieldsToTrack.forEach(({ key, label }) => {
+      const oldVal = String(oldFlight[key] ?? '');
+      const newVal = String(req.body[key] ?? '');
+      if (oldVal !== newVal) {
+        changes.push({ field: label, oldValue: oldVal, newValue: newVal });
+      }
+    });
+
     // Audit trail: Flight Updated
     if (req.session && req.session.user) {
       await logActivity({
         username: req.session.user.email || req.session.user.name,
         userRole: req.session.user.role || 'admin',
         activity: 'Flight Updated',
-        details: `Flight ${flightNumber} updated`
+        details: `Flight ${flightNumber} updated` + (changes.length ? ` (${changes.length} field${changes.length > 1 ? 's' : ''} changed)` : ''),
+        changes,
       });
     }
 

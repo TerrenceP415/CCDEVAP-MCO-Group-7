@@ -4538,3 +4538,237 @@ body.admin-page {
   }
 }
 
+/* ─── View Details Button ────────────────────────────── */
+.audit-view-details-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 12px;
+  border-radius: 6px;
+  border: 1px solid rgba(14, 165, 233, 0.4);
+  background: rgba(14, 165, 233, 0.1);
+  color: var(--color-sky-400);
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  white-space: nowrap;
+}
+
+.audit-view-details-btn:hover {
+  background: rgba(14, 165, 233, 0.25);
+  border-color: var(--color-sky-400);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(14, 165, 233, 0.2);
+}
+
+.audit-view-details-btn:active {
+  transform: translateY(0);
+}
+
+.audit-no-details {
+  color: var(--color-slate-600);
+  font-size: 0.85rem;
+}
+
+/* ─── Audit Details Modal ────────────────────────────── */
+.audit-modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  justify-content: center;
+  align-items: center;
+  animation: auditFadeIn 0.2s ease;
+}
+
+.audit-modal-overlay.active {
+  display: flex;
+}
+
+@keyframes auditFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes auditSlideUp {
+  from { opacity: 0; transform: translateY(20px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.audit-modal-panel {
+  background: var(--color-navy, #0f172a);
+  border: 1px solid var(--color-slate-700, #334155);
+  border-radius: 12px;
+  width: 90%;
+  max-width: 680px;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(14, 165, 233, 0.1);
+  animation: auditSlideUp 0.25s ease;
+}
+
+.audit-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 24px;
+  border-bottom: 1px solid var(--color-slate-700, #334155);
+}
+
+.audit-modal-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.audit-modal-title i {
+  font-size: 1.2rem;
+  color: var(--color-sky-400, #38bdf8);
+}
+
+.audit-modal-title h4 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-white, #fff);
+  letter-spacing: 0.3px;
+}
+
+.audit-modal-close {
+  background: none;
+  border: none;
+  color: var(--color-slate-400, #94a3b8);
+  font-size: 1.1rem;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+
+.audit-modal-close:hover {
+  color: var(--color-white, #fff);
+  background: rgba(239, 68, 68, 0.15);
+}
+
+/* ─── Changes Diff Table ─────────────────────────────── */
+.audit-modal-body {
+  padding: 16px 24px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.audit-changes-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.audit-changes-table thead th {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--color-sky-300, #7dd3fc);
+  padding: 8px 12px;
+  border-bottom: 2px solid var(--color-slate-700, #334155);
+  text-align: left;
+  font-weight: 700;
+}
+
+.audit-changes-table tbody td {
+  padding: 10px 12px;
+  font-size: 0.82rem;
+  border-bottom: 1px solid rgba(51, 65, 85, 0.4);
+  vertical-align: middle;
+}
+
+.audit-changes-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.audit-changes-table tbody tr:hover {
+  background: rgba(14, 165, 233, 0.04);
+}
+
+.audit-change-field {
+  font-weight: 600;
+  color: var(--color-slate-200, #e2e8f0);
+  white-space: nowrap;
+}
+
+.audit-change-old {
+  color: #f87171;
+  background: rgba(239, 68, 68, 0.08);
+  border-radius: 4px;
+  padding: 4px 10px !important;
+  font-family: 'SFMono-Regular', 'Consolas', 'Liberation Mono', monospace;
+  font-size: 0.78rem;
+  word-break: break-word;
+  max-width: 200px;
+}
+
+.audit-change-arrow {
+  text-align: center;
+  color: var(--color-slate-500, #64748b);
+  font-size: 0.9rem;
+  width: 30px;
+  padding: 4px !important;
+}
+
+.audit-change-new {
+  color: #4ade80;
+  background: rgba(34, 197, 94, 0.08);
+  border-radius: 4px;
+  padding: 4px 10px !important;
+  font-family: 'SFMono-Regular', 'Consolas', 'Liberation Mono', monospace;
+  font-size: 0.78rem;
+  word-break: break-word;
+  max-width: 200px;
+}
+
+/* ─── Modal Footer ───────────────────────────────────── */
+.audit-modal-footer {
+  padding: 14px 24px;
+  border-top: 1px solid var(--color-slate-700, #334155);
+  display: flex;
+  justify-content: flex-end;
+}
+
+.audit-modal-done-btn {
+  padding: 8px 24px;
+  border-radius: 8px;
+  border: 1px solid var(--color-sky-500, #0ea5e9);
+  background: rgba(14, 165, 233, 0.15);
+  color: var(--color-sky-400, #38bdf8);
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.audit-modal-done-btn:hover {
+  background: rgba(14, 165, 233, 0.3);
+  box-shadow: 0 2px 10px rgba(14, 165, 233, 0.2);
+}
+
+/* ─── Modal Responsive ───────────────────────────────── */
+@media (max-width: 768px) {
+  .audit-modal-panel {
+    width: 95%;
+    max-height: 85vh;
+  }
+
+  .audit-changes-table thead th,
+  .audit-changes-table tbody td {
+    padding: 8px 6px;
+    font-size: 0.72rem;
+  }
+
+  .audit-change-old,
+  .audit-change-new {
+    max-width: 120px;
+  }
+}

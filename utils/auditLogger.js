@@ -10,14 +10,16 @@ const AuditLog = require('../models/AuditLog');
  * @param {string} opts.userRole  - Role of the user ('admin' or 'passenger')
  * @param {string} opts.activity  - Short description (e.g. "User Login")
  * @param {string} [opts.details] - Optional extra context (e.g. flight number)
+ * @param {Array}  [opts.changes] - Optional array of { field, oldValue, newValue } diffs
  */
-async function logActivity({ username, userRole, activity, details }) {
+async function logActivity({ username, userRole, activity, details, changes }) {
   try {
     await AuditLog.create({
       username: username || 'Unknown',
       userRole: userRole || 'Unknown',
       activity,
       details: details || '',
+      changes: changes || [],
     });
   } catch (err) {
     // Silent catch — audit logging must never crash the main request
