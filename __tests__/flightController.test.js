@@ -188,7 +188,7 @@ describe('deleteFlight', () => {
   test('returns 404 when flight to delete is not found', async () => {
     Flight.findByIdAndDelete.mockResolvedValue(null);
 
-    const req = { params: { id: 'missing' }, session: {} };
+    const req = { params: { id: 'missing' }, session: { user: { email: 'admin@skyease.com', role: 'admin' } } };
     const res = mockRes();
 
     await deleteFlight(req, res);
