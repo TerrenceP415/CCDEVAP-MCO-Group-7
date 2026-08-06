@@ -20,6 +20,7 @@ beforeEach(() => {
 
 // Test suite for authentication flow
 describe('authentication flow', () => {
+  // Test for successful registration
   test('successful registration redirects to login', async () => {
     User.findOne.mockResolvedValueOnce(null);
     User.create.mockResolvedValueOnce({
@@ -43,7 +44,7 @@ describe('authentication flow', () => {
   });
 
 
-  // Test for failed registration due to existing email
+  // Test for successful login
   test('successful login creates a session and redirects to profile', async () => {
     User.findOne.mockResolvedValueOnce({
       _id: 'user-1',
@@ -64,7 +65,7 @@ describe('authentication flow', () => {
     expect(res.headers.location).toBe('/profile');
   });
 
-  // Test for failed login due to incorrect password
+  // Test for failed login 
   test('failed login redirects back to login with an error', async () => {
     User.findOne.mockResolvedValueOnce({
       _id: 'user-1',
