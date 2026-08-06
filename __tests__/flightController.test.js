@@ -40,9 +40,9 @@ describe('createFlight', () => {
 
     const req = { body: baseFlight, session: { user: { email: 'admin@skyease.com', role: 'admin' } } };
     const res = mockRes();
-
+    //create flight with baseFlight data
     await createFlight(req, res);
-
+    //Flight should have object containing baseFlight data
     expect(Flight).toHaveBeenCalledWith(
       expect.objectContaining({
         flightNumber: 'PR101',
@@ -53,7 +53,7 @@ describe('createFlight', () => {
         ticketPrice: 2500,
       })
     );
-    
+    //Audit log should have activity 'Flight Created'
     expect(logActivity).toHaveBeenCalledWith(
       expect.objectContaining({ activity: 'Flight Created' })
     );
@@ -61,26 +61,28 @@ describe('createFlight', () => {
   });
 
   test('rejects when flight number already exists', async () => {
+    //findOne should return a flight with the same flight number to simulate a duplicate
     Flight.findOne.mockResolvedValue({ flightNumber: 'PR101' });
 
     const req = { body: baseFlight, session: { user: { email: 'admin@skyease.com', role: 'admin' } } };
     const res = mockRes();
-
+    //try to create flight with the same flight number
     await createFlight(req, res);
-
+    //expect return 400 and  error message
     expect(res.status).toHaveBeenCalledWith(400);
     expect(res.send).toHaveBeenCalledWith('A flight with that number already exists');
   });
 
   test('rejects when departure is not before arrival', async () => {
+    //flight with departure after arrival
     const req = {
       body: { ...baseFlight, departureDateTime: '2026-09-01T10:00', arrivalDateTime: '2026-09-01T09:30' },
       session: { user: { email: 'admin@skyease.com', role: 'admin' } },
     };
     const res = mockRes();
-
+    //try to create flight 
     await createFlight(req, res);
-
+    //expect return 400 and error message
     expect(res.status).toHaveBeenCalledWith(400);
     expect(res.send).toHaveBeenCalledWith('Departure must be before arrival');
   });
@@ -105,23 +107,27 @@ describe('updateFlight', () => {
       availableSeats: 80,
       ticketPrice: 3000,
     };
-
+    // Findone returns null to indicate no duplicate flight number exists
     Flight.findOne.mockResolvedValue(null); 
+    //findByID returns a flight object with the baseFlight data
     Flight.findById.mockReturnValue({ 
       lean: jest.fn().mockResolvedValue({ _id: 'abc123', ...baseFlight }),
     });
+    //findByIdAndUpdate returns the id and the updated flight data 
     Flight.findByIdAndUpdate.mockResolvedValue({ _id: 'abc123', ...updatedFlight });
 
+    //req object with the flight id and the updated flight data
     const req = {
       params: { id: 'abc123' },
       body: updatedFlight,
       session: { user: { email: 'admin@skyease.com', role: 'admin' } },
     };
     const res = mockRes();
-
+    //update the flight
     await updateFlight(req, res);
-
+    //expect findById to be called with the flight id
     expect(Flight.findById).toHaveBeenCalledWith('abc123');
+    //expect findByIdAndUpdate to be called with the flight id and the updated flight data
     expect(Flight.findByIdAndUpdate).toHaveBeenCalledWith(
       'abc123',
       expect.objectContaining({
@@ -130,18 +136,21 @@ describe('updateFlight', () => {
       }),
       { returnDocument: 'after', runValidators: true }
     );
+    //vereify with audit log
     expect(logActivity).toHaveBeenCalledWith(
       expect.objectContaining({ activity: 'Flight Updated' })
     );
+    //expect json response to be success
     expect(res.json).toHaveBeenCalledWith({ success: true, message: 'Flight updated successfully.' });
   });
 
   test('returns 400 when required fields are missing', async () => {
     const req = { params: { id: 'abc123' }, body: { flightNumber: 'PR101' }, session: {} };
     const res = mockRes();
-
+    //update flight with missing required fields
     await updateFlight(req, res);
 
+    //expect return 400 and error message
     expect(res.status).toHaveBeenCalledWith(400);
     expect(res.json).toHaveBeenCalledWith(
       expect.objectContaining({ success: false })
@@ -155,12 +164,12 @@ describe('updateFlight', () => {
     Flight.findById.mockReturnValue({
       lean: jest.fn().mockResolvedValue(null),
     });
-
+    //invalid flight id in the request params to simulate flight not found
     const req = { params: { id: 'missing' }, body: baseFlight, session: {} };
     const res = mockRes();
 
     await updateFlight(req, res);
-
+    
     expect(Flight.findById).toHaveBeenCalledWith('missing');
     expect(res.status).toHaveBeenCalledWith(404);
     expect(res.json).toHaveBeenCalledWith({ success: false, message: 'Flight not found.' });
