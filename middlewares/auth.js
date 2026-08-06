@@ -1,7 +1,4 @@
-
-/**
- * Middleware to check if the user is authenticated
- */
+//Middleware to check if the user is authenticated
 const isAuthenticated = (req, res, next) => {
   if (req.session && req.session.user) {
     return next();
@@ -12,9 +9,7 @@ const isAuthenticated = (req, res, next) => {
   return res.redirect('/login');
 };
 
-/**
- * Middleware to check if the user has the required role
- */
+//Middleware to check if the user has the required role
 function requireRole(role) {
   return function (req, res, next) {
     if (!req.session || !req.session.user) {
